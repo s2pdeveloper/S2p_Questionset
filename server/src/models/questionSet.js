@@ -5,21 +5,16 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    type: {
-      type: Boolean,
-      required: false,
-      default: 0,
-    },
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
       required: false,
     },
-    serialNumber: {
+    sno: {
       type: String,
       required: false,
     },
-    isvisible: {
+    isVisible: {
       type: Boolean,
       required: false,
     },

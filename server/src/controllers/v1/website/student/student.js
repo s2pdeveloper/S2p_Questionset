@@ -5,15 +5,16 @@ const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      const DATA = req.body;
-            DATA.seminarId=req.params.id
-      const student = await Student.create(DATA);
+      const data = req.body;
+            data.seminarId=req.params.id
+      const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
         console.log('token', token);
 
         res.status(201).json({
             message: MESSAGES.apiSuccessStrings.ADDED('Student'),
+            studentId:student._id,
             token:token  
           })
       }
@@ -25,7 +26,7 @@ const customerobj = {
   },
   testArea: async (req, res) => {
     try {
-      const DATA = req.body;
+      const data = req.body;
       let {
         page = 1,
         pageSize = 10,

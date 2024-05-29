@@ -134,10 +134,10 @@ const questionsetOjbect = {
 
   createforSeminar: async (req, res) => {
     try {
-      const DATA = req.body;
-      DATA.seminarId=req.params.id
+      const data = req.body;
+      data.seminarId=req.params.id
       console.log("you hit the create question set")
-      const seminar = await QuestionSet.create(DATA);
+      const seminar = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
         seminary: seminar,
@@ -232,12 +232,12 @@ const questionsetOjbect = {
       }
 
 
-      existing.isvisible=!existing.isvisible
+      existing.isVisible=!existing.isVisible
      await existing.save()
      
 
       return res.success({
-        message: MESSAGES.apiSuccessStrings.UPDATE('visiblity of QuestionSet '),
+        message: MESSAGES.apiSuccessStrings.UPDATE('visibility of QuestionSet'),
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

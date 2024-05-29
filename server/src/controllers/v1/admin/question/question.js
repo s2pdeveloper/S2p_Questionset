@@ -230,9 +230,9 @@ const questionsetOjbect = {
   createforQuestionSet: async (req, res) => {
     try {
       console.log("called the question to create by question set");
-      const DATA = req.body;
-            DATA.questionSetId=req.params.id
-            const question = await Question.create(DATA);
+      const data = req.body;
+      data.questionSetId=req.params.id
+            const question = await Question.create(data);
 
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('Question'),
@@ -264,11 +264,11 @@ const questionsetOjbect = {
       });
 
       if (!existing) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Semimar');
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Question');
         return res.unprocessableEntity(errors);
       }
 
-      let seminar = await Question.findOneAndUpdate(
+      let question = await Question.findOneAndUpdate(
         { _id: req.params.id },
         req.body
       );
@@ -288,7 +288,7 @@ const questionsetOjbect = {
       let existing = await Question.findOne({ _id: req.params.id });
 
       if (!existing) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Semimar');
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Question');
         return res.unprocessableEntity(errors);
       }
 
