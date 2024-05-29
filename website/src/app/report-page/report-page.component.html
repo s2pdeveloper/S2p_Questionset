@@ -1,0 +1,61 @@
+<div class="row m-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-head">
+        <h4 class="d-flex justify-content-center">
+          Total Students : {{ totalStudents }}
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-evenly">
+          <h5 class="text-success">Attempted : {{ stuAttempted }}</h5>
+          <h5 class="text-danger">Not Attempted : {{ stuNotAttempted }}</h5>
+        </div>
+
+        <div class="d-flex justify-content-evenly">
+          <nz-progress
+            [nzPercent]="attemptPercentage.toFixed(0)"
+            nzType="circle"
+            nzStatus="success"
+            [nzFormat]="passFormat"
+          ></nz-progress>
+          <nz-progress
+            [nzPercent]="notAttemptPercentage.toFixed(0)"
+            nzType="circle"
+            nzStatus="exception"
+            [nzFormat]="failFormat"
+          ></nz-progress>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-head">
+        <h4 class="d-flex justify-content-center">
+          Attempted Students : {{ stuAttempted }}
+        </h4>
+      </div>
+      <div class="card-body">
+        <div class="d-flex justify-content-evenly">
+          <h5 class="text-success">Passed : {{ totalPassed }}</h5>
+          <h5 class="text-danger">Failed : {{ totalFailed }}</h5>
+        </div>
+        <div class="d-flex justify-content-evenly">
+          <nz-progress
+            [nzPercent]="passPercentage.toFixed(0)"
+            nzType="circle"
+            nzStatus="success"
+            [nzFormat]="passFormat"
+          ></nz-progress>
+          <nz-progress
+            [nzPercent]="failPercentage.toFixed(0)"
+            nzType="circle"
+            nzStatus="exception"
+            [nzFormat]="failFormat"
+          ></nz-progress>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

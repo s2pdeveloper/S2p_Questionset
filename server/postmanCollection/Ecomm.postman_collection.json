@@ -1,0 +1,2941 @@
+{
+	"info": {
+		"_postman_id": "20daabcc-f675-4d96-83c6-2a5c2ca9ba04",
+		"name": "Ecomm",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26094812"
+	},
+	"item": [
+		{
+			"name": "Ecomm",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "userAddress",
+							"item": [
+								{
+									"name": "addUserAddress",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n\r\n    \"userId\":\"6440e25073a21fa5a21348db\",\r\n    \"isDelete\":0,\r\n    \"addressId\":\"6450e46677c30d2caf9603bc\", \r\n    \"isDefault\":0\r\n\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/user/createAddress",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"user",
+												"createAddress"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getUserAddressById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/user/getAddressById/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"user",
+												"getAddressById",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6450eb62ef25391be219a1c4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateUserAddress",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/user/updateAddress/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"user",
+												"updateAddress",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6450eb62ef25391be219a1c4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "deleteUserAddress",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/user//deleteAddress/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"user",
+												"",
+												"deleteAddress",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": ""
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "registerUser",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"admin@gmail.com\",\r\n    \"password\":\"admin@1234\",\r\n    \"userName\":\"admin12\",\r\n    \"firstName\":\"s2p\",\r\n    \"lastName\":\"Edutech\",\r\n    \"companyName\":\"S2p Edutech\",\r\n    \"gender\":\"Male\",\r\n    \"phone\":7654343223,\r\n    \"alternatePhone\":\"9087654321\",\r\n    \"emailVerified\":1,\r\n    \"phoneVerified\":1\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "registerUser Copy",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"kashif@gmail.com\",\r\n    \"password\":\"kashif@1234\",\r\n    \"userName\":\"kashif12\",\r\n    \"firstName\":\"Kashif\",\r\n    \"lastName\":\"Khan\",\r\n    \"companyName\":\"\",\r\n    \"gender\":\"Male\",\r\n    \"phone\":7878676786,\r\n    \"alternatePhone\":\"6789987676\",\r\n    \"emailVerified\":1,\r\n    \"phoneVerified\":1\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProfile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/643fc5157331e4a1ab86a868",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"643fc5157331e4a1ab86a868"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"hcl@gmail.com\",\r\n    \"password\":\"hcl@1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateUser",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"gender\":\"female\",\r\n    \"phone\":9876453221\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/643fc5eb7331e4a1ab86a86b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"643fc5eb7331e4a1ab86a86b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteUser",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/643fc5eb7331e4a1ab86a86b",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"643fc5eb7331e4a1ab86a86b"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllUsers",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/user/getAll",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "role",
+					"item": [
+						{
+							"name": "addNewRole",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\":\"Customer\",\r\n\"description\":\"Customer\",\r\n\"isDelete\":0\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/addRole",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"addRole"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getRoleById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/6440f9f921d093a11fedf637",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"6440f9f921d093a11fedf637"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateRole",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Vendors\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/6440fa2a21d093a11fedf63a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"6440fa2a21d093a11fedf63a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/6440fa2a21d093a11fedf63a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"6440fa2a21d093a11fedf63a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllRoles",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/getAll",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getByName",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/role/getByName/admin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"role",
+										"getByName",
+										"admin"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "categories",
+					"item": [
+						{
+							"name": "addCategory",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " {\r\n     \"parentId\":\"C0001\",\r\n     \"name\":\"FOOTWEARS\",\r\n     \"slug\":\"Best Footwear Online\",\r\n     \"isDelete\":0\r\n }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/addCategories",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"addCategories"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCategoryById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories//getCategoryById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"",
+										"getCategoryById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644111f3c444efd0d0184f12"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCategory",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"slug\":\"Electricals Appliances\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories//updateCategory/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"",
+										"updateCategory",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644114ec3a2e1c03401d1fca"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCategoryById",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/deleteById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"deleteById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6441172e9d80f9cf392bcee4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCategoryByParentId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/getCategoryByParentId/:parentId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"getCategoryByParentId",
+										":parentId"
+									],
+									"variable": [
+										{
+											"key": "parentId",
+											"value": "C0002"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllCategory",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/getAll",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"getAll"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product",
+					"item": [
+						{
+							"name": "createProduct",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "",
+										"value": "",
+										"type": "default"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"name\":\"Apple 13\",\r\n\"published\":1,\r\n\"isDelete\":0,\r\n\"isFeatured\":1,\r\n \r\n\"visibilityInCatalog\":0,\r\n\"shortDescription\":\"Apple Smartphone\",\r\n\"description\":\"Apple New Edition Smartphone\",\r\n\"salePriceStarts\":\"06/04/2017\",\r\n\"salePriceEnds\":\"09/05/2017\",\r\n\"inStock\":1,\r\n\"soldIndividually\":0,\r\n\"salePrice\":1200,\r\n\"regularPrice\":2000,\r\n\"categoryId\":\"644117edc1711abf20b88701\",\r\n\"displayUnit\":\"2000\",\r\n\"isTrending\":\"0\",\r\n\"inSale\":1,\r\n\"COD\":1,\r\n\"hsnCode\":\"3406\",\r\n\"CGSTTax\":1800,\r\n\"SGSTTax\":1100,\r\n\"IGSTTax\":1800\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllProduct",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProductById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644cf34d1c0d06cb10a19a0f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProduct",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n       \"published\": false\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644cf34d1c0d06cb10a19a0f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProduct",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64509c43e1eada681dffe17d"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllPublishedProducts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getAllPublished",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getAllPublished"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllTrendingProducts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getAllTrending",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getAllTrending"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllProductByCategory",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllInSaleProducts",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getAllInSale",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getAllInSale"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProduct",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": ""
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "vendor",
+					"item": [
+						{
+							"name": "vendor_address",
+							"item": [
+								{
+									"name": "createAddress",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"vendorId\":\"644cff96bf808bcc95337e9b\",\r\n    \"isDelete\":0,\r\n    \"addressId\":\"6450c0cd620f534599161906\",\r\n    \"isWareHouse\":1,\r\n    \"isDefault\":0\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/vendor/createAddress",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"vendor",
+												"createAddress"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getAddressById",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/vendor/getAddressById/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"vendor",
+												"getAddressById",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6450d746bedaf4b823dca3fb"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "vendor_gst_details",
+							"item": [
+								{
+									"name": "addGSTdetails",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n   \r\n   \"vendorId\":\"644cfd75bf808bcc95337e8b\",\r\n\"gstinNumber\":\"31FFFFF1314R9Z6\",\r\n\"panNumber\":\"BCATY1234D\",\r\n\"legalName\":\"Siddhesh\",\r\n\"tradeName\":\"MNP Pvt Ltd.\"\r\n\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/vendor/addGSTDetails",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"vendor",
+												"addGSTDetails"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "getGstByVendorId",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/vendor/getByVendorId/:vendorId",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"vendor",
+												"getByVendorId",
+												":vendorId"
+											],
+											"variable": [
+												{
+													"key": "vendorId",
+													"value": "644cfd75bf808bcc95337e8b"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "updateGstDetails",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n      \"tradeName\": \"MNP  Pvt Ltd.\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:3000/api/v1/admin/vendor/updateGSTFDetails/:id",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "3000",
+											"path": [
+												"api",
+												"v1",
+												"admin",
+												"vendor",
+												"updateGSTFDetails",
+												":id"
+											],
+											"variable": [
+												{
+													"key": "id",
+													"value": "6450e1e377c30d2caf9603ae"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "createVendor",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"vendorCounter\":1 ,\r\n\"isDelete\":0  ,  \r\n\"firstName\": \"Aman\"  ,\r\n\"lastName\": \"Singh\"    ,\r\n\"email\":\"aman@mail.com\",\r\n\"phoneNumber\":\"7658828928\"     ,\r\n\"alternatePhone\":\"8765432112\",\r\n\"companyName\":\"Aman Enterprises\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllVendor",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getVendorById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644cfe30bf808bcc95337e90"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateVendor",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n      \"companyName\": \"Arora Enterprises\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644cfe30bf808bcc95337e90"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteVendor",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "644cfe30bf808bcc95337e90"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getByName",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/vendor/getByName/:firstName",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"vendor",
+										"getByName",
+										":firstName"
+									],
+									"variable": [
+										{
+											"key": "firstName",
+											"value": "Aman"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "address",
+					"item": [
+						{
+							"name": "createAddress",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\"isDelete\":0,\r\n\"name\":\"HCL Private Limited\",\r\n\"phone\":\"9132321112\",\r\n\"city\":\"Pune\",\r\n\"state\":\"Maharashtra\",\r\n\"country\":\"India\",\r\n\"pincode\":\"442001\",\r\n\"addressLine1\":\"Pune IT Park\",\r\n\"addressLine2\":\"Hinjewadi\",\r\n\"addressLine3\":\"Pune\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/address/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"address",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllAddress",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/address/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"address",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAddressById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/address/getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"address",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6450bea6620f5345991618f5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateAddress",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n \"city\": \"Mumbai\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/address/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"address",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6450bea6620f5345991618f5"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteAddress",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/address/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"address",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6450bf9c620f5345991618fa"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "user_role_mapping",
+					"item": [
+						{
+							"name": "createURM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"userId\":\"64524ef25edfaaf2201b481c\",\r\n    \"roleId\":\"64524f515edfaaf2201b4820\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/urm/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"urm",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAll",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/urm/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"urm",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateURM",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/urm/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"urm",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteURM",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/urm/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"urm",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6450f6be2c33f4221759d2a7"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getURMById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/urm//getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"urm",
+										"",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64524f665edfaaf2201b4823"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "product_vendor_mapping",
+					"item": [
+						{
+							"name": "createPVM",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\":\"644cf34d1c0d06cb10a19a0f\",\r\n    \"vendorId\":\"644cfd75bf808bcc95337e8b\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllPVM",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPVMByProductId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/getByProductId/:productId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										"getByProductId",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "productId",
+											"value": "644cf34d1c0d06cb10a19a0f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updatePVM",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deletePVM",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "645108a4413f0302e0168993"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/pvm/getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"pvm",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64510a3f413f0302e016899f"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ProductGroup",
+					"item": [
+						{
+							"name": "getProductGroup",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getGroupProduct",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getGroupProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProductGroup",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\":\"644cf34d1c0d06cb10a19a0f\",\r\n    \"product2Id\":\"64509cd5e1eada681dffe186\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/addGroupProduct",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"addGroupProduct"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProductGroup",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/deleteFromGroup/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"deleteFromGroup",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "645225b3881ce5a5ad4db448"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ProductImage",
+					"item": [
+						{
+							"name": "getPImageByProductId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/getImagebyproductid/:productId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"getImagebyproductid",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "productId",
+											"value": "64521e2cc4f3d39356253c7f"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addProductImage",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"productId\":\"64521e2cc4f3d39356253c7f\",\r\n\"imageId\":\"https://m.media-amazon.com/images/I/71dKjvLPkAL._SL1500_.jpg\",\r\n\"isBanner\":1\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/addProductImage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"addProductImage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProductImage",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/product/deleteProductImage/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"product",
+										"deleteProductImage",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64522fc6338c06ea7c603519"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ProductOption",
+					"item": [
+						{
+							"name": "addProductOption",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n\"productId\":\"64509cd5e1eada681dffe186\",\r\n\"published\":1 ,\r\n\"isDelete\":0 ,\r\n\"SKU\":\"PR0003\" ,\r\n\"quantity\":50 ,\r\n\"cost\":15000\r\n\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllProductOption",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getProductOptionById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption/getById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption",
+										"getById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6452435ff4c0e471bd33dc40"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getPOByProductId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption/getByProductId/:productId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption",
+										"getByProductId",
+										":productId"
+									],
+									"variable": [
+										{
+											"key": "productId",
+											"value": "64509cd5e1eada681dffe186"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateProductOption",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n     \"quantity\": 55\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "6452435ff4c0e471bd33dc40"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteProductOption",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/productoption/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"productoption",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "645246f4461266b90571d32a"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "CategoryImage",
+					"item": [
+						{
+							"name": "addCategoryImage",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n \"categoryId\":\"644111f3c444efd0d0184f12\",\r\n \"imageId\":\"https://images.pexels.com/photos/609771/pexels-photo-609771.jpeg?cs=srgb&dl=pexels-ingo-joseph-609771.jpg&fm=jpg\"\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/addCategoryImage",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"addCategoryImage"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCatImageByctegoryId",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/getbyCategoryid/:categoryId",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"getbyCategoryid",
+										":categoryId"
+									],
+									"variable": [
+										{
+											"key": "categoryId",
+											"value": "644111f3c444efd0d0184f12"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCategoryImage",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/categories/deleteCategoryImage/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"categories",
+										"deleteCategoryImage",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64524d4b46a21a70be53d1a9"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Coupon",
+					"item": [
+						{
+							"name": "addNewCoupon",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n\r\n\"discountType\":\"By 2 get 1 free\",\r\n\"code\":\"ASH0012\",\r\n\"active\":1,\r\n\"minAmount\":100,\r\n\"amount\":400,\r\n\"discount\":50,\r\n\"start\":\"02/04/2017\",\r\n\"end\":\"06/04/2017\",\r\n\"description\":\"By 2 any product and get 1 absalutely free\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllCoupon",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon/",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										""
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCouponById",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon/getCouponById/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										"getCouponById",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": "64525b4fd6549852846a0d89"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getCouponByCode",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": " ",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon//getCouponByCode/:code",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										"",
+										"getCouponByCode",
+										":code"
+									],
+									"variable": [
+										{
+											"key": "code",
+											"value": "ASH0012"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateCoupon",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "deleteCoupon",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:3000/api/v1/admin/coupon/:id",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"coupon",
+										":id"
+									],
+									"variable": [
+										{
+											"key": "id",
+											"value": ""
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "customer",
+					"item": [
+						{
+							"name": "Register new customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"shakir973019@gmail.com\",\r\n    \"lastName\":\"ansari\",\r\n    \"firstName\":\"mohammad\",\r\n    \"phone\":\"8956366996\",\r\n    \"password\":\"82516552shajs\"    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/customerRegister",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"customerRegister"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Request OTP for password change",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"shakir973019@gmail.com\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/requestResetPasswordOTP",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"requestResetPasswordOTP"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "reset password from OTP",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"shakir973019@gmail.com\",\r\n    \"newPassword\":\"shakirTwo\",\r\n    \"confirmPassword\":\"shakirTwo\",\r\n    \"OTP\":\"1498\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/resetPassword",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"resetPassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Login Customer",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\":\"shakir973019@gmail.com\",\r\n    \"password\":\"shakirTwo\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/customerLogin",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"customerLogin"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get user All Address",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer//getAllCustomerAddress/65a7959e859a66bd5f3a8d0d",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"",
+										"getAllCustomerAddress",
+										"65a7959e859a66bd5f3a8d0d"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update the customer",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\":\"MohammadAnsari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/65cef8bbebc42e2d5328362a",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"65cef8bbebc42e2d5328362a"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "customer All Orders",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/getAllOrders/65b209bae80e604417a1c134",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"getAllOrders",
+										"65b209bae80e604417a1c134"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update password (user should log in)",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "\"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1Y2VmOGJiZWJjNDJlMmQ1MzI4MzYyYSIsImlhdCI6MTcwODkyOTU0NiwiZXhwIjoxNzA5MDE1OTQ2fQ.hjk8UnNK2cVHG_17jERF_RPtCTClqAA7vjqHII2Z1do\"",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"oldPassword\":\"shakirTwo\",\r\n    \"newPassword\":\"shakirOne\",\r\n    \"confirmPassword\":\"shakirOne\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/updatePassword",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"updatePassword"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "download invoice for parituclar order",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/customer/invoiceDownload/65c738216c07835d33c8ceda",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"customer",
+										"invoiceDownload",
+										"65c738216c07835d33c8ceda"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "download invoice for parituclar order",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://api.jhumkaplanet.com/api/v1/website/customer/invoiceDownload/65aa619a6b41cb00b6d51ab2",
+											"protocol": "https",
+											"host": [
+												"api",
+												"jhumkaplanet",
+												"com"
+											],
+											"path": [
+												"api",
+												"v1",
+												"website",
+												"customer",
+												"invoiceDownload",
+												"65aa619a6b41cb00b6d51ab2"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "html",
+									"header": [
+										{
+											"key": "Server",
+											"value": "nginx/1.18.0 (Ubuntu)"
+										},
+										{
+											"key": "Date",
+											"value": "Wed, 21 Feb 2024 10:56:39 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "text/html; charset=utf-8"
+										},
+										{
+											"key": "Transfer-Encoding",
+											"value": "chunked"
+										},
+										{
+											"key": "Connection",
+											"value": "keep-alive"
+										},
+										{
+											"key": "Content-Security-Policy",
+											"value": "default-src 'none'"
+										},
+										{
+											"key": "Cross-Origin-Embedder-Policy",
+											"value": "require-corp"
+										},
+										{
+											"key": "Cross-Origin-Opener-Policy",
+											"value": "same-origin"
+										},
+										{
+											"key": "Origin-Agent-Cluster",
+											"value": "?1"
+										},
+										{
+											"key": "Referrer-Policy",
+											"value": "no-referrer"
+										},
+										{
+											"key": "Strict-Transport-Security",
+											"value": "max-age=15552000; includeSubDomains"
+										},
+										{
+											"key": "X-Content-Type-Options",
+											"value": "nosniff"
+										},
+										{
+											"key": "X-DNS-Prefetch-Control",
+											"value": "off"
+										},
+										{
+											"key": "X-Download-Options",
+											"value": "noopen"
+										},
+										{
+											"key": "X-Frame-Options",
+											"value": "SAMEORIGIN"
+										},
+										{
+											"key": "X-Permitted-Cross-Domain-Policies",
+											"value": "none"
+										},
+										{
+											"key": "X-XSS-Protection",
+											"value": "0"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "Express"
+										},
+										{
+											"key": "Vary",
+											"value": "Accept-Encoding"
+										},
+										{
+											"key": "Content-Encoding",
+											"value": "gzip"
+										}
+									],
+									"cookie": [],
+									"body": "<!DOCTYPE html>\n<html lang=\"en\">\n    <head>\n        <meta charset=\"utf-8\">\n        <title>Error</title>\n    </head>\n    <body>\n        <pre>Cannot GET /api/v1/website/customer/invoiceDownload/65aa619a6b41cb00b6d51ab2</pre>\n    </body>\n</html>"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "admin Order",
+					"item": [
+						{
+							"name": "get all order by status",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/orders/orderByStatus",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"orders",
+										"orderByStatus"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "todaysAllOrder",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/orders/todaysOrder",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"orders",
+										"todaysOrder"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "analytics",
+					"item": [
+						{
+							"name": "get favProducts mostAddedTocart topOrderedProduct",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/analytics/mostfavProduct?month=2&direction=-1&top=2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"analytics",
+										"mostfavProduct"
+									],
+									"query": [
+										{
+											"key": "month",
+											"value": "2"
+										},
+										{
+											"key": "direction",
+											"value": "-1"
+										},
+										{
+											"key": "top",
+											"value": "2"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

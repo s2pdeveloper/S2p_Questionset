@@ -1,0 +1,201 @@
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-primary text-white">
+            <h2>Test Info</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Subject:</strong> C</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Duration:</strong> 10 minutes</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Questions:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Marks per Question:</strong> 1</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Marks:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Negative Marking:</strong> No</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Passing Marks:</strong> 4</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <p><strong>Instructions:</strong> Please ensure you have a stable internet connection. Do not refresh the page during the test. Once you start the test, you cannot pause it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-primary" (click)="startTest('C')">Start Test</button>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="col-md-6 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-success text-white">
+            <h2>Java Test</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Subject:</strong> Java</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Duration:</strong> 10 minutes</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Questions:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Marks per Question:</strong> 2</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Marks:</strong> 20</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Negative Marking:</strong> No</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Passing Marks:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <p><strong>Instructions:</strong> Please ensure you have a stable internet connection. Do not refresh the page during the test. Once you start the test, you cannot pause it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-primary" disabled>Start Test</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-warning text-white">
+            <h2>JavaScript Test</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Subject:</strong> JavaScript</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Duration:</strong> 10 minutes</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Questions:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Marks per Question:</strong> 2</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Marks:</strong> 20</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Negative Marking:</strong> No</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Passing Marks:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <p><strong>Instructions:</strong> Please ensure you have a stable internet connection. Do not refresh the page during the test. Once you start the test, you cannot pause it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-primary" disabled>Start Test</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-danger text-white">
+            <h2>HTML Test</h2>
+          </div>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Subject:</strong> HTML</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Duration:</strong> 10 minutes</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Questions:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Marks per Question:</strong> 2</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Total Marks:</strong> 20</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <p><strong>Negative Marking:</strong> No</p>
+              </div>
+              <div class="col-md-6">
+                <p><strong>Passing Marks:</strong> 10</p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-12">
+                <p><strong>Instructions:</strong> Please ensure you have a stable internet connection. Do not refresh the page during the test. Once you start the test, you cannot pause it.</p>
+              </div>
+            </div>
+          </div>
+          <div class="card-footer text-center">
+            <button class="btn btn-primary" disabled>Start Test</button>
+          </div>
+        </div>
+      </div> -->
+    </div>
+  </div>
+  
