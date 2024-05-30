@@ -1,0 +1,624 @@
+{
+	"info": {
+		"_postman_id": "d03c1423-725a-4247-8077-16c8b577e9c4",
+		"name": "Seminar",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33771971"
+	},
+	"item": [
+		{
+			"name": "website",
+			"item": [
+				{
+					"name": "student",
+					"item": [
+						{
+							"name": "register new Student to particular seminar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"branch\":\"computer Science\",\r\n    \"degree\":\"BCA\",\r\n    \"firstName\":\"shakir\",\r\n    \"lastName\":\"ansari\",\r\n    \"email\":\"shakir@212gmail.com\",\r\n    \"gender\":\"MALE\",\r\n    \"phone\":8956369962\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/student/6656cdbc9eec676cc7b88352",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"student",
+										"6656cdbc9eec676cc7b88352"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "New Request",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "admin",
+			"item": [
+				{
+					"name": "user",
+					"item": [
+						{
+							"name": "register New admin",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\":\"shakir\",\r\n    \"lastName\":\"ansari\",\r\n    \"email\":\"shakir97301999@gmail.com\",\r\n    \"password\":\"shakirHero\",\r\n    \"phone\":8956369962,\r\n    \"gender\":\"MALE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/user/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "login",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\":\"shakir\",\r\n    \"lastName\":\"ansari\",\r\n    \"email\":\"shakir97301999@gmail.com\",\r\n    \"password\":\"shakirHero\",\r\n    \"phone\":8956369962,\r\n    \"gender\":\"MALE\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/user/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"user",
+										"login"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Question set",
+					"item": [
+						{
+							"name": "add question to targeted seminar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656cdbc9eec676cc7b88352",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"6656cdbc9eec676cc7b88352"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get question set by questionSet Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d3a888baa5b7875d0376",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"6656d3a888baa5b7875d0376"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllbySeminarId",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d3a888baa5b7875d0376",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"6656d3a888baa5b7875d0376"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "change visibility",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/changeVisibility/6656d3a888baa5b7875d0376",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"changeVisibility",
+										"6656d3a888baa5b7875d0376"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update the questionSet",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic updated by shakir ansari\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d074030bf7351dfbece8",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"6656d074030bf7351dfbece8"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete questionSet",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Node.js set Basic updated by shakir ansari\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d98d68182228209cdab7",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"questionSet",
+										"6656d98d68182228209cdab7"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "question",
+					"item": [
+						{
+							"name": "create question by QuestionsetId",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statement\":\"what is full name of shakir\",\r\n    // \"options\":[\"english\",\"marathi\",\"hindi\",\"urdu\"],\r\n    \"hint\":null,\r\n    \"type\":\"TEXT\",\r\n    \"correctOption\":\"mohd shakir mohd shabbir ansari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/question/6656cdbc9eec676cc7b88352",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"question",
+										"6656cdbc9eec676cc7b88352"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get all question of particular QuestionSet",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statement\":\"what is full name of shakir\",\r\n    // \"options\":[\"english\",\"marathi\",\"hindi\",\"urdu\"],\r\n    \"hint\":null,\r\n    \"type\":\"TEXT\",\r\n    \"correctOption\":\"mohd shakir mohd shabbir ansari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/question/getAllQuestionOfQuestionSet/6656cdbc9eec676cc7b88352",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"question",
+										"getAllQuestionOfQuestionSet",
+										"6656cdbc9eec676cc7b88352"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get questionById",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statement\":\"what is full name of shakir\",\r\n    // \"options\":[\"english\",\"marathi\",\"hindi\",\"urdu\"],\r\n    \"hint\":null,\r\n    \"type\":\"TEXT\",\r\n    \"correctOption\":\"mohd shakir mohd shabbir ansari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/question/6656e13127788180b01a3f66",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"question",
+										"6656e13127788180b01a3f66"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "updateById",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statement\":\"what is full name of shakir updated\",\r\n    // \"options\":[\"english\",\"marathi\",\"hindi\",\"urdu\"],\r\n    \"hint\":null,\r\n    \"type\":\"TEXT\",\r\n    \"correctOption\":\"mohd shakir mohd shabbir ansari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/question/6656e0cb27788180b01a3f64",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"question",
+										"6656e0cb27788180b01a3f64"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"statement\":\"what is full name of shakir updated\",\r\n    // \"options\":[\"english\",\"marathi\",\"hindi\",\"urdu\"],\r\n    \"hint\":null,\r\n    \"type\":\"TEXT\",\r\n    \"correctOption\":\"mohd shakir mohd shabbir ansari\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/question/6656e0cb27788180b01a3f64",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"question",
+										"6656e0cb27788180b01a3f64"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Seminar",
+					"item": [
+						{
+							"name": "add new seminar",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Seminar of SB Jain Node developer\",\r\n    \"email\":\"shakir111@gmail.com\",\r\n    \"lastName\":\"ansari\",\r\n    \"degree\":\"BCA\",\r\n    \"description\":\"Conducting the Node developer interview and seminar in SB jain 2024\",\r\n    \"college\":\"SB jain Nagpur\",\r\n    \"phone\":895636996\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/seminar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"seminar"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update seminar",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\":\"Seminar of SB Jain Node developer with Sachin sir and Gandhar sir\",\r\n    \"email\":\"shakir111@gmail.com\",\r\n    \"lastName\":\"ansari\",\r\n    \"degree\":\"BCA\",\r\n    \"description\":\"Conducting the Node developer interview and seminar in SB jain 2024\",\r\n    \"college\":\"SB jain Nagpur\",\r\n    \"phone\":895636996\r\n\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/seminar/6656ce239eec676cc7b88354",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"seminar",
+										"6656ce239eec676cc7b88354"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get by Id",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/seminar/6656ce239eec676cc7b88354",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"seminar",
+										"6656ce239eec676cc7b88354"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/seminar/6656ce239eec676cc7b88354",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"seminar",
+										"6656ce239eec676cc7b88354"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}

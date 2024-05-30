@@ -3,11 +3,9 @@ const bcrypt = require('bcrypt');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');
-// const OrdersRepository = require('../../../../models/repository/OrderRepository');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { generateCreateData } = OPTIONS;
-// const mail = require('../../../../models/helpers/EmailHelper');
 
 const Seminar = require('../../../../models/seminar');
 

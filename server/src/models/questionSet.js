@@ -5,6 +5,12 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    noOfQuestion:{
+     type:Number,
+    },
+    duration:{
+      type:Number,
+    },
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
@@ -22,7 +28,6 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    Querstion: [],
   },
   {
     timestamps: true,
