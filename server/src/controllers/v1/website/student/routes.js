@@ -7,7 +7,10 @@ const AuthHelper = require('../../../../models/helpers/AuthHelper');
 const { helpers } = require('handlebars');
 
 
+app.get('/getAllQuestionSetOfSeminar',Student.getAllQuestionSetOfSeminar)
+app.get('/testByQuestionSet/:id',Student.testByQuestionSet)
+app.post('/submitTest',Student.submitTest)
 app.post('/:id', Student.registerStudent);
-app.get('/testArea,',Student.testArea)
+// app.get('/go', Student.registerStudent);
 
 module.exports = app;

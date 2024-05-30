@@ -1,5 +1,5 @@
 const app = require('express')();
-const QuestionSet = require('./questionSet');
+const QuestoinSet = require('./questionSet');
 const { validate } = require('../../../../middleware/Validators');
 const AuthHelper = require('../../../../models/helpers/AuthHelper');
 
