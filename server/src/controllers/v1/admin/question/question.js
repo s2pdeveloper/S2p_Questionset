@@ -6,178 +6,178 @@ const { generateCreateData } = OPTIONS;
 const  Question  = require('../../../../models/question');
 const { User } = require('../../../../models/User');
 const questionsetOjbect = {
-  getAll: async (req, res) => {
-    // try {
-      // let {
-      //   page = 1,
-      //   pageSize = 10,
-      //   search = null,
-      //   column = 'createdAt',
-      //   direction = -1,
-      // } = req.query;
-      // const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
+  // getAll: async (req, res) => {
+  //   // try {
+  //     // let {
+  //     //   page = 1,
+  //     //   pageSize = 10,
+  //     //   search = null,
+  //     //   column = 'createdAt',
+  //     //   direction = -1,
+  //     // } = req.query;
+  //     // const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
 
-      // const pipeline = [
-      //   {
-      //     $match: {
-      //       ...(![undefined, null, ''].includes(search) && {
-      //         $text: { $search: search },
-      //       }),
-      //     },
-      //   },
-        // {
-        //   $unwind: '$productDetails',
-        // },
-        // {
-        //   $lookup: {
-        //     from: 'Product',
-        //     localField: 'productDetails.productId',
-        //     foreignField: '_id',
-        //     as: 'productDetails.productInfo',
-        //   },
-        // },
-        // {
-        //   $unwind: '$productDetails.productInfo',
-        // },
-        // {
-        //   $lookup: {
-        //     from: 'ProductImage',
-        //     localField: 'productDetails.productInfo._id',
-        //     foreignField: 'productId',
-        //     as: 'productDetails.productInfo.productImages',
-        //     pipeline: [
-        //       {
-        //         $project: {
-        //           _id: 1,
-        //           productId: 1,
-        //           isBanner: 1,
-        //           image: {
-        //             $concat: [process.env.IMAGE_PATH, '/product/', '$image'],
-        //           },
-        //         },
-        //       },
-        //     ],
-        //   },
-        // },
-        // {
-        //   $lookup: {
-        //     from: 'User_address',
-        //     localField: 'userAddressId',
-        //     foreignField: '_id',
-        //     as: 'userAddress',
-        //   },
-        // },
-        // {
-        //   $unwind: '$userAddress',
-        // },
-        // {
-        //   $lookup: {
-        //     from: 'User',
-        //     localField: 'customerId',
-        //     foreignField: '_id',
-        //     as: 'customerDetails',
-        //   },
-        // },
-        // {
-        //   $unwind: '$customerDetails',
-        // },
-        // {
-        //   $group: {
-        //     _id: '$_id',
-        //     customerDetails: { $first: '$customerDetails' },
-        //     status: { $first: '$status' },
-        //     createdAt: { $first: '$createdAt' },
-        //     updatedAt: { $first: '$updatedAt' },
-        //     trackURL: { $first: '$trackURL' },
-        //     COD: { $first: '$COD' },
-        //     subTotal: { $first: '$subTotal' },
-        //     shippingCharges: { $first: '$shippingCharges' },
-        //     totalAmount: { $first: '$totalAmount' },
-        //     orderNumber: { $first: '$orderNumber' },
-        //     productDetails: {
-        //       $push: '$productDetails.productInfo',
-        //     },
-        //   },
-        // },
-    //     { $sort: { [column]: direction } },
-    //     {
-    //       $facet: {
-    //         metadata: [{ $count: 'total' }],
-    //         data: [{ $skip: skip }, { $limit: parseInt(pageSize, 10) }],
-    //       },
-    //     },
-    //   ];
-    //   const resp = await User.aggregate(pipeline);
-    //   return res.success(resp);
-    // } catch (e) {
-    //   const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-    //   res.serverError(errors);
-    //   throw new Error(e);
-    // }
+  //     // const pipeline = [
+  //     //   {
+  //     //     $match: {
+  //     //       ...(![undefined, null, ''].includes(search) && {
+  //     //         $text: { $search: search },
+  //     //       }),
+  //     //     },
+  //     //   },
+  //       // {
+  //       //   $unwind: '$productDetails',
+  //       // },
+  //       // {
+  //       //   $lookup: {
+  //       //     from: 'Product',
+  //       //     localField: 'productDetails.productId',
+  //       //     foreignField: '_id',
+  //       //     as: 'productDetails.productInfo',
+  //       //   },
+  //       // },
+  //       // {
+  //       //   $unwind: '$productDetails.productInfo',
+  //       // },
+  //       // {
+  //       //   $lookup: {
+  //       //     from: 'ProductImage',
+  //       //     localField: 'productDetails.productInfo._id',
+  //       //     foreignField: 'productId',
+  //       //     as: 'productDetails.productInfo.productImages',
+  //       //     pipeline: [
+  //       //       {
+  //       //         $project: {
+  //       //           _id: 1,
+  //       //           productId: 1,
+  //       //           isBanner: 1,
+  //       //           image: {
+  //       //             $concat: [process.env.IMAGE_PATH, '/product/', '$image'],
+  //       //           },
+  //       //         },
+  //       //       },
+  //       //     ],
+  //       //   },
+  //       // },
+  //       // {
+  //       //   $lookup: {
+  //       //     from: 'User_address',
+  //       //     localField: 'userAddressId',
+  //       //     foreignField: '_id',
+  //       //     as: 'userAddress',
+  //       //   },
+  //       // },
+  //       // {
+  //       //   $unwind: '$userAddress',
+  //       // },
+  //       // {
+  //       //   $lookup: {
+  //       //     from: 'User',
+  //       //     localField: 'customerId',
+  //       //     foreignField: '_id',
+  //       //     as: 'customerDetails',
+  //       //   },
+  //       // },
+  //       // {
+  //       //   $unwind: '$customerDetails',
+  //       // },
+  //       // {
+  //       //   $group: {
+  //       //     _id: '$_id',
+  //       //     customerDetails: { $first: '$customerDetails' },
+  //       //     status: { $first: '$status' },
+  //       //     createdAt: { $first: '$createdAt' },
+  //       //     updatedAt: { $first: '$updatedAt' },
+  //       //     trackURL: { $first: '$trackURL' },
+  //       //     COD: { $first: '$COD' },
+  //       //     subTotal: { $first: '$subTotal' },
+  //       //     shippingCharges: { $first: '$shippingCharges' },
+  //       //     totalAmount: { $first: '$totalAmount' },
+  //       //     orderNumber: { $first: '$orderNumber' },
+  //       //     productDetails: {
+  //       //       $push: '$productDetails.productInfo',
+  //       //     },
+  //       //   },
+  //       // },
+  //   //     { $sort: { [column]: direction } },
+  //   //     {
+  //   //       $facet: {
+  //   //         metadata: [{ $count: 'total' }],
+  //   //         data: [{ $skip: skip }, { $limit: parseInt(pageSize, 10) }],
+  //   //       },
+  //   //     },
+  //   //   ];
+  //   //   const resp = await User.aggregate(pipeline);
+  //   //   return res.success(resp);
+  //   // } catch (e) {
+  //   //   const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+  //   //   res.serverError(errors);
+  //   //   throw new Error(e);
+  //   // }
 
 
 
-    try {
-      let {
-        page = 1,
-        pageSize = 10,
-        search = null,
-        column = 'createdAt',
-        direction = -1,
-      } = req.query;
+  //   try {
+  //     let {
+  //       page = 1,
+  //       pageSize = 10,
+  //       search = null,
+  //       column = 'createdAt',
+  //       direction = -1,
+  //     } = req.query;
       
-      page = parseInt(page, 10);
-      pageSize = parseInt(pageSize, 10);
-      direction = parseInt(direction, 10);
+  //     page = parseInt(page, 10);
+  //     pageSize = parseInt(pageSize, 10);
+  //     direction = parseInt(direction, 10);
       
-      const skip = Math.max(0, page - 1) * pageSize;
+  //     const skip = Math.max(0, page - 1) * pageSize;
   
-      const matchStage = {
-        $match: {
-          ...(![undefined, null, ''].includes(search) && {
-            $text: { $search: search },
-          }),
-        },
-      };
+  //     const matchStage = {
+  //       $match: {
+  //         ...(![undefined, null, ''].includes(search) && {
+  //           $text: { $search: search },
+  //         }),
+  //       },
+  //     };
   
-      const sortStage = { $sort: { [column]: direction } };
+  //     const sortStage = { $sort: { [column]: direction } };
   
-      const facetStage = {
-        $facet: {
-          metadata: [{ $count: 'total' }],
-          data: [{ $skip: skip }, { $limit: pageSize }],
-        },
-      };
+  //     const facetStage = {
+  //       $facet: {
+  //         metadata: [{ $count: 'total' }],
+  //         data: [{ $skip: skip }, { $limit: pageSize }],
+  //       },
+  //     };
   
-      const pipeline = [matchStage, sortStage, facetStage];
+  //     const pipeline = [matchStage, sortStage, facetStage];
   
-      const resp = await Question.aggregate(pipeline);
+  //     const resp = await Question.aggregate(pipeline);
   
-      return res.success(resp);
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
+  //     return res.success(resp);
+  //   } catch (e) {
+  //     const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+  //     res.serverError(errors);
+  //     throw new Error(e);
+  //   }
 
-  },
+  // },
 
-  create: async (req, res) => {
-    try {
-      const DATA = req.body;
+  // create: async (req, res) => {
+  //   try {
+  //     const DATA = req.body;
 
-      const seminar = await Question.create(DATA);
+  //     const seminar = await Question.create(DATA);
 
-      return res.success({
-        message: MESSAGES.apiSuccessStrings.ADDED('Question'),
-        seminary: seminar,
-      });
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
-  },
+  //     return res.success({
+  //       message: MESSAGES.apiSuccessStrings.ADDED('Question'),
+  //       seminary: seminar,
+  //     });
+  //   } catch (e) {
+  //     const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+  //     res.serverError(errors);
+  //     throw new Error(e);
+  //   }
+  // },
 
 
   getAllQuestionOfQuestionSet: async (req, res) => {

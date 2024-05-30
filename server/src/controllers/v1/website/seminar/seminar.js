@@ -1,17 +1,13 @@
 const bcrypt = require('bcrypt');
 const { Student } = require('../../../../models/student');
 const { User } = require('../../../../models/User');
-const USER_ADDRESS = require('../../../../models/user_address');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const _ = require('lodash');
 const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
-// const { Address } = require('../../../../models/address');
 const mail = require('../../../../models/helpers/EmailHelper');
 const UserHelper = require('../../../../models/helpers/UserHelper');
-// const { Order } = require('../../../../models/Order');
-// const User_address = require('../../../../models/user_address');
 const ObjectId = mongoose.Types.ObjectId;
 const puppeteer = require('puppeteer');
 const { path } = require('./routes');

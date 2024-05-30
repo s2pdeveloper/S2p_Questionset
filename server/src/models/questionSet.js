@@ -5,10 +5,11 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    type: {
-      type: Boolean,
-      required: false,
-      default: 0,
+    noOfQuestion:{
+     type:Number,
+    },
+    duration:{
+      type:Number,
     },
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -27,7 +28,6 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    Querstion: [],
   },
   {
     timestamps: true,
