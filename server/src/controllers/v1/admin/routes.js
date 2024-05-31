@@ -6,11 +6,14 @@ const seminar = require('./seminar/routes')
 const questionSet = require('./questionSet/routes')
 const question = require('./question/routes')
 const user = require('./user/routes')
+const result=require("./result/routes")
 
-router.use('/seminar', seminar);
-router.use('/questionSet', questionSet);
-router.use('/question', question);
-router.use('/user', user);
+
+router.use('/seminar',AuthHelper.authenticateJWT(usersRoles.getAdmin()), seminar);
+router.use('/questionSet',AuthHelper.authenticateJWT(usersRoles.getAdmin()), questionSet);
+router.use('/question',AuthHelper.authenticateJWT(usersRoles.getAdmin()), question);
+router.use('/user',  user);
+router.use('/result', AuthHelper.authenticateJWT(usersRoles.getAdmin()), result);
 
 
 

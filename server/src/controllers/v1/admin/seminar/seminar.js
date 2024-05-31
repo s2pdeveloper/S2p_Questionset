@@ -122,12 +122,11 @@ const seminaryObject = {
 
   create: async (req, res) => {
     try {
-      const DATA = req.body;
+      const data = req.body;
       console.log("you hit the Seminar create")
-      const seminary = await Seminar.create(DATA);
+      await Seminar.create(data);
       return res.success({
-        message: MESSAGES.apiSuccessStrings.ADDED('Seminar'),
-        seminary: seminary,
+        message: MESSAGES.apiSuccessStrings.ADDED('Seminar')
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

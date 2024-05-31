@@ -27,6 +27,8 @@ const verifyJwt = async (token, roles, force) => {
         _id: new mongoose.Types.ObjectId(jwtPayload.id),
         status: { $ne: OPTIONS.defaultStatus.DELETED },
       });
+
+      console.log("your found by token",existingUser)
       if (
         existingUser &&
         ![OPTIONS.defaultStatus.ACTIVE].includes(existingUser.status)
@@ -67,6 +69,7 @@ exports.authenticateJWT = function (roles, force = true) {
       const token = authHeader.split(' ')[1];   // only for testing need to change in production
       // const token =authHeader;     
      // console.log("your token",token)
+     console.log("your token",token)
       return verifyJwt(token, roles, force).then((checkAuth) => {
         if (checkAuth.status === resCode.HTTP_OK) {
           req.authenticated = true;
