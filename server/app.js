@@ -5,7 +5,6 @@ const chalk = require('chalk');
 const logger = require('morgan');
 const helmet = require('helmet');
 const express = require('express');
-const compression = require('compression');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 
@@ -36,7 +35,7 @@ app.use(
   express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
 );
 app.use('/images', express.static(path.join(__dirname, 'assets')));
-app.use(compression());
+
 app.use(cors('*'));
 app.use('/', apiRouter);
 if (NODE_ENV !== 'production') {
