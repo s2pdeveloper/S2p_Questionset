@@ -20,7 +20,7 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    isvisible: {
+    isVisible: {
       type: Boolean,
       required: false,
     },

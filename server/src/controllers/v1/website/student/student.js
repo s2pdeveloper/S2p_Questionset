@@ -1,19 +1,26 @@
 const bcrypt = require('bcrypt');
 const { Student } = require('../../../../models/student');
+const QuestionSet=require("../../../../models/questionSet")
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
+const mongoose=require("mongoose");
+const Question = require('../../../../models/question');
+const Questionset = require('../../../../models/questionSet');
+const Result = require('../../../../models/result');
+const { eq } = require('lodash');
 
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      const DATA = req.body;
-            DATA.seminarId=req.params.id
-      const student = await Student.create(DATA);
+      const data = req.body;
+            data.seminarId=req.params.id
+      const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
         console.log('token', token);
 
         res.status(201).json({
             message: MESSAGES.apiSuccessStrings.ADDED('Student'),
+            studentId:student._id,
             token:token  
           })
       }
@@ -23,9 +30,14 @@ const customerobj = {
       throw new Error(e);
     }
   },
-  testArea: async (req, res) => {
+  getAllQuestionSetOfSeminar: async (req, res) => {
+
+
+    // const find the user first
+    // take out the seminary id so all the Question set we can show in the test area
+
     try {
-      const DATA = req.body;
+      const data = req.body;
       let {
         page = 1,
         pageSize = 10,
@@ -34,8 +46,10 @@ const customerobj = {
         direction = -1,
       } = req.query;
 
-      let questionSetId=req.params.id
-      
+      //Need to change the code that is student id should be get from req
+      const student= await Student.findOne({_id:"6656ee1e1509b7e1a7830510"})
+      let seminarId=student.seminarId
+    console.log("seminar Id is ",seminarId);
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
       direction = parseInt(direction, 10);
@@ -44,16 +58,13 @@ const customerobj = {
   
       const matchStage = {
         $match: {
-          // ...(questionSetId && { questionSetId: new mongoose.Types.ObjectId(questionSetId) }),
+         ...(seminarId && { seminarId: new mongoose.Types.ObjectId(seminarId) }),
           ...(![undefined, null, ''].includes(search) && {
             $text: { $search: search },
           }),
         },
       };
-  
-  
       const sortStage = { $sort: { [column]: direction } };
-  
       const facetStage = {
         $facet: {
           metadata: [{ $count: 'total' }],
@@ -61,6 +72,65 @@ const customerobj = {
         },
       };
       const pipeline = [matchStage, sortStage, facetStage];
+      const resp = await QuestionSet.aggregate(pipeline);
+      return res.success(resp);
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
+
+
+  testByQuestionSet: async (req, res) => {
+
+
+    // const find the user first
+    // take out the seminary id so all the Question set we can show in the test area
+
+    try {
+      const data = req.body;
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+      //Need to change the code that is student id should be get from req
+      // const student= await Student.findOne({_id:"6656ee1e1509b7e1a7830510"})
+      // let seminarId=student.seminarId
+      let questionSetId=req.params.id
+    // console.log("seminar Id is ",seminarId);
+      page = parseInt(page, 10);
+      pageSize = parseInt(pageSize, 10);
+      direction = parseInt(direction, 10);
+      
+      const skip = Math.max(0, page - 1) * pageSize;
+  
+      const matchStage = {
+        $match: {
+         ...(questionSetId && { questionSetId: new mongoose.Types.ObjectId(questionSetId) }),
+          ...(![undefined, null, ''].includes(search) && {
+            $text: { $search: search },
+          }),
+        },
+      };
+      const sortStage = { $sort: { [column]: direction } };
+      const facetStage = {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skip }, { $limit: pageSize }],
+        },
+      };
+      const projectStage = {
+        $project: {
+          correctOption: 0,
+        },
+      };
+      const pipeline = [matchStage, sortStage, projectStage,facetStage];
       const resp = await Question.aggregate(pipeline);
       return res.success(resp);
     } catch (e) {
@@ -69,6 +139,171 @@ const customerobj = {
       throw new Error(e);
     }
   },
+
+
+
+
+
+  submitTest: async (req, res) => {
+    try {
+      const marksPerQuestion = 10;
+      const { studentId, seminarId, questionSetId, answers } = req.body;
+    
+      const questions = await Question.find({ questionSetId });
+  
+      let correctAnswers = 0;
+  
+      
+      answers.forEach((answer) => {
+        const questionId = Object.keys(answer)[0];
+        const question = questions.find((q) => q._id.toString() === questionId);
+  
+        console.log("checking for ",question && question.correctOption === answer[questionId],question.correctOption,"==",answer[questionId])
+        if (question && question.correctOption === answer[questionId]) {
+          correctAnswers++;
+        }
+      });
+  
+      // Fetch question set details
+      const questionSet = await Questionset.findById(questionSetId);
+     console.log("your questionset",questionSet);
+      if (!questionSet) {
+        // Handle case where question set is not found
+        const errors = "Question set Not found";
+        res.serverError(errors);
+        return;
+      }
+  
+      // Calculate max score, obtained marks, passing marks, and status
+      const maxScore = Number(questionSet.noOfQuestion * marksPerQuestion);
+      const obtainMarks = correctAnswers * marksPerQuestion;
+      const passingMarks = questionSet.passingMarks;
+      const status = obtainMarks >= passingMarks ? 'PASS' : 'FAIL';
+  
+      // Create result data object
+      const resultData = {
+        studentId,
+        questionSetId,
+        seminarId,
+        status,
+        obtainMarks,
+        passingMarks,
+        maxScore
+      };
+  
+      
+      const result = await Result.create(resultData);
+  
+    
+      res.success(result);
+  
+    } catch (error) {
+     
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+  
+
+
+
+  getResultByQuestionSetId: async (req, res) => {
+    try {
+      
+      const questionSetId=req.params.id;
+      const studentId=req.user? req.user._id: req.body.studentId
+     const seminarId=req.user?req.user.seminarId : req.body.seminarId
+      const result= await Result.findOne({studentId:studentId,questionSetId:questionSetId});
+
+    res.status(200).json({
+      result
+    })
+  
+    } catch (error) {
+     
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+
+
+
+
+  rankedResult: async (req, res) => {
+    try {
+      
+      const questionSetId=req.body.questionSetId;
+      const studentId=req.user? req.user._id: req.body.studentId
+     const seminarId=req.user?req.user.seminarId : req.body.seminarId
+
+      const data = req.body;
+      let {
+        page = 1,
+        pageSize = 9999,
+        search = null,
+        column = 'obtainMarks',
+        direction = -1,
+      } = req.query;
+
+      page = parseInt(page, 10);
+      pageSize = parseInt(pageSize, 10);
+      direction = parseInt(direction, 10);
+      const skip = Math.max(0, page - 1) * pageSize;
+      const matchStage = {
+        $match: {
+         ...(seminarId && { seminarId: new mongoose.Types.ObjectId(seminarId) }),
+         ...(questionSetId && { questionSetId: new mongoose.Types.ObjectId(questionSetId) }),
+        },
+      };
+      const facetStage = {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skip }, { $limit: pageSize }],
+        },
+      };
+      
+      const pipeline = [matchStage, facetStage,];
+      const resp = await Result.aggregate(pipeline);
+      let noOfPassStudent=0
+      let noOfFailStudent=0;
+      let totalStudent=resp[0].data.length;
+      let student=null
+      let topStudent=[]
+
+      resp[0].data.forEach((item, index) => {
+        item.rank = index + 1;
+        if(item.status=="PASS"){
+          noOfPassStudent++
+        }else{
+          noOfFailStudent++
+        }
+        if(item.studentId==studentId){
+          student={...item,rank:index+1}
+        }
+        if(index<3){
+          topStudent.push(item)
+        }
+      })
+
+    res.status(200).json({
+    
+      noOfFailStudent,
+      noOfPassStudent,
+      totalStudent,
+      topStudent,
+      student
+    })
+  
+    } catch (error) {
+     
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+  
 
 
 
@@ -361,7 +596,7 @@ const customerobj = {
 //       let existing = await User.findByIdAndUpdate(req.params.id, req.body, {
 //         upsert: true,
 //         new: true,
-//         rawResult: true,
+//         rawstatus: true,
 //       });
 //       if (!existing) {
 //         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('User');

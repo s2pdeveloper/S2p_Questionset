@@ -46,6 +46,7 @@ const OPTIONS = {
       ];
     },
     getAdmin: () => [OPTIONS.usersRoles.SUPER_ADMIN, OPTIONS.usersRoles.ADMIN],
+    getStudent: () => [OPTIONS.usersRoles.STUDENT],
     getUser: () => [OPTIONS.usersRoles.SHOP, OPTIONS.usersRoles.CUSTOMER],
   },
   genders: {

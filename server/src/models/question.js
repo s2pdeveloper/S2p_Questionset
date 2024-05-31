@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 
 const QuestionSchema = mongoose.Schema(
     {
-        statement: {
+        question: {
             type: String,
             required: false,
         },
@@ -21,12 +21,10 @@ const QuestionSchema = mongoose.Schema(
             ref: 'Questionset',
             required: false,
           },
-        options:[
-
-        ],
-    correctOption:{
-        type:String
-    }         
+         options:[],
+         correctOption:{
+            type:String
+        }         
     },
     {
         timestamps: true,
