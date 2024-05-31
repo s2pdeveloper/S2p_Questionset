@@ -12,18 +12,20 @@
           <h5 class="text-danger">Not Attempted : {{ stuNotAttempted }}</h5>
         </div>
 
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-evenly mt-3">
           <nz-progress
             [nzPercent]="attemptPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="success"
-            [nzFormat]="passFormat"
+            [nzFormat]="percentFormat"
+            [nzWidth]="150"
           ></nz-progress>
           <nz-progress
             [nzPercent]="notAttemptPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="exception"
-            [nzFormat]="failFormat"
+            [nzFormat]="percentFormat"
+            [nzWidth]="150"
           ></nz-progress>
         </div>
       </div>
@@ -41,21 +43,59 @@
           <h5 class="text-success">Passed : {{ totalPassed }}</h5>
           <h5 class="text-danger">Failed : {{ totalFailed }}</h5>
         </div>
-        <div class="d-flex justify-content-evenly">
+        <div class="d-flex justify-content-evenly mt-3">
           <nz-progress
             [nzPercent]="passPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="success"
-            [nzFormat]="passFormat"
+            [nzFormat]="percentFormat"
+            [nzWidth]="150"
           ></nz-progress>
           <nz-progress
             [nzPercent]="failPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="exception"
-            [nzFormat]="failFormat"
+            [nzFormat]="percentFormat"
+            [nzWidth]="150"
           ></nz-progress>
         </div>
       </div>
+    </div>
+  </div>
+</div>
+<div class="row m-3">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-head">
+        <h4 class="d-flex justify-content-center">Your Result</h4>
+      </div>
+      <div class="card-body">
+        <h5>Marks Obtained</h5>
+        <nz-progress
+          [nzPercent]="marksPercent.toFixed(0)"
+          [nzFormat]="marksFormat"
+          [nzStatus]="MarkStatusFormat()"
+          nzStrokeLinecap="round"
+        ></nz-progress>
+        <h5>Questions Attempted</h5>
+        <nz-progress
+          [nzPercent]="questionsPercent.toFixed(0)"
+          [nzFormat]="questionsFormat"
+          [nzStatus]="QuestionStatusFormat()"
+          nzStrokeLinecap="round"
+        ></nz-progress>
+        <h5>Result Status</h5>
+        <h5>Your Rank</h5>
+        <span>5</span>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-head">
+        <h4 class="d-flex justify-content-center"></h4>
+      </div>
+      <div class="card-body"></div>
     </div>
   </div>
 </div>

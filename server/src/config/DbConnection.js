@@ -5,7 +5,7 @@ if (process.env.ENVIRONMENT === "development") {
   mongoose.set("autoCreate", true);
 }
 if (process.env.NODE_ENV == "development") {
-  mongoUrl = process.env.MONGODB_URL;
+  mongoUrl = process.env.DEV_DATABASE_URL;
 }
 if (process.env.NODE_ENV == "production") {
   mongoUrl = process.env.PROD_DATABASE_URL;
