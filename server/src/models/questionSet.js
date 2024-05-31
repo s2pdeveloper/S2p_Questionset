@@ -16,7 +16,7 @@ const questionSetSchema = mongoose.Schema(
       ref: 'Seminar',
       required: false,
     },
-    sno: {
+    serialNumber: {
       type: String,
       required: false,
     },

@@ -6,6 +6,7 @@ const mongoose=require("mongoose");
 const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
+const { eq } = require('lodash');
 
 const customerobj = {
   registerStudent: async (req, res) => {
@@ -195,6 +196,105 @@ const customerobj = {
   
     
       res.success(result);
+  
+    } catch (error) {
+     
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+  
+
+
+
+  getResultByQuestionSetId: async (req, res) => {
+    try {
+      
+      const questionSetId=req.params.id;
+      const studentId=req.user? req.user._id: req.body.studentId
+     const seminarId=req.user?req.user.seminarId : req.body.seminarId
+      const result= await Result.findOne({studentId:studentId,questionSetId:questionSetId});
+
+    res.status(200).json({
+      result
+    })
+  
+    } catch (error) {
+     
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+
+
+
+
+  rankedResult: async (req, res) => {
+    try {
+      
+      const questionSetId=req.body.questionSetId;
+      const studentId=req.user? req.user._id: req.body.studentId
+     const seminarId=req.user?req.user.seminarId : req.body.seminarId
+
+      const data = req.body;
+      let {
+        page = 1,
+        pageSize = 9999,
+        search = null,
+        column = 'obtainMarks',
+        direction = -1,
+      } = req.query;
+
+      page = parseInt(page, 10);
+      pageSize = parseInt(pageSize, 10);
+      direction = parseInt(direction, 10);
+      const skip = Math.max(0, page - 1) * pageSize;
+      const matchStage = {
+        $match: {
+         ...(seminarId && { seminarId: new mongoose.Types.ObjectId(seminarId) }),
+         ...(questionSetId && { questionSetId: new mongoose.Types.ObjectId(questionSetId) }),
+        },
+      };
+      const facetStage = {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skip }, { $limit: pageSize }],
+        },
+      };
+      
+      const pipeline = [matchStage, facetStage,];
+      const resp = await Result.aggregate(pipeline);
+      let noOfPassStudent=0
+      let noOfFailStudent=0;
+      let totalStudent=resp[0].data.length;
+      let student=null
+      let topStudent=[]
+
+      resp[0].data.forEach((item, index) => {
+        item.rank = index + 1;
+        if(item.status=="PASS"){
+          noOfPassStudent++
+        }else{
+          noOfFailStudent++
+        }
+        if(item.studentId==studentId){
+          student={...item,rank:index+1}
+        }
+        if(index<3){
+          topStudent.push(item)
+        }
+      })
+
+    res.status(200).json({
+    
+      noOfFailStudent,
+      noOfPassStudent,
+      totalStudent,
+      topStudent,
+      student
+    })
   
     } catch (error) {
      
