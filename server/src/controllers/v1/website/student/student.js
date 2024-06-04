@@ -47,9 +47,8 @@ const customerobj = {
       } = req.query;
 
       //Need to change the code that is student id should be get from req
-      const student= await Student.findOne({_id:"6656ee1e1509b7e1a7830510"})
+      const student= await Student.findOne({_id:req.body.studentId});
       let seminarId=student.seminarId
-    console.log("seminar Id is ",seminarId);
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
       direction = parseInt(direction, 10);
@@ -86,9 +85,6 @@ const customerobj = {
   testByQuestionSet: async (req, res) => {
 
 
-    // const find the user first
-    // take out the seminary id so all the Question set we can show in the test area
-
     try {
       const data = req.body;
       let {
@@ -99,11 +95,9 @@ const customerobj = {
         direction = -1,
       } = req.query;
 
-      //Need to change the code that is student id should be get from req
-      // const student= await Student.findOne({_id:"6656ee1e1509b7e1a7830510"})
-      // let seminarId=student.seminarId
+    
       let questionSetId=req.params.id
-    // console.log("seminar Id is ",seminarId);
+  
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
       direction = parseInt(direction, 10);
