@@ -258,7 +258,7 @@ const customerobj = {
         },
       };
       
-      const pipeline = [matchStage, facetStage,];
+      const pipeline = [matchStage, { $sort: { obtainMarks: -1 } }, facetStage,];
       const resp = await Result.aggregate(pipeline);
       let noOfPassStudent=0
       let noOfFailStudent=0;

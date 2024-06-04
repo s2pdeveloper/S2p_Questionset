@@ -9,7 +9,7 @@ const ResultObject = {
     try {
 
       const questionSetId = req.body.questionSetId;
-      const seminarId = req.user ? req.user.seminarId : req.body.seminarId;
+      const seminarId = req.body.seminarId;
       let {
         page = 1,
         pageSize = 9999,
@@ -35,7 +35,7 @@ const ResultObject = {
       const facetStage = {
         $facet: {
           metadata: [{ $count: 'total' }],
-          data: [{ $skip: skip }, { $limit: pageSize }],
+          data: [{ $skip: skip }, { $sort: { obtainMarks: -1 } }, { $limit: pageSize }],
         },
       };
 

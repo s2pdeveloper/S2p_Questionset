@@ -9,7 +9,6 @@ const questionsetOjbect = {
     try {
       const data = req.body;
       data.seminarId=req.params.id
-      console.log("you hit the create question set")
       const seminar = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
@@ -24,7 +23,6 @@ const questionsetOjbect = {
 
   getById: async (req, res) => {
     try {
-      console.log("you hit the get by id question set",req.params.id);
       const seminar = await QuestionSet.find({ _id: req.params.id });
       return res.success(seminar);
     } catch (e) {
@@ -36,9 +34,7 @@ const questionsetOjbect = {
 
   getAllBySeminaryId: async (req, res) => {
     try {
-      console.log("you hit the get by id question set",req.params.id);
       const seminar = await QuestionSet.find({ seminarId: req.params.id });
-      // return res.success(seminar);
 
       const DATA = req.body;
       let {
@@ -79,8 +75,6 @@ const questionsetOjbect = {
       const resp = await QuestionSet.aggregate(pipeline);
       return res.success(resp);
 
-
-
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -93,22 +87,16 @@ const questionsetOjbect = {
   
 
   changeVisibility: async (req, res) => {
-    console.log('req.params.id', req.params.id);
     try {
       let existing = await QuestionSet.findOne({
         _id: req.params.id,
       });
-
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
-
-
       existing.isVisible=!existing.isVisible
      await existing.save()
-     
-
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('visibility of QuestionSet'),
       });
@@ -119,7 +107,6 @@ const questionsetOjbect = {
     }
   },
   update: async (req, res) => {
-    console.log('req.params.id', req.params.id);
     try {
       let existing = await QuestionSet.findOne({
         _id: req.params.id,
@@ -134,7 +121,6 @@ const questionsetOjbect = {
         { _id: req.params.id },
         req.body
       );
-
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('QuestionSet'),
       });
@@ -148,14 +134,11 @@ const questionsetOjbect = {
   delete: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({ _id: req.params.id });
-
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
-
       await QuestionSet.findOneAndDelete({ _id: req.params.id });
-
       return res.success({
         message: MESSAGES.apiSuccessStrings.DELETED('QuestionSet'),
       });
