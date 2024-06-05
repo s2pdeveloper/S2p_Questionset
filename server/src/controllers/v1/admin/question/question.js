@@ -54,7 +54,7 @@ const questionsetOjbect = {
     }
   },
 
-  createforQuestionSet: async (req, res) => {
+  createForQuestionSet: async (req, res) => {
     try {
       const data = req.body;
       data.questionSetId = req.params.id;

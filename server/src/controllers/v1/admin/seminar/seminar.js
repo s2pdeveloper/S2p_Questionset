@@ -154,7 +154,7 @@ const seminaryObject = {
       });
 
       if (!existing) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Semimar');
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
         return res.unprocessableEntity(errors);
       }
 
@@ -178,7 +178,7 @@ const seminaryObject = {
       let existing = await Seminar.findOne({ _id: req.params.id });
 
       if (!existing) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Semimar');
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
         return res.unprocessableEntity(errors);
       }
 
