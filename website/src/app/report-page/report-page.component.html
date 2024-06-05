@@ -34,9 +34,7 @@
   <div class="col-md-6">
     <div class="card">
       <div class="card-head">
-        <h4 class="d-flex justify-content-center">
-          Overall Results
-        </h4>
+        <h4 class="d-flex justify-content-center">Overall Results</h4>
       </div>
       <div class="card-body">
         <div class="d-flex justify-content-evenly">
@@ -70,7 +68,7 @@
         <h4 class="d-flex justify-content-center">Your Result</h4>
       </div>
       <div class="card-body">
-        <div class="row">
+        <div class="row mb-3">
           <div class="col-4">
             <h5>Marks Obtained</h5>
           </div>
@@ -84,25 +82,23 @@
           </div>
         </div>
 
-        <div class="row">
+        <div class="row mb-3">
           <div class="col-4">
             <h5>Questions Attempted</h5>
           </div>
           <div class="col-8">
             <nz-progress
-          [nzPercent]="questionsPercent.toFixed(0)"
-          [nzFormat]="questionsFormat"
-          [nzStatus]="QuestionStatusFormat()"
-          nzStrokeLinecap="round"
-        ></nz-progress>
+              [nzPercent]="questionsPercent.toFixed(0)"
+              [nzFormat]="questionsFormat"
+              [nzStatus]="QuestionStatusFormat()"
+              nzStrokeLinecap="round"
+            ></nz-progress>
           </div>
         </div>
-
-       
-        
-        <h5>Result Status</h5>
-        <h5>Your Rank</h5>
-        <span>5</span>
+        <div class="row mb-3">
+          <h5>Result Status</h5>
+          <h5>Rank</h5>
+        </div>
       </div>
     </div>
   </div>

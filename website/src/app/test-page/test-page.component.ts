@@ -7,7 +7,7 @@ import { Subject, takeUntil, timer } from 'rxjs';
 @Component({
   selector: 'app-test-page',
   standalone: true,
-  imports: [CommonModule,ReactiveFormsModule,FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule],
   templateUrl: './test-page.component.html',
   styleUrl: './test-page.component.css',
 })
@@ -18,52 +18,52 @@ export class TestPageComponent implements OnDestroy {
     {
       text: 'What is the capital of France?',
       options: ['Paris', 'London', 'Berlin', 'Madrid'],
-      answer:''
+      answer: '',
     },
     {
       text: 'Which planet is known as the Red Planet?',
       options: ['Earth', 'Mars', 'Jupiter', 'Saturn'],
-      answer:''
+      answer: '',
     },
     {
       text: 'Who wrote "Hamlet"?',
       options: ['Shakespeare', 'Dante', 'Homer', 'Cervantes'],
-      answer:''
+      answer: '',
     },
     {
       text: 'What is the largest ocean on Earth?',
       options: ['Pacific', 'Atlantic', 'Indian', 'Arctic'],
-      answer:''
+      answer: '',
     },
     {
       text: 'What is the speed of light?',
       options: ['300,000 km/s', '150,000 km/s', '450,000 km/s', '600,000 km/s'],
-      answer:''
+      answer: '',
     },
     {
       text: 'Who painted the Mona Lisa?',
       options: ['Da Vinci', 'Van Gogh', 'Picasso', 'Rembrandt'],
-      answer:''
+      answer: '',
     },
     {
       text: 'What is the chemical symbol for gold?',
       options: ['Au', 'Ag', 'Pb', 'Fe'],
-      answer:''
+      answer: '',
     },
     {
       text: 'Who discovered penicillin?',
       options: ['Fleming', 'Curie', 'Einstein', 'Newton'],
-      answer:''
+      answer: '',
     },
     {
       text: 'What is the tallest mountain in the world?',
       options: ['Everest', 'K2', 'Kangchenjunga', 'Lhotse'],
-      answer:''
+      answer: '',
     },
     {
       text: 'What is the smallest prime number?',
       options: ['2', '1', '3', '5'],
-      answer:''
+      answer: '',
     },
   ];
 
@@ -74,8 +74,6 @@ export class TestPageComponent implements OnDestroy {
   timer: number = 30 * 60;
 
   ngOnInit() {
-    console.log("On Init");
-
     this.startTimer();
   }
 
@@ -94,7 +92,9 @@ export class TestPageComponent implements OnDestroy {
         this.timer = this.timer - 1;
         const minutes = Math.floor(this.timer / 60);
         const seconds = this.timer % 60;
-        this.timeRemaining = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+        this.timeRemaining = `${minutes}:${
+          seconds < 10 ? '0' + seconds : seconds
+        }`;
 
         if (this.timer === 0) {
           this.destroy.next('');
@@ -103,11 +103,11 @@ export class TestPageComponent implements OnDestroy {
       });
     });
   }
-  answerChange(ans,i:number){
-    this.questions[i].answer=ans;
+  answerChange(ans, i: number) {
+    this.questions[i].answer = ans;
   }
-  submit(){
+  submit() {
     console.log(this.questions);
-    this.router.navigate(['/report'])
+    this.router.navigate(['/report']);
   }
 }
