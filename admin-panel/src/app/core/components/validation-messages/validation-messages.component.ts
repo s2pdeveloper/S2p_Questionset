@@ -1,5 +1,5 @@
 import { Component, Input } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { AbstractControl, FormControl } from "@angular/forms";
 import { ValidationService } from "./validation-messages.service";
 
 @Component({
@@ -9,14 +9,12 @@ import { ValidationService } from "./validation-messages.service";
 })
 export class ValidationMessagesComponent {
   
-  @Input() control:any= FormControl;
-  @Input()
-  message: any;
-  errorName: any;
+  @Input() control: FormControl | AbstractControl;
+  @Input() message: string;
+  errorName: string = null;
   constructor(private validationService: ValidationService) { }
 
   get errorMessage() {
-    // console.log(this.control);
     for (const propertyName in this.control.errors) {
       if (
         this.control.errors.hasOwnProperty(propertyName) && (this.control.dirty || this.control.touched)

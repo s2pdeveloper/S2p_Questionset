@@ -63,12 +63,12 @@ export class ReportPageComponent implements OnInit {
   questionsFormat = () => `${this.questionsAttempted}`;
   MarkStatusFormat(): NzProgressStatusType {
     if (this.marksPercent > 70) return 'success';
-    else if (this.marksPercent > 40) return 'active';
+    else if (this.marksPercent > 40) return null;
     else return 'exception';
   }
   QuestionStatusFormat(): NzProgressStatusType {
     if (this.questionsPercent > 70) return 'success';
-    else if (this.questionsPercent > 40) return 'active';
+    else if (this.questionsPercent > 40) return null;
     else return 'exception';
   }
 }

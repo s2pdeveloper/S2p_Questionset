@@ -6,11 +6,6 @@ import { ReportPageComponent } from './report-page/report-page.component';
 
 export const routes: Routes = [
   {
-    path: '',
-    redirectTo: 'register',
-    pathMatch: 'full',
-  },
-  {
     path: 'register',
     title: 'Registration',
     component: RegisterComponent,

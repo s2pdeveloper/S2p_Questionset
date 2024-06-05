@@ -27,40 +27,42 @@ const StudentSchema = mongoose.Schema(
     },
     gender: {
       type: String,
-      
     },
     phone: {
       type: Number,
       required: true,
     },
-   
-    college:{
-        type: String,
-        required: false,
+
+    college: {
+      type: String,
+      required: false,
     },
 
-    degree:{
-        type: String,
-        required: true,
+    degree: {
+      type: String,
+      required: true,
     },
-    branch:{
-        type: String,
-        required: true,
+    branch: {
+      type: String,
+      required: true,
     },
-    seminarId:{
-        type: mongoose.Schema.Types.ObjectId,
+    semester: {
+      type: String,
+      required: true,
+    },
+    seminarId: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
-      required: true, 
-    }
-    
+      required: true,
+    },
   },
-  
+
   {
     collection: 'Student',
     timestamps: true,
     toJSON: { getters: true, virtuals: true },
     toObject: { getters: true, virtuals: true },
-  }  
+  }
 );
 StudentSchema.index({ '$**': 'text' });
 

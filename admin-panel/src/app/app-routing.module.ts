@@ -1,105 +1,93 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { AppComponent } from './app.component';
-import { LayoutComponent } from './layout/layout.component';
-import { UserModule } from './user/user.module';
-import { HttpClientModule } from '@angular/common/http';
-import { LoginComponent } from './auth-module/login/login.component';
-import { SignupComponent } from './auth-module/signup/signup.component';
-import { AuthGuard } from './services/services/auth.guard';
+import { Routes, RouterModule } from '@angular/router';
 
-const routes: Routes = [
+// Import Containers
+import { DefaultLayoutComponent } from './containers';
+import { P404Component } from './views/error/404.component';
+import { P500Component } from './views/error/500.component';
+import { LoginComponent } from './views/login/login.component';
+import { RegisterComponent } from './views/register/register.component';
+import { ForgotpassComponent } from './views/forgotpass/forgotpass.component';
+import { ChangepwdComponent } from './views/changepwd/changepwd.component';
+
+export const routes: Routes = [
   {
     path: '',
     redirectTo: 'login',
     pathMatch: 'full',
   },
   {
-    path: 'signup',
-    component: SignupComponent,
+    path: '404',
+    component: P404Component,
+    data: {
+      title: 'Page 404',
+    },
+  },
+  {
+    path: '500',
+    component: P500Component,
+    data: {
+      title: 'Page 500',
+    },
   },
   {
     path: 'login',
     component: LoginComponent,
-    children: [],
-    
+    data: {
+      title: 'Login Page',
+    },
   },
   {
+    path: 'register',
+    component: RegisterComponent,
+    data: {
+      title: 'Register Page',
+    },
+  },
+  {
+    path: 'forgot-pwd',
+    component: ForgotpassComponent,
+    data: {
+      title: 'Forgot Password Page',
+    },
+  },
+  {
+    path: 'change-pwd',
+    component: ChangepwdComponent,
+    data: {
+      title: 'Change Password Page',
+    },
+  },
+
+  {
     path: '',
-    component: LayoutComponent,
+    component: DefaultLayoutComponent,
     children: [
       {
-        path: 'user',
+        path: 'dashboard',
         loadChildren: () =>
-          import('./user/user.module').then((m) => m.UserModule),
-          canActivate: [AuthGuard]
-      },
-      {
-        path: 'services',
-        loadChildren: () =>
-          import('./modules/modules.module').then((m) => m.ModulesModule),
-          canActivate: [AuthGuard]
-      },
-      {
-        path: 'event',
-        loadChildren: () =>
-          import('./event/event.module').then((m) => m.EventModule),
-          // canActivate: [AuthGuard]
-      },
-      {
-        path: 'placement',
-        loadChildren: () =>
-          import('./placement/placement.module').then((m) => m.PlacementModule),
-          // canActivate: [AuthGuard]
-      },
-      {
-        path: 'feedback',
-        loadChildren: () =>
-          import('./feedback/feedback.module').then((m) => m.FeedbackModule),
-          canActivate: [AuthGuard]
-      },
-      {
-        path: 'enquiry',
-        loadChildren: () =>
-          import('./enquiry/enquiry.module').then((m) => m.EnquiryModule),
-          canActivate: [AuthGuard]
-      },
-      
-      {
-        path: 'transition',
-        loadChildren: () =>
-          import('./transition-course/transition-course.module').then(
-            (m) => m.TransitionCourseModule
+          import('./views/dashboard/dashboard.module').then(
+            (m) => m.DashboardModule
           ),
-          canActivate: [AuthGuard]
+      },
+      {
+        path: 'profile',
+        loadChildren: () =>
+          import('./views/profile/profile.module').then((m) => m.ProfileModule),
+      },
+      {
+        path: 'users',
+        loadChildren: () =>
+          import('./layout/users/users.module').then((m) => m.UsersModule),
       },
     ],
   },
-  {
-    path:"auth",
-    loadChildren:()=>import("./auth-module/auth-module.module").then(m=>m.AuthModuleModule),
-    // canActivate: [AuthGuard]
-  },
-  {
-    path: 'auth',
-    loadChildren: () =>
-      import('./auth-module/auth-module.module').then(
-        (m) => m.AuthModuleModule
-      ),
-      // canActivate: [AuthGuard]
-  },
-  // {
-  //   path: 'auth',
-  //   loadChildren: () =>
-  //     import('./auth-module/auth-module.module').then(
-  //       (m) => m.AuthModuleModule
-  //     ),
-  // },
+
+  { path: '**', component: P404Component },
 ];
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes), HttpClientModule],
+  imports: [RouterModule.forRoot(routes, { relativeLinkResolution: 'legacy' })],
   exports: [RouterModule],
-  providers: [AuthGuard]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

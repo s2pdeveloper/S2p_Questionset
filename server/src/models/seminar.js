@@ -22,7 +22,10 @@ const seminarySchema = mongoose.Schema(
       type: String,
       required: false,
     },
-   
+    duration: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,

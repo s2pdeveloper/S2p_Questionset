@@ -4,26 +4,21 @@ import {Observable} from "rxjs";
 
 @Injectable()
 export class JwtInterceptor implements HttpInterceptor {
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
-    // add authorization header with jwt token if available
-    if (typeof window !== 'undefined') {
-       let user:any = localStorage.getItem('s2pUser');
-      const s2pUser = JSON.parse(user);
-      // console.log("s2pUser",s2pUser);
-      if (s2pUser && s2pUser.token) {
-        request = request.clone({
-          setHeaders: {
-            authorization: `jwt ${s2pUser.token}`,
-            // role: emergeUser.role
-          },
-        });
-      }
+    intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+        // add authorization header with jwt token if available
+        if (typeof window !== "undefined") {
+            const user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.token) {
+                request = request.clone({
+                    setHeaders: {
+                        authorization: `Bearer ${user.token}`,
+                        'Access-Control-Allow-Origin':'*'
+                    },
+                });
+            }
+        }
+        return next.handle(request);
     }
-    return next.handle(request);
-  }
 }
 
 export const JwtInterceptorProvider = {

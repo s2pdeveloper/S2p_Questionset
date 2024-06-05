@@ -4,7 +4,6 @@ import { Router, NavigationStart } from "@angular/router";
 import { Observable, ObservableInput, ObservedValueOf, OperatorFunction, throwError } from "rxjs";
 import { Subject } from "rxjs";
 import { map, catchError } from "rxjs/operators";
-
 @Injectable()
 export class AlertService {
   private subject = new Subject<any>();
@@ -19,7 +18,7 @@ export class AlertService {
           this.keepAfterNavigationChange = false;
         } else {
           // clear alert
-          this.subject.next('T');
+          this.subject.next();
         }
       }
     });
