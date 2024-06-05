@@ -3,10 +3,9 @@ const OPTIONS = require('../../../../config/Options');
 // const OrdersRepository = require('../../../../models/repository/OrderRepository');
 const mongoose = require('mongoose');
 const { generateCreateData } = OPTIONS;
-const  Question  = require('../../../../models/question');
+const Question = require('../../../../models/question');
 const { User } = require('../../../../models/User');
 const questionsetOjbect = {
-
   getAllQuestionOfQuestionSet: async (req, res) => {
     try {
       const DATA = req.body;
@@ -18,26 +17,27 @@ const questionsetOjbect = {
         direction = -1,
       } = req.query;
 
-      let questionSetId=req.params.id
-      
+      let questionSetId = req.params.id;
+
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
       direction = parseInt(direction, 10);
-      
+
       const skip = Math.max(0, page - 1) * pageSize;
-  
+
       const matchStage = {
         $match: {
-          ...(questionSetId && { questionSetId: new mongoose.Types.ObjectId(questionSetId) }),
+          ...(questionSetId && {
+            questionSetId: new mongoose.Types.ObjectId(questionSetId),
+          }),
           ...(![undefined, null, ''].includes(search) && {
             $text: { $search: search },
           }),
         },
       };
-  
-  
+
       const sortStage = { $sort: { [column]: direction } };
-  
+
       const facetStage = {
         $facet: {
           metadata: [{ $count: 'total' }],
@@ -54,12 +54,11 @@ const questionsetOjbect = {
     }
   },
 
-  createforQuestionSet: async (req, res) => {
+  createForQuestionSet: async (req, res) => {
     try {
-      console.log("called the question to create by question set");
       const data = req.body;
-      data.questionSetId=req.params.id
-            const question = await Question.create(data);
+      data.questionSetId = req.params.id;
+      const question = await Question.create(data);
 
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('Question'),
@@ -84,7 +83,6 @@ const questionsetOjbect = {
   },
 
   update: async (req, res) => {
-    console.log('req.params.id', req.params.id);
     try {
       let existing = await Question.findOne({
         _id: req.params.id,
