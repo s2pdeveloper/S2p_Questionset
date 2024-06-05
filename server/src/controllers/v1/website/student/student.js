@@ -245,6 +245,8 @@ const customerobj = {
       let noOfFailStudent = 0;
       let percentageOfFailStudent = null;
       let percentageOfPassStudent = null;
+      let noOfAttemptedStudent = 0;
+      let noOfUnattemptedStudent = 0;
       let student = null;
       let topStudent = [];
       let totalStudent = null;
@@ -291,11 +293,17 @@ const customerobj = {
       });
       noOfFailStudent = totalStudent - noOfPassStudent;
 
+     noOfAttemptedStudent=await Result.countDocuments({seminarId:seminarId,questionSetId:questionSetId})
+     noOfUnattemptedStudent=totalStudent-noOfAttemptedStudent;
+
       percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
       percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
 
+
       res.status(200).json({
         totalStudent,
+        noOfAttemptedStudent,
+        noOfUnattemptedStudent,
         percentageOfPassStudent,
         percentageOfFailStudent,
         noOfPassStudent,
