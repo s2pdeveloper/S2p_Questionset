@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  apiEndpoint: 'https://api-dev.jankalyan.life/',
+  apiEndpoint: 'http://localhost:2024/api/v1/admin/',
   // apiEndpoint: './api/v1/',
 };

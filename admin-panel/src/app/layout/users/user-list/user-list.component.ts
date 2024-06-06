@@ -17,7 +17,7 @@ export class UserListComponent implements OnInit {
   selectedRow: any = {};
   users: any = [];
   search: any = '';
-  page =1;
+  page = 1;
   pageSize = 10;
   collection: number = 0;
   // pages: number = 1;
@@ -39,24 +39,22 @@ export class UserListComponent implements OnInit {
 
   getAll() {
     this.spinner.show();
-    let params ={
-      page:this.page-1,
-      pageSize:this.pageSize,
-      search:this.search
-    }
-    this.userService
-      .getAllUsers(params)
-      .subscribe((success) => {
+    let params = {
+      page: this.page,
+      pageSize: this.pageSize,
+      search: this.search,
+    };
+    this.userService.getAllUsers(params).subscribe(
+      (success) => {
         this.users = success.data;
-        this.collection = success.count; 
+        this.collection = success.count;
         this.spinner.hide();
       },
-      (error) =>{
+      (error) => {
         this.spinner.hide();
-        this.toastService.error("Something Went Wrong!");
-        
+        this.toastService.error('Something Went Wrong!');
       }
-      );
+    );
   }
 
   navigateTo(path, id) {

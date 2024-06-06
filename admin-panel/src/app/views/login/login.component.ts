@@ -64,7 +64,7 @@ export class LoginComponent implements OnInit {
         console.log('success', success);
 
         if (typeof window !== 'undefined') {
-          localStorage.setItem('user', JSON.stringify(success));
+          localStorage.setItem('user', JSON.stringify(success.result));
         }
 
         this.toastService.success('Login done Successfully!');

@@ -3,9 +3,9 @@
       <div class="card-header">
         <div class="row justify-content-between align-items-center">
           <div class="col-auto">
-            <h3 class="mb-0">Admins</h3>
+            <h3 class="mb-0">Seminars</h3>
           </div>
-          <div
+          <!-- <div
             class="col-auto"
             *ngIf="
               userDetails.role == 'SUPER_ADMIN' ||
@@ -21,7 +21,7 @@
               <i class="fa fa-plus-circle me-1"></i>
               Admin
             </button>
-          </div>
+          </div> -->
         </div>
       </div>
   
@@ -58,27 +58,33 @@
                 <th>Sr.No</th>
                 <th>Name</th>
                 <!-- <th>Email</th> -->
-                <th>Mobile No.</th>
-                <th>Role</th>
+                <th>Type</th>
+                <th>College</th>
+                <th>Seminar Date</th>
+                <th>Description</th>
+                <th>Duration</th>
                 <th>Created At</th>
-                <th
-                  *ngIf="
+                <!-- <th
+                *ngIf="
                     userDetails.role == 'SUPER_ADMIN' ||
                     userDetails.role == 'ADMIN' ||
                     userDetails.role == 'CUSTOMER'
                   "
                 >
                   Action
-                </th>
+                </th> -->
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let u of users; let i = index">
+              <tr *ngFor="let s of seminars; let i = index">
                 <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
-                <td>{{ u.firstName }}</td>
-                <td>{{ u.mobileNo }}</td>
-                <td>{{ u.role }}</td>
-                <td>{{ u.createdAt }}</td>
+                <td>{{ s.name }}</td>
+                <td>{{ s.type }}</td>
+                <td>{{ s.college }}</td>
+                <td>{{ s.dateOfSeminar }}</td>
+                <td>{{ s.description }}</td>
+                <td>{{ s.duration }}</td>
+                <td>{{ s.createdAt }}</td>
                 <!-- <td
                   *ngIf="
                     userDetails.role == 'SUPER_ADMIN' ||

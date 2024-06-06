@@ -9,7 +9,7 @@ const UserHelper = require('../../../../models/helpers/UserHelper');
 const ObjectId = mongoose.Types.ObjectId;
 
 const userObj = {
- 
+
   create: async (req, res) => {
     try {
      
@@ -35,7 +35,7 @@ const userObj = {
         await existingUser.save();
         return res.success(UserHelper.modifyOutputData(existingUser));
       } else {
-        console.log('YOu dont pass the test');
+        console.log('You dont pass the test');
         let errors = MESSAGES.apiErrorStrings.INVALID_CREDENTIALS;
         return res.preconditionFailed(errors);
       }
@@ -421,8 +421,6 @@ const userObj = {
       throw new Error(e);
     }
   },
-
-  
-
 };
+
 module.exports = userObj;

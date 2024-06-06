@@ -5,7 +5,7 @@ const { validate } = require('../../../../middleware/Validators');
 const AuthHelper = require('../../../../models/helpers/AuthHelper');
 
 app.get('/', seminaryController.getAll);
-app.get('/:id', seminaryController.getById);
+app.get('/:id', seminaryController.getById);1
 app.post('/', seminaryController.create);
 app.put('/:id', seminaryController.update);
 app.delete('/:id', seminaryController.delete);
