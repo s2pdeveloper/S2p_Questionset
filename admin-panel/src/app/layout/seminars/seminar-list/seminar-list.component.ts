@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { SeminarService } from '../../../services/seminar/seminar.service';
+
 
 @Component({
   selector: 'app-seminar-list',
@@ -8,9 +10,12 @@ import { Router } from '@angular/router';
 })
 export class SeminarListComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  seminarDetails: any = {};
+
+  constructor(private router: Router, private seminarService: SeminarService) { }
 
   ngOnInit(): void {
+    // this.seminarDetails  = 
   }
 
 }

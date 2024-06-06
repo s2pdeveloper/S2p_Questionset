@@ -15,7 +15,7 @@ const seminarRoutes: Routes = [
         redirectTo: 'seminars',
       },
       {
-        path: 'seminars-list',
+        path: 'seminars',
         component: SeminarListComponent,
         data: {
           title: 'Seminars List',
@@ -32,7 +32,7 @@ const seminarRoutes: Routes = [
   },
 ];
 
-NgModule({
+@NgModule({
   imports: [RouterModule.forChild(seminarRoutes)],
   exports: [RouterModule],
 })

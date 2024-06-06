@@ -42,10 +42,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ForgotpassComponent } from './views/forgotpass/forgotpass.component';
 import { ChangepwdComponent } from './views/changepwd/changepwd.component';
 import { DeleteAlertComponent } from './modal/delete-alert/delete-alert.component';
-import { SeminarFormComponent } from './layout/seminar/seminar-form/seminar-form.component';
-import { SeminarListComponent } from './layout/seminar/seminar-list/seminar-list.component';
- 
-
 
 
 
@@ -80,10 +76,6 @@ import { SeminarListComponent } from './layout/seminar/seminar-list/seminar-list
     ForgotpassComponent,
     ChangepwdComponent,
     DeleteAlertComponent,
-    SeminarFormComponent,
-    SeminarListComponent,
-   
-    
   ],
   providers: [
     {

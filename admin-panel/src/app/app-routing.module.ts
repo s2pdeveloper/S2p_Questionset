@@ -80,6 +80,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./layout/users/users.module').then((m) => m.UsersModule),
       },
+      {
+        path: 'seminars',
+        loadChildren: () =>
+          import('./layout/seminars/seminars.module').then((m) => m.SeminarsModule),
+      },
     ],
   },
 

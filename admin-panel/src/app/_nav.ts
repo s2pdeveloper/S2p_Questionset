@@ -18,5 +18,10 @@ export const navItems: INavData[] = [
     name: 'Admins',
     url: '/users/users',
     icon: 'icon-user',
-  }, 
+  },
+  {
+    name: 'Seminar',
+    url: '/seminars/seminars',
+    icon: 'icon-user',
+  },
 ];
