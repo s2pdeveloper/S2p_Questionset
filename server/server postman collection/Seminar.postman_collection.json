@@ -152,7 +152,7 @@
 							"response": []
 						},
 						{
-							"name": "studentResultByRank",
+							"name": "rankedResult",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -161,7 +161,7 @@
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n   \"questionSetId\":\"665970ebfdc7d61c9b19371f\",\r\n   \"seminarId\":\"6659701b6d0b98b7e76e6075\",\r\n   \"studentId\":\"665973f5fdc7d61c9b193730\"\r\n \r\n   \r\n    \r\n}",
+									"raw": "{\r\n   \"questionSetId\":\"665970ebfdc7d61c9b19371f\",\r\n   \"seminarId\":\"6659701b6d0b98b7e76e6075\",\r\n   \"studentId\":\"665973f5fdc7d61c9b193730\"\r\n    \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -181,6 +181,41 @@
 										"website",
 										"student",
 										"rankedResult"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "getAllQuestionSetOfSeminar",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n   \"questionSetId\":\"665970ebfdc7d61c9b19371f\",\r\n   \"seminarId\":\"6659701b6d0b98b7e76e6075\",\r\n   \"studentId\":\"665973f5fdc7d61c9b193730\"\r\n \r\n   \r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:2024/api/v1/website/student/getAllQuestionSetOfSeminar",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"website",
+										"student",
+										"getAllQuestionSetOfSeminar"
 									]
 								}
 							},
@@ -722,6 +757,35 @@
 										"admin",
 										"seminar",
 										"6656ce239eec676cc7b88354"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get All seminary",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:2024/api/v1/admin/seminar/?pageSize=9",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "2024",
+									"path": [
+										"api",
+										"v1",
+										"admin",
+										"seminar",
+										""
+									],
+									"query": [
+										{
+											"key": "pageSize",
+											"value": "9"
+										}
 									]
 								}
 							},
