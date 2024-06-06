@@ -13,16 +13,13 @@
 					"name": "student",
 					"item": [
 						{
-							"name": "register new Student to particular seminar",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
+							"name": "Register Student",
 							"request": {
-								"method": "GET",
+								"method": "POST",
 								"header": [],
 								"body": {
 									"mode": "raw",
-									"raw": "{\r\n    \"branch\":\"computer Science\",\r\n    \"degree\":\"BCA\",\r\n    \"firstName\":\"shakir\",\r\n    \"lastName\":\"ansari\",\r\n    \"email\":\"shakir@212gmail.com\",\r\n    \"gender\":\"MALE\",\r\n    \"phone\":8956369962\r\n    \r\n}",
+									"raw": "{\r\n    \"branch\":\"computer Science\",\r\n    \"degree\":\"BCA\",\r\n    \"firstName\":\"adnan\",\r\n    \"lastName\":\"khan\",\r\n    \"email\":\"adnan@212gmail.com\",\r\n    \"gender\":\"MALE\",\r\n    \"phone\":8956369962\r\n    \r\n}",
 									"options": {
 										"raw": {
 											"language": "json"
@@ -30,7 +27,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:2024/api/v1/website/student/getAllQuestionSetOfSeminar",
+									"raw": "http://localhost:2024/api/v1/website/student/6659701b6d0b98b7e76e6075",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -41,7 +38,7 @@
 										"v1",
 										"website",
 										"student",
-										"getAllQuestionSetOfSeminar"
+										"6659701b6d0b98b7e76e6075"
 									]
 								}
 							},
@@ -301,7 +298,7 @@
 					"name": "Question set",
 					"item": [
 						{
-							"name": "add question to targeted seminar",
+							"name": "create",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -333,13 +330,19 @@
 							"response": []
 						},
 						{
-							"name": "get question set by questionSet Id",
+							"name": "getAllBySeminarId",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVhY2FjYzkyN2QyZDYwMDMzZTJiZCIsImlhdCI6MTcxNzY2NDI1NywiZXhwIjoxNzE4MjY5MDU3fQ.kCyVZcfbOaEl9LWXcQUdSuu3MqSOOMJOPQ0h_zsEXL0",
+										"type": "text"
+									}
+								],
 								"body": {
 									"mode": "raw",
 									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
@@ -350,7 +353,7 @@
 									}
 								},
 								"url": {
-									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d3a888baa5b7875d0376",
+									"raw": "http://localhost:2024/api/v1/admin/questionSet/seminarAllQuestionSet/6659701b6d0b98b7e76e6075",
 									"protocol": "http",
 									"host": [
 										"localhost"
@@ -361,42 +364,8 @@
 										"v1",
 										"admin",
 										"questionSet",
-										"6656d3a888baa5b7875d0376"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "getAllbySeminarId",
-							"protocolProfileBehavior": {
-								"disableBodyPruning": true
-							},
-							"request": {
-								"method": "GET",
-								"header": [],
-								"body": {
-									"mode": "raw",
-									"raw": "{\r\n    \"name\":\"Node.js set Basic\",\r\n    \"isvisible\":true,\r\n    \"passingMarks\":1000,\r\n    \"serialNumber\":4200\r\n}",
-									"options": {
-										"raw": {
-											"language": "json"
-										}
-									}
-								},
-								"url": {
-									"raw": "http://localhost:2024/api/v1/admin/questionSet/6656d3a888baa5b7875d0376",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "2024",
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"questionSet",
-										"6656d3a888baa5b7875d0376"
+										"seminarAllQuestionSet",
+										"6659701b6d0b98b7e76e6075"
 									]
 								}
 							},
@@ -436,7 +405,7 @@
 							"response": []
 						},
 						{
-							"name": "update the questionSet",
+							"name": "update",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -468,7 +437,7 @@
 							"response": []
 						},
 						{
-							"name": "delete questionSet",
+							"name": "delete",
 							"request": {
 								"method": "DELETE",
 								"header": [],
@@ -505,7 +474,7 @@
 					"name": "question",
 					"item": [
 						{
-							"name": "create question by QuestionsetId",
+							"name": "create",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -537,7 +506,7 @@
 							"response": []
 						},
 						{
-							"name": "get all question of particular QuestionSet",
+							"name": "getAllQuestionOfQuestionSet",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -573,7 +542,7 @@
 							"response": []
 						},
 						{
-							"name": "get questionById",
+							"name": "getById",
 							"protocolProfileBehavior": {
 								"disableBodyPruning": true
 							},
@@ -608,7 +577,7 @@
 							"response": []
 						},
 						{
-							"name": "updateById",
+							"name": "update",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -677,7 +646,7 @@
 					"name": "Seminar",
 					"item": [
 						{
-							"name": "add new seminar",
+							"name": "create",
 							"request": {
 								"method": "POST",
 								"header": [],
@@ -708,7 +677,7 @@
 							"response": []
 						},
 						{
-							"name": "update seminar",
+							"name": "update",
 							"request": {
 								"method": "PUT",
 								"header": [],
@@ -740,7 +709,7 @@
 							"response": []
 						},
 						{
-							"name": "get by Id",
+							"name": "getById",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -763,10 +732,16 @@
 							"response": []
 						},
 						{
-							"name": "get All seminary",
+							"name": "getAll",
 							"request": {
 								"method": "GET",
-								"header": [],
+								"header": [
+									{
+										"key": "authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2NWVhY2FjYzkyN2QyZDYwMDMzZTJiZCIsImlhdCI6MTcxNzY2NDI1NywiZXhwIjoxNzE4MjY5MDU3fQ.kCyVZcfbOaEl9LWXcQUdSuu3MqSOOMJOPQ0h_zsEXL0",
+										"type": "text"
+									}
+								],
 								"url": {
 									"raw": "http://localhost:2024/api/v1/admin/seminar/?pageSize=9",
 									"protocol": "http",
@@ -793,29 +768,6 @@
 						},
 						{
 							"name": "delete",
-							"request": {
-								"method": "DELETE",
-								"header": [],
-								"url": {
-									"raw": "http://localhost:2024/api/v1/admin/seminar/6656ce239eec676cc7b88354",
-									"protocol": "http",
-									"host": [
-										"localhost"
-									],
-									"port": "2024",
-									"path": [
-										"api",
-										"v1",
-										"admin",
-										"seminar",
-										"6656ce239eec676cc7b88354"
-									]
-								}
-							},
-							"response": []
-						},
-						{
-							"name": "delete Copy",
 							"request": {
 								"method": "DELETE",
 								"header": [],
