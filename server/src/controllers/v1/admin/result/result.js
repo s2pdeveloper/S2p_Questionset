@@ -7,9 +7,9 @@ const { Student } = require('../../../../models/student');
 const ResultObject = {
   rankedStudent: async (req, res) => {
     try {
-
       const questionSetId = req.body.questionSetId;
       const seminarId = req.body.seminarId;
+      const top = req.query.top || 3; // Dyamically decide the how much ranked student want to see in list
       let {
         page = 1,
         pageSize = 9999,
@@ -35,7 +35,11 @@ const ResultObject = {
       const facetStage = {
         $facet: {
           metadata: [{ $count: 'total' }],
-          data: [{ $skip: skip }, { $sort: { obtainMarks: -1 } }, { $limit: pageSize }],
+          data: [
+            { $skip: skip },
+            { $sort: { obtainMarks: -1 } },
+            { $limit: pageSize },
+          ],
         },
       };
 
@@ -43,29 +47,45 @@ const ResultObject = {
       const resp = await Result.aggregate(pipeline);
       let noOfPassStudent = 0;
       let noOfFailStudent = 0;
-      let noOfStudentAttemted = resp[0].data.length;
+      let percentageOfPassStudent = 0;
+      let percentageOfFailStudent = 0;
+      let noOfAttemptedStudent = 0;
+      let noOfUnattemptedStudent = 0;
       let topStudent = [];
 
       resp[0].data.forEach((item, index) => {
         item.rank = index + 1;
         if (item.status == 'PASS') {
           noOfPassStudent++;
-        } else {
-          noOfFailStudent++;
         }
 
-        if (index < 9) {
+        if (index < top) {
           topStudent.push(item);
         }
       });
       const totalStudent = await Student.countDocuments({
         seminarId: seminarId,
       });
+
+      noOfFailStudent = totalStudent - noOfPassStudent;
+
+      noOfAttemptedStudent = await Result.countDocuments({
+        seminarId: seminarId,
+        questionSetId: questionSetId,
+      });
+      noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
+
+      percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
+      percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
+
       res.status(200).json({
-        noOfFailStudent,
-        noOfPassStudent,
-        noOfStudentAttemted,
         totalStudent,
+        noOfAttemptedStudent,
+        noOfUnattemptedStudent,
+        percentageOfPassStudent,
+        percentageOfFailStudent,
+        noOfPassStudent,
+        noOfFailStudent,
         topStudent,
       });
     } catch (error) {

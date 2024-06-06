@@ -1,96 +1,32 @@
-const bcrypt = require("bcrypt");
-const { User } = require("../../../../models/User");
-// const { User_address } = require("../../../../models/user_address");
-const MESSAGES = require("../../../../models/helpers/MessagesHelper");
+const bcrypt = require('bcrypt');
+const { User } = require('../../../../models/User');
+const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
-const OPTIONS = require("../../../../config/Options");
-const mongoose = require("mongoose");
-// const USER_ADDRESS = require("../../../../models/user_address");
-// const { Address } = require("../../../../models/address");
-const mail = require("../../../../models/helpers/EmailHelper");
-// const UserRepository = require("../../../../models/repository/UserRepository");
-// const AddressRepository = require("../../../../models/repository/AddressRepository");
-const UserHelper = require("../../../../models/helpers/UserHelper");
+const OPTIONS = require('../../../../config/Options');
+const mongoose = require('mongoose');
+const mail = require('../../../../models/helpers/EmailHelper');
+const UserHelper = require('../../../../models/helpers/UserHelper');
 const ObjectId = mongoose.Types.ObjectId;
 
 const userObj = {
-  getAll: async (req, res) => {
+ 
+  create: async (req, res) => {
     try {
-      let {
-        page = 1,
-        pageSize = 10,
-        search = null,
-        column = "createdAt",
-        direction = -1,
-      } = req.query;
-      const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
-
-      const pipeline = [
-        {
-          $match: {
-            ...(![undefined, null, ""].includes(search) && {
-              $text: { $search: search },
-            }),
-            status: { $ne: OPTIONS.defaultStatus.DELETED },
-          },
-        },
-        {
-          $project: {
-            _id: 1,
-            id: "$_id",
-            firstName: 1,
-            lastName: 1,
-            userName: 1,
-            email: 1,
-            role: 1,
-            phone: 1,
-            gender: 1,
-            status: 1,
-            createdAt: 1,
-          },
-        },
-        { $sort: { [column]: direction } },
-        {
-          $facet: {
-            metadata: [{ $count: "total" }],
-            data: [{ $skip: skip }, { $limit: parseInt(pageSize, 10) }],
-          },
-        },
-      ];
-
-      const resp = await UserRepository.getAndCountAll(pipeline);
-      return res.success(resp);
+     
+      let user = await User.create(req.body);
+      res.status(200).json({
+        user,
+      });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
       throw new Error(e);
     }
   },
-
-  create: async (req, res) => {
-    try {
-      // let { success, message, data } = await UserRepository.checkAndCreate(
-      //   req.body
-      // );
-
-      let user= await User.create(req.body)
-res.status(200).json({
-  user
-})
-         } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
-  },
   login: async (req, res) => {
-
-   
     try {
-      
-
-      let existingUser = await User.findOne({email:req.body.email});
-      console.log("your found",existingUser)
+      let existingUser = await User.findOne({ email: req.body.email });
+      console.log('your found', existingUser);
       if (
         existingUser &&
         (await existingUser.isPasswordMatch(req.body.password))
@@ -99,7 +35,7 @@ res.status(200).json({
         await existingUser.save();
         return res.success(UserHelper.modifyOutputData(existingUser));
       } else {
-        console.log("YOu dont pass the test")
+        console.log('YOu dont pass the test');
         let errors = MESSAGES.apiErrorStrings.INVALID_CREDENTIALS;
         return res.preconditionFailed(errors);
       }
@@ -135,33 +71,6 @@ res.status(200).json({
     }
   },
 
-  // update: async (req, res) => {
-  //   try {
-
-  //     let { success, message, data } = await UserRepository.checkAndUpdate(
-  //       req.params.id,
-  //       req.params
-  //     );
-
-  //     if (!success) {
-  //       return res.preconditionFailed(message);
-  //     }
-  //     return res.success({
-
-  //       message,
-  //       data,
-
-  //     }
-
-  //     );
-
-  //   } catch (e) {
-  //     const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-  //     res.serverError(errors);
-  //     throw new Error(e);
-  //   }
-  // },
-
   update: async (req, res) => {
     try {
       let user = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -174,7 +83,7 @@ res.status(200).json({
         return res.preconditionFailed(errors);
       }
       return res.success({
-        message: MESSAGES.apiSuccessStrings.UPDATE("User profile has been"),
+        message: MESSAGES.apiSuccessStrings.UPDATE('User profile has been'),
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -187,7 +96,7 @@ res.status(200).json({
     try {
       let existingUser = await User.findOne({ _id: req.params.id });
       if (!existingUser) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS("The User");
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('The User');
         return res.MESSAGES(errors);
       }
       existingUser.status =
@@ -196,7 +105,7 @@ res.status(200).json({
           : OPTIONS.defaultStatus.ACTIVE;
       await existingUser.save();
       return res.success({
-        message: MESSAGES.apiSuccessStrings.STATUS_CHANGE("User"),
+        message: MESSAGES.apiSuccessStrings.STATUS_CHANGE('User'),
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -204,61 +113,6 @@ res.status(200).json({
       throw new Error(e);
     }
   },
-
-  // delete: async (req, res) => {
-  //   try {
-  //     let existingUser = await UserRepository.findUserByCondition(
-  //       {
-  //         _id: new mongoose.Types.ObjectId(req.params.id),
-  //         status: { $ne: OPTIONS.defaultStatus.DELETED },
-  //       },
-  //       {
-  //         _id: 1,
-  //         id: '_id',
-  //         firstName: 1,
-  //         lastName: 1,
-  //         email: 1,
-  //         phone: 1,
-  //         gender: 1,
-  //         status: 1,
-  //         isDelete: 1,
-  //       }
-  //     );
-  //     if (existingUser) {
-  //       const { message } = await UserRepository.patchUserStatus(
-  //         existingUser,
-  //         OPTIONS.defaultStatus.DELETED
-  //       );
-  //       res.success({ message });
-  //     } else {
-  //       let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('User');
-  //       return res.unprocessableEntity(errors);
-  //     }
-  //   } catch (e) {
-  //     const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-  //     res.serverError(errors);
-  //     throw new Error(e);
-  //   }
-  // },
-
-  //  delete : async (req, res) => {
-  //   try {
-  //       const deleteItem = await User.findById(req.params.id);
-  //       if (deleteItem) {
-  //           await deleteItem.deleteOne();
-  //           return res.success({
-  //               message: MESSAGES.apiSuccessStrings.DELETED("The User"),
-  //           });
-  //       } else {
-  //           let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS("The User");
-  //           res.preconditionFailed(errors);
-  //       }
-  //   } catch (e) {
-  //       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-  //       res.serverError(errors);
-  //       console.error(e);
-  //   }
-  // },
 
   delete: async (req, res) => {
     try {
@@ -269,7 +123,7 @@ res.status(200).json({
         },
         {
           _id: 1,
-          id: "$_id",
+          id: '$_id',
           firstName: 1,
           lastName: 1,
           email: 1,
@@ -286,7 +140,7 @@ res.status(200).json({
         );
         res.success({ message });
       } else {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS("User");
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('User');
         return res.unprocessableEntity(errors);
       }
     } catch (e) {
@@ -337,7 +191,7 @@ res.status(200).json({
 
         let message = MESSAGES.apiSuccessStrings.EMAIL_UPDATE;
         if (!emailChange) {
-          message = MESSAGES.apiSuccessStrings.UPDATE("User profile");
+          message = MESSAGES.apiSuccessStrings.UPDATE('User profile');
           await EmailRepository.sendWelcomeEmail(existingUser);
         }
         return res.success(existingUser);
@@ -376,7 +230,6 @@ res.status(200).json({
         };
         let message = MESSAGES.apiSuccessStrings.EMAIL_FORGOT;
         mail.sendForgetMail(req, data);
-        // await EmailRepository.sendForgotPassword(existingUser);
         return res.success({ message: message });
       }
     } catch (e) {
@@ -388,7 +241,7 @@ res.status(200).json({
   //** send token for  */
   sendToken: async (req, res) => {
     try {
-      req.assert("email", "Email cannot be blank").notEmpty();
+      req.assert('email', 'Email cannot be blank').notEmpty();
 
       let errors = req.validationErrors();
 
@@ -414,7 +267,7 @@ res.status(200).json({
       let existingUser = await User.findOne(query);
 
       if (!existingUser) {
-        const message = MESSAGES.apiErrorStrings.USER_EXISTS("email address");
+        const message = MESSAGES.apiErrorStrings.USER_EXISTS('email address');
         return res
           .status(resCode.HTTP_BAD_REQUEST)
           .json(
@@ -432,10 +285,6 @@ res.status(200).json({
         let token = existingUser.genToken();
         await existingUser.save();
 
-        /** send email to user*/
-        // await EmailRepository.sendOTPEmail(user);
-        /** send sms to user*/
-        // await SMSRepository.sendOTPMessage(user);
         return res.success(existingUser);
         return res.status(resCode.HTTP_OK).json(
           generateResponse(resCode.HTTP_OK, {
@@ -451,8 +300,8 @@ res.status(200).json({
   //** verify the token */
   verifyToken: async (req, res) => {
     try {
-      req.assert("otp", "Please enter a valid otp.").notEmpty();
-      req.assert("email", "Email cannot be blank").notEmpty();
+      req.assert('otp', 'Please enter a valid otp.').notEmpty();
+      req.assert('email', 'Email cannot be blank').notEmpty();
 
       let errors = req.validationErrors();
       if (errors) {
@@ -524,12 +373,7 @@ res.status(200).json({
           );
           user.LAST_UPDATED_DATE = Date.now();
           let users = await user.save();
-          /** send email to user*/
-          // await EmailRepository.sendResetPassword(user);
-          /** send sms to user*/
-          // await SMSRepository.sendOTPMessage(user);
-
-          const message = MESSAGES.apiSuccessStrings.PASSWORD("reset");
+          const message = MESSAGES.apiSuccessStrings.PASSWORD('reset');
           return res.success({ message: message });
         } else {
           let errors = MESSAGES.apiErrorStrings.INVALID_CREDENTIALS;
@@ -563,7 +407,7 @@ res.status(200).json({
           user.IS_VERIFY = true;
           user.RESET_PIN = null;
           let users = await user.save();
-          const message = MESSAGES.apiSuccessStrings.password("set");
+          const message = MESSAGES.apiSuccessStrings.password('set');
           return res.success({ message: message });
         } else {
           let errors = MESSAGES.apiErrorStrings.INVALID_TOKEN;
@@ -578,132 +422,7 @@ res.status(200).json({
     }
   },
 
-  //    USER ADDRESS PART
-  createAddress: async (req, res) => {
-    try {
-      let data = await USER_ADDRESS.create(req.body);
+  
 
-      let result = await Address.updateOne(
-        { _id: new ObjectId(req.body.userId) },
-        { $push: { addressId: data._id } }
-      );
-      return res.success({
-        message: MESSAGES.apiSuccessStrings.ADDED("User_address"),
-      });
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
-  },
-
-  getAddressById: async (req, res) => {
-    try {
-      let existing = await USER_ADDRESS.findOne({
-        _id: req.params.id,
-      })
-        .populate("userId")
-        .populate("addressId");
-      if (!existing) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS("User_address");
-        return res.unprocessableEntity(errors);
-      }
-      return res.success(existing);
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
-  },
-
-  getAllCustomerAddress: async (req, res) => {
-    try {
-      const address = await USER_ADDRESS.find({
-        customerId: new ObjectId(req.params.id),
-      }).populate("addressId");
-      // if (address.length > 0) {
-      //   address[0].isDefault = true;
-      //   await address[0].save();
-      // }
-
-      return res.success({
-        message: "Addresses retrieved successfully.",
-        data: address,
-      });
-    } catch (e) {
-      console.error(e);
-      res.status(errors);
-    }
-  },
-
-  updateAddress: async (req, res) => {
-    try {
-      let itemDetails = await USER_ADDRESS.findOne({
-        _id: req.params.id,
-      });
-      if (!itemDetails) {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS(
-          "The User_address"
-        );
-        return res.unprocessableEntity(errors);
-      } else {
-        itemDetails = await OPTIONS.generateCreateData(itemDetails, req.body);
-        await itemDetails.save();
-        return res.success({
-          message: MESSAGES.apiSuccessStrings.UPDATE("The User_address"),
-        });
-      }
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      throw new Error(e);
-    }
-  },
-
-  deleteAddressById: async (req, res) => {
-    try {
-      const deleteItem = await USER_ADDRESS.findById(req.params.id);
-      if (deleteItem) {
-        await deleteItem.deleteOne();
-        return res.success({
-          message: MESSAGES.apiSuccessStrings.DELETED(" User_address"),
-        });
-      } else {
-        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS(
-          " User_address"
-        );
-        res.preconditionFailed(errors);
-      }
-    } catch (e) {
-      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
-      console.error(e);
-    }
-  },
-
-  // registerCustomer: async (req, res) => {
-  //   try {
-  //     const hardcodedPassword = 'customer@1234';
-
-  //     if (req.body ) {
-  //       req.body.role = 'CUSTOMER'
-  //     }
-  //     req.body.password = hardcodedPassword;
-  //     console.log("req.body",req.body);
-  //     let { success, message, data } = await UserRepository.checkAndCreate(
-  //       req.body,
-  //       true
-  //     );
-  //     if (success) {
-  //       return res.success({ message, data });
-  //     }
-  //   } catch (e) {
-  //     const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-  //     res.serverError(errors);
-  //     throw new Error(e);
-  //   }
-  // },
-
-  // Customer Registration & Login
 };
 module.exports = userObj;

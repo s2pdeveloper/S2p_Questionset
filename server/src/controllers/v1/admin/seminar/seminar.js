@@ -29,80 +29,6 @@ const seminaryObject = {
             }),
           },
         },
-        {
-          $unwind: '$productDetails',
-        },
-        {
-          $lookup: {
-            from: 'Product',
-            localField: 'productDetails.productId',
-            foreignField: '_id',
-            as: 'productDetails.productInfo',
-          },
-        },
-        {
-          $unwind: '$productDetails.productInfo',
-        },
-        {
-          $lookup: {
-            from: 'ProductImage',
-            localField: 'productDetails.productInfo._id',
-            foreignField: 'productId',
-            as: 'productDetails.productInfo.productImages',
-            pipeline: [
-              {
-                $project: {
-                  _id: 1,
-                  productId: 1,
-                  isBanner: 1,
-                  image: {
-                    $concat: [process.env.IMAGE_PATH, '/product/', '$image'],
-                  },
-                },
-              },
-            ],
-          },
-        },
-        {
-          $lookup: {
-            from: 'User_address',
-            localField: 'userAddressId',
-            foreignField: '_id',
-            as: 'userAddress',
-          },
-        },
-        {
-          $unwind: '$userAddress',
-        },
-        {
-          $lookup: {
-            from: 'User',
-            localField: 'customerId',
-            foreignField: '_id',
-            as: 'customerDetails',
-          },
-        },
-        {
-          $unwind: '$customerDetails',
-        },
-        {
-          $group: {
-            _id: '$_id',
-            customerDetails: { $first: '$customerDetails' },
-            status: { $first: '$status' },
-            createdAt: { $first: '$createdAt' },
-            updatedAt: { $first: '$updatedAt' },
-            trackURL: { $first: '$trackURL' },
-            COD: { $first: '$COD' },
-            subTotal: { $first: '$subTotal' },
-            shippingCharges: { $first: '$shippingCharges' },
-            totalAmount: { $first: '$totalAmount' },
-            orderNumber: { $first: '$orderNumber' },
-            productDetails: {
-              $push: '$productDetails.productInfo',
-            },
-          },
-        },
         { $sort: { [column]: direction } },
         {
           $facet: {
@@ -111,8 +37,8 @@ const seminaryObject = {
           },
         },
       ];
-      // const resp = await OrdersRepository.getAndCountAll(pipeline);
-      // return res.success(resp);
+      const resp = await Seminar.aggregate(pipeline);
+      return res.success(resp);
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -123,10 +49,9 @@ const seminaryObject = {
   create: async (req, res) => {
     try {
       const data = req.body;
-      console.log("you hit the Seminar create")
       await Seminar.create(data);
       return res.success({
-        message: MESSAGES.apiSuccessStrings.ADDED('Seminar')
+        message: MESSAGES.apiSuccessStrings.ADDED('Seminar'),
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -147,7 +72,6 @@ const seminaryObject = {
   },
 
   update: async (req, res) => {
-    console.log('req.params.id', req.params.id);
     try {
       let existing = await Seminar.findOne({
         _id: req.params.id,
@@ -158,10 +82,7 @@ const seminaryObject = {
         return res.unprocessableEntity(errors);
       }
 
-      let seminar = await Seminar.findOneAndUpdate(
-        { _id: req.params.id },
-        req.body
-      );
+      await Seminar.findOneAndUpdate({ _id: req.params.id }, req.body);
 
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('Seminar'),

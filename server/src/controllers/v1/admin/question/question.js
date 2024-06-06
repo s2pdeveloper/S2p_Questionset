@@ -1,6 +1,5 @@
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const OPTIONS = require('../../../../config/Options');
-// const OrdersRepository = require('../../../../models/repository/OrderRepository');
 const mongoose = require('mongoose');
 const { generateCreateData } = OPTIONS;
 const Question = require('../../../../models/question');
@@ -8,7 +7,6 @@ const { User } = require('../../../../models/User');
 const questionsetOjbect = {
   getAllQuestionOfQuestionSet: async (req, res) => {
     try {
-      const DATA = req.body;
       let {
         page = 1,
         pageSize = 10,
@@ -93,7 +91,7 @@ const questionsetOjbect = {
         return res.unprocessableEntity(errors);
       }
 
-      let question = await Question.findOneAndUpdate(
+      await Question.findOneAndUpdate(
         { _id: req.params.id },
         req.body
       );
