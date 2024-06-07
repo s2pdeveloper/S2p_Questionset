@@ -14,7 +14,7 @@ export class SeminarListComponent implements OnInit {
   seminarDetails: any = {};
   seminars: any;
   page = 1;
-  pageSize = 10;
+  pageSize = 5;
   search: any = '';
   totalSeminars: any;
 
@@ -31,23 +31,24 @@ export class SeminarListComponent implements OnInit {
   getAll() {
     this.spinner.show();
     let params = {
-      page: this.page ,
+      page: this.page,
       pageSize: this.pageSize,
       search: this.search,
-    }
+    };
     this.seminarService.getAllSeminars(params).subscribe(
       (success) => {
-        // console.log(success);
-        this.seminars = success.result[0].data;
-        this.totalSeminars = success.result[0].metadata[0].total;
+        console.log(success);
+        this.seminars = success.result.data;
+        console.log(this.seminars);
+        this.totalSeminars = success.result.totalCount;
         this.spinner.hide();
         // console.log(this.seminarDetails);
         // console.log(this.totalSeminars);
       },
-      (error) =>{
+      (error) => {
         this.spinner.hide();
         this.toastService.error('Something Went Wrong!');
       }
-    )
+    );
   }
 }
