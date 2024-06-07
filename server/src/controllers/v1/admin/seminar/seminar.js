@@ -38,7 +38,13 @@ const seminaryObject = {
         },
       ];
       const resp = await Seminar.aggregate(pipeline);
-      return res.success(resp);
+      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
+      const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+    
+      return res.success({
+        data,
+        totalCount
+      });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);

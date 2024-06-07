@@ -13,6 +13,11 @@ const customerobj = {
     try {
       const data = req.body;
       data.seminarId = req.params.id;
+      const existing=await Student.findOne({email:req.body.email});
+      if(existing){
+        const errors = 'Student Already Exist on This ';
+       return res.serverError(errors);
+      }
       const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
@@ -84,7 +89,9 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-      return res.success(resp);
+      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
+const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      return res.success({data,totalCount});
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -94,7 +101,7 @@ const customerobj = {
 
   testByQuestionSet: async (req, res) => {
     try {
-      const data = req.body;
+   
       let {
         page = 1,
         pageSize = 10,
@@ -135,7 +142,9 @@ const customerobj = {
       };
       const pipeline = [matchStage, sortStage, projectStage, facetStage];
       const resp = await Question.aggregate(pipeline);
-      return res.success(resp);
+      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
+const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      return res.success({data,totalCount});
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
