@@ -9,10 +9,10 @@ const questionsetOjbect = {
     try {
       const data = req.body;
       data.seminarId = req.params.id;
-      const seminar = await QuestionSet.create(data);
+      const questionSet = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
-        seminary: seminar,
+        data: questionSet,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

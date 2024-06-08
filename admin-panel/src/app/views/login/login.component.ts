@@ -72,7 +72,9 @@ export class LoginComponent implements OnInit {
         this.spinner.hide();
       },
       (error) => {
-        this.toastService.error(error.error);
+        // console.log(error);
+        this.spinner.hide();
+        this.toastService.error();
       }
     );
   }

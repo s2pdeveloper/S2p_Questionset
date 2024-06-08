@@ -6,9 +6,9 @@ const seminarySchema = mongoose.Schema(
       type: String,
       required: false,
     },
-    type:{
-      type:String,
-      enum:["SEMINAR","CLASS","LECTURE"]
+    type: {
+      type: String,
+      enum: ['SEMINAR', 'CLASS', 'LECTURE'],
     },
     college: {
       type: String,
@@ -23,8 +23,8 @@ const seminarySchema = mongoose.Schema(
       required: false,
     },
     duration: {
-      type: String,
-      required: false,
+      type: Number,
+      require: false,
     },
   },
   {

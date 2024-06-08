@@ -16,7 +16,7 @@ export class CustomPaginationComponent implements OnInit, AfterViewInit {
     @Output() myOutput: EventEmitter<any> = new EventEmitter();
     itemsPerPage: number = 25;
     public currentPageLimit: number = 25;
-    public pageLimitOptions = [{value: 10}, {value: 25}, {value: 50}, {value: 100}, {value: 150}, {value: 200}];
+    public pageLimitOptions = [{value: 5}, {value: 10}, {value: 25}, {value: 50}, {value: 100}, {value: 150}, {value: 200}];
 
     constructor() {}
     ngAfterViewInit(): void {

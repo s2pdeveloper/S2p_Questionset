@@ -15,7 +15,7 @@ const customerobj = {
       data.seminarId = req.params.id;
       const existing=await Student.findOne({email:req.body.email});
       if(existing){
-        const errors = 'Student Already Exist on This ';
+        const errors = 'Email Already Exist';
        return res.serverError(errors);
       }
       const student = await Student.create(data);
@@ -184,14 +184,13 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
 
       //checking student already submited the test or not
 
-      let existing = Result.findOne({
+      let existing = await Result.findOne({
         questionSetId: questionSetId,
-        studentId,
-        studentId,
+        studentId:studentId
       });
 
       if (existing) {
-        let errors = 'Result Submited Alread Can not submit twice';
+        let errors = 'Test Already Submited';
         return res.unprocessableEntity(errors);
       }
 

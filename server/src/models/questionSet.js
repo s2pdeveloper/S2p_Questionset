@@ -22,7 +22,8 @@ const questionSetSchema = mongoose.Schema(
     },
     isVisible: {
       type: Boolean,
-      required: false,
+      default:false,
+      
     },
     passingMarks: {
       type: String,

@@ -4,6 +4,7 @@ import { SeminarService } from '../../../services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { error } from '@angular/compiler/src/util';
 import { ToastrService } from 'ngx-toastr';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-seminar-list',
@@ -11,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./seminar-list.component.scss'],
 })
 export class SeminarListComponent implements OnInit {
+  selectedRow: any = {};
   seminarDetails: any = {};
   seminars: any;
   page = 1;
@@ -22,12 +24,14 @@ export class SeminarListComponent implements OnInit {
     private router: Router,
     private seminarService: SeminarService,
     private toastService: ToastrService,
+    private modalService: NgbModal,
     private spinner: NgxSpinnerService
   ) {}
 
   ngOnInit(): void {
     this.getAll();
   }
+  
   getAll() {
     this.spinner.show();
     let params = {
@@ -51,4 +55,46 @@ export class SeminarListComponent implements OnInit {
       }
     );
   }
+
+  onChangePage(pageNo) {
+    if (pageNo > 0) { 
+      this.page = pageNo;
+    }
+    this.getAll();
+  }
+
+  navigateTo(path, id) {
+    if (id) {
+      this.router.navigate([path], { queryParams: { id } });
+    } else {
+      this.router.navigate([path]);
+    }
+  }
+
+  refreshList(title) {
+    this.search = title == 'clear' ? '' : this.search;
+    this.getAll();
+  }
+
+  open(s, content) {
+    this.selectedRow = s;
+    this.modalService.open(content, { centered: true });
+  }
+
+  deleteSeminarById(id) {
+    this.seminarService.deleteSeminar(id).subscribe(
+      (success) => {
+        console.log(success);
+        this.getAll();
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.toastService.success(success.result.message);
+      },
+      (error) => {
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+      }
+    );
+  }
+
 }
