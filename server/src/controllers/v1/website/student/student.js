@@ -143,7 +143,7 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       const pipeline = [matchStage, sortStage, projectStage, facetStage];
       const resp = await Question.aggregate(pipeline);
       const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
-const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       return res.success({data,totalCount});
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -299,10 +299,11 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       totalStudent = await Student.countDocuments({
         seminarId: seminarId,
       });
-      noOfFailStudent = totalStudent - noOfPassStudent;
+     
 
-     noOfAttemptedStudent=await Result.countDocuments({seminarId:seminarId,questionSetId:questionSetId})
+     noOfAttemptedStudent= resp[0].data.length();
      noOfUnattemptedStudent=totalStudent-noOfAttemptedStudent;
+       noOfFailStudent = noOfAttemptedStudent - noOfPassStudent;
 
       percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
       percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
