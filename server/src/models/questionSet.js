@@ -29,6 +29,11 @@ const questionSetSchema = mongoose.Schema(
       type: String,
       required: false,
     },
+    isClose:{
+      type:Boolean,
+      default:true,
+      required: false,
+    }
   },
   {
     timestamps: true,

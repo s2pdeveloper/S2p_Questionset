@@ -156,6 +156,21 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
     try {
       const marksPerQuestion = 10;
       const { studentId, seminarId, questionSetId, answers } = req.body;
+        // Fetch question set details
+        const questionSet = await Questionset.findById(questionSetId);
+       
+        if (!questionSet) {
+          // Handle case where question set is not found
+          const errors = 'Question set Not found';
+          res.serverError(errors);
+          return;
+        }
+
+        if(!questionSet.isVisible){
+          const errors = 'This Question No more Available';
+          res.serverError(errors);
+          return;
+        }
       const questions = await Question.find({ questionSetId });
       let correctAnswers = 0;
       answers.forEach((answer) => {
@@ -166,15 +181,7 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
         }
       });
 
-      // Fetch question set details
-      const questionSet = await Questionset.findById(questionSetId);
-      console.log('your questionset', questionSet);
-      if (!questionSet) {
-        // Handle case where question set is not found
-        const errors = 'Question set Not found';
-        res.serverError(errors);
-        return;
-      }
+    
 
       // Calculate max score, obtained marks, passing marks, and status
       const maxScore = Number(questionSet.noOfQuestion * marksPerQuestion);
