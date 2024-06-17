@@ -102,7 +102,79 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
+  getAll: async (req, res) => {
+    try {
+    
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+        seminarId = null
+      } = req.query;
+      page = parseInt(page, 10);
+      pageSize = parseInt(pageSize, 10);
+      direction = parseInt(direction, 10);
+      const skip = Math.max(0, page - 1) * pageSize;
+      const matchStage = {
+        $match: {
+          ...(seminarId && {
+            seminarId: new mongoose.Types.ObjectId(seminarId),
+          }),
+          ...(![undefined, null, ''].includes(search) && {
+            $text: { $search: search },
+          }),
+        },
+      };
 
+      const lookupStage = {
+        $lookup: {
+          from: 'Seminar',
+          localField: 'seminarId',
+          foreignField: '_id',
+          as: 'seminar',
+        },
+      };
+
+      const sortStage = { $sort: { [column]: direction } };
+      const facetStage = {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skip }, { $limit: pageSize }],
+        },
+      };
+      const projectStage = {
+        $project: {
+          seminarName: {
+            $arrayElemAt: ['$seminar.name', 0],
+          },
+        },
+      };
+      const pipeline = [
+        matchStage,
+        sortStage,
+        lookupStage,
+        projectStage, 
+        facetStage,
+      ];
+      const resp = await QuestionSet.aggregate(pipeline);
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+
+      return res.success({
+        data,
+        totalCount,
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
   changeVisibility: async (req, res) => {
     try {
       const { seminarId } = req.body;
