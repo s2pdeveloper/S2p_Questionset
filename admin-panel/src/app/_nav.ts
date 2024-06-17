@@ -24,4 +24,9 @@ export const navItems: INavData[] = [
     url: '/seminars/seminars',
     icon: 'icon-user',
   },
+  {
+    name: 'Question Set',
+    url: '/questionSet/questionSet',
+    icon: 'icon-user',
+  },
 ];

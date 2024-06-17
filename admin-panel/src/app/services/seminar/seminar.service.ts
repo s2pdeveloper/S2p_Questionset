@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { map, catchError } from 'rxjs/operators';
 import { ApiService } from 'src/app/core/services';
 
 @Injectable({

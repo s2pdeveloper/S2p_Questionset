@@ -85,6 +85,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./layout/seminars/seminars.module').then((m) => m.SeminarsModule),
       },
+      {
+        path: 'questionSet',
+        loadChildren: () =>
+          import('./layout/questionSet/question-set.module').then((m) => m.QuestionSetModule),
+      },
     ],
   },
 
