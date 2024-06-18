@@ -42,7 +42,7 @@ export class SeminarListComponent implements OnInit {
     this.seminarService.getAllSeminars(params).subscribe(
       (success) => {
         console.log(success);
-        this.seminars = success.result.data;
+        this.seminars = success?.result?.data;
         console.log(this.seminars);
         this.totalSeminars = success.result.totalCount;
         this.spinner.hide();

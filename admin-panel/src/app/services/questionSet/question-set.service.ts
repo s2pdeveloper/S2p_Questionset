@@ -5,9 +5,24 @@ import { ApiService } from '../../core/services';
   providedIn: 'root',
 })
 export class QuestionSetService {
+  routes: any = {
+    createPath: (id) => `questionSet/${id}`,
+    getPath: (params) =>
+      `questionSet/getAll?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
+    updatePath: (id) => `questionSet/${id}`
+  };
+
   constructor(private http: ApiService) {}
 
-  getAllQuestionSet() {}
+  getAllQuestionSet(params) {
+    return this.http.get(this.routes.getPath(params));
+  }
 
-  createQuestionSet() {}
+  createQuestionSet(data, id) {
+    return this.http.post(this.routes.createPath(id), data);
+  }
+
+  updateQuestionSet(data, id){
+    return this.http.put(this.routes.updatePath(id), data);
+  }
 }

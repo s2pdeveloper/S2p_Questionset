@@ -110,6 +110,34 @@
             </div>
           </div>
         </div>
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Select Seminar
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="seminarId"
+                class="form-select"
+                placeholder="Select Seminar"
+                [ngClass]="{
+                  'is-invalid':
+                    form.seminarId.invalid &&
+                    submitted &&
+                    (form.seminarId.touched || form.seminarId.dirty)
+                }"
+              >
+                <option *ngFor="let s of seminars" [value]="s?._id">
+                  {{ s?.name }}
+                </option>
+              </select>
+              <validation-messages
+                [control]="form['seminarId']"
+              ></validation-messages>
+            </div>
+          </div>
+        </div>
       </form>
       <div class="text-center">
         <button

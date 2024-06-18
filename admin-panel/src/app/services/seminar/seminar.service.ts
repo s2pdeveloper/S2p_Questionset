@@ -12,6 +12,7 @@ export class SeminarService {
     deletePath: (id) => `seminar/${id}`,
     getSeminars: (params) =>
       `seminar?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
+    getSeminarList: `seminar/list`,
   };
 
   constructor(private http: ApiService) {}
@@ -34,5 +35,9 @@ export class SeminarService {
 
   deleteSeminar(id) {
     return this.http.delete(this.routes.deletePath(id));
+  }
+
+  allSeminarList(){
+    return this.http.get(this.routes.getSeminarList);
   }
 }

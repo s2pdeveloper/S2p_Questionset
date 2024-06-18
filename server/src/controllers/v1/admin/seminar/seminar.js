@@ -51,7 +51,21 @@ const seminaryObject = {
       throw new Error(e);
     }
   },
+  getList: async (req, res) => {
+    try {
+      
+      const data = await Seminar.find().select('_id name')
+      .sort({'createdAt': 'desc' }) ;
 
+      return res.success({
+        data
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
   create: async (req, res) => {
     try {
       const data = req.body;
