@@ -9,7 +9,18 @@ const questionsetOjbect = {
     try {
       const data = req.body;
       data.seminarId = req.params.id;
-      const questionSet = await QuestionSet.create(data);
+      const questionSets = await QuestionSet.find({ seminarId: req.params.id }).sort({serialNumber:1});
+      data.serialNumber=questionSets.length+1;
+
+      //Arranging the Serail Number if one of the Question set deleted so the question will get disturb
+      questionSets.map(async(questionset,index)=>{
+        if(questionset.serialNumber!==index+1){  
+       await QuestionSet.findOneAndUpdate({_id:questionset._id},{serialNumber:index+1});
+        }
+      })
+    
+
+     const questionSet = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
         data: questionSet,
