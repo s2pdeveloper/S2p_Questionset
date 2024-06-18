@@ -3,22 +3,25 @@ const questionSetSchema = mongoose.Schema(
   {
     name: {
       type: String,
-      required: false,
+      required: true,
+     
     },
     noOfQuestion:{
      type:Number,
+     required: true,
     },
     duration:{
       type:Number,
+      required:true,
     },
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
-      required: false,
+      required: true,
     },
     serialNumber: {
       type: Number,
-      required: false,
+      required: true,
     },
     isVisible: {
       type: Boolean,
@@ -27,12 +30,12 @@ const questionSetSchema = mongoose.Schema(
     },
     passingMarks: {
       type: String,
-      required: false,
+      required:true,
     },
     isClose:{
       type:Boolean,
       default:true,
-      required: false,
+      required:true,
     }
   },
   {

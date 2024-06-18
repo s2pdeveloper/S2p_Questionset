@@ -18,5 +18,4 @@ router.use('/result', AuthHelper.authenticateJWT(usersRoles.getAdmin()), result)
 
 
 
-
 module.exports = router;
