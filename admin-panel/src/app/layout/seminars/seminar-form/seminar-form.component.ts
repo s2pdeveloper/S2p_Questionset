@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SeminarFormComponent implements OnInit {
   submitted = false;
+  action: string = '';
   seminarForm = this.formBuilder.group({
     _id: new FormControl(null),
     name: new FormControl('', [Validators.required]),
@@ -35,6 +36,7 @@ export class SeminarFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
+      this.action = params.action;
       if(params.id){
         this.getById(params.id);
       }

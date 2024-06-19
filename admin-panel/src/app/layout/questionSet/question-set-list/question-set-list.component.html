@@ -8,7 +8,7 @@
           <div class="col-auto">
             <button
               type="button"
-              (click)="navigateTo('questionSet/questionSet-form', null)"
+              (click)="navigateTo('questionSet/questionSet-form', null, 'create')"
               class="btn btn-outline-primary"
             >
               <i class="fa fa-plus-circle me-1"></i>
@@ -63,17 +63,17 @@
               <tr *ngFor="let s of sets; let i = index">
                 <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
                 <td>{{ s.name }}</td>
-                <td>{{ s.type }}</td>
-                <td>{{ s.college }}</td>
-                <td>{{ s.dateOfSeminar | date }}</td>
-                <td>{{ s.description }}</td>
+                <td>{{ s.serialNumber }}</td>
+                <td>{{ s.seminarName }}</td>
+                <td>{{ s.noOfQuestion }}</td>
                 <td>{{ s.duration }}</td>
-                <td>{{ s.createdAt | date }}</td>
+                <td>{{ s.passingMarks }}</td>
+                <td>{{ s.isVisible ? "Visible" : "Not Visible"}}</td>
                 <td>
                   <button
-                    (click)="navigateTo('/seminars/seminars-form', s._id)"
+                    (click)="navigateTo('/questionSet/questionSet-form', s._id, 'edit')"
                     class="btn btn-sm btn-outline-success me-1"
-                    ngbTooltip="Edit Seminar"
+                    ngbTooltip="Edit Set"
                   >
                     <i class="fa fa-pencil me-1"></i>
                   </button>
@@ -81,14 +81,14 @@
                     class="btn btn-sm btn-outline-danger"
                     data-toggle="modal"
                     (click)="open(s, alertMsg)"
-                    ngbTooltip="Delete Seminar"
+                    ngbTooltip="Delete Set"
                   >
                     <i class="fa fa-trash me-1"></i>
                   </button>
                   <button
-                    (click)="navigateTo('/seminars/seminars-form', s._id)"
+                    (click)="navigateTo('/questionSet/questionSet-form', s._id, 'view')"
                     class="btn btn-sm btn-outline-success me-1"
-                    ngbTooltip="View Seminar"
+                    ngbTooltip="View Set"
                   >
                     <i class="fa fa-eye me-1"></i>
                   </button>
@@ -100,7 +100,7 @@
         <app-custom-pagination
           [(page)]="page"
           [(pageSize)]="pageSize"
-          [(collection)]="totalSeminars"
+          [(collection)]="totalSets"
           (myOutput)="onChangePage(page)"
         ></app-custom-pagination>
       </div>
@@ -128,7 +128,7 @@
         width="100"
         alt=""
       />
-      <h4 class="text-warning">Are you sure you want to Delete ?</h4>
+      <h4 class="text-warning">Are you sure you want to Delete?</h4>
       <div class="clearfix modal-text">
         <label *ngIf="selectedRow.name">
           <h3>{{ selectedRow.name }}</h3>
@@ -139,7 +139,7 @@
       <div class="clearfix py-2">
         <button
           class="btn btn-danger me-2"
-          (click)="deleteSeminarById(this.selectedRow._id)"
+          (click)="deleteQuestionSet(this.selectedRow._id)"
         >
           OK
         </button>

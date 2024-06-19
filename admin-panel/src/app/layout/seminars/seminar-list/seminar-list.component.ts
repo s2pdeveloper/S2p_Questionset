@@ -63,11 +63,11 @@ export class SeminarListComponent implements OnInit {
     this.getAll();
   }
 
-  navigateTo(path, id) {
+  navigateTo(path, id, action) {
     if (id) {
-      this.router.navigate([path], { queryParams: { id } });
+      this.router.navigate([path], { queryParams: { id, action} });
     } else {
-      this.router.navigate([path]);
+      this.router.navigate([path], { queryParams: {action}});
     }
   }
 
@@ -93,6 +93,7 @@ export class SeminarListComponent implements OnInit {
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.toastService.error('Something went Wrong!');
       }
     );
   }

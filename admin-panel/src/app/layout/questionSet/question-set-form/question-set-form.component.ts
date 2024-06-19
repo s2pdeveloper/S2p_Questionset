@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionSetService } from '@services/questionSet/question-set.service';
 import { SeminarService } from '@services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -13,6 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./question-set-form.component.scss'],
 })
 export class QuestionSetFormComponent implements OnInit {
+  action: string = '';
   seminars: any;
   totalSeminars: number = 0;
   submitted = false;
@@ -30,6 +31,7 @@ export class QuestionSetFormComponent implements OnInit {
     private questionSetService: QuestionSetService,
     private seminarService: SeminarService,
     private formBuilder: FormBuilder,
+    private actRoutes: ActivatedRoute,
     private location: Location,
     private spinner: NgxSpinnerService,
     private toastService: ToastrService
@@ -37,6 +39,12 @@ export class QuestionSetFormComponent implements OnInit {
 
   ngOnInit(): void {
     this.getSeminarList();
+    this.actRoutes.queryParams.subscribe((params) => {
+      this.action = params.action;
+      if (params.id) {
+        this.getSetById(params.id);
+      }
+    });
   }
 
   get form() {
@@ -48,12 +56,19 @@ export class QuestionSetFormComponent implements OnInit {
       (success) => {
         console.log(success);
         this.seminars = success?.result?.data;
-        console.log('this.seminars', this.seminars);
+        // console.log('this.seminars', this.seminars);
 
         // this.totalSeminars = success?.result?.
       },
       (error) => {}
     );
+  }
+
+  getSetById(id) {
+    this.questionSetService.getQuestionSetById(id).subscribe((success) => {
+      // console.log("Print" ,success);
+      this.questionSetForm.patchValue(success.result[0]);
+    });
   }
 
   submit() {

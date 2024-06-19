@@ -1,6 +1,7 @@
 import { error } from '@angular/compiler/src/util';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionSetService } from '@services/questionSet/question-set.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -11,6 +12,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./question-set-list.component.scss'],
 })
 export class QuestionSetListComponent implements OnInit {
+  selectedRow: any = {};
   sets: any;
   totalSets: any;
   page = 1;
@@ -20,6 +22,7 @@ export class QuestionSetListComponent implements OnInit {
   constructor(
     private router: Router,
     private questionSetService: QuestionSetService,
+    private modalService: NgbModal,
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
@@ -49,13 +52,44 @@ export class QuestionSetListComponent implements OnInit {
     );
   }
 
-  navigateTo(path, id) {
+  onChangePage(pageNo) {
+    if (pageNo > 0) { 
+      this.page = pageNo;
+    }
+    this.getAllSets();
+  }
+
+  navigateTo(path, id, action) {
     if (id) {
-      this.router.navigate([path], { queryParams: { id } });
+      this.router.navigate([path], { queryParams: { id, action } });
     } else {
-      this.router.navigate([path]);
+      this.router.navigate([path], { queryParams: { action } });
     }
   }
 
-  
+  refreshList(title) {
+    this.search = title == 'clear' ? '' : this.search;
+    this.getAllSets();
+  }
+
+  open(s, content) {
+    this.selectedRow = s;
+    this.modalService.open(content, { centered: true });
+  }
+
+  deleteQuestionSet(id) {
+    this.questionSetService.deleteSetById(id).subscribe(
+      (success) => {
+        this.getAllSets();
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.toastService.success(success.result.message);
+      },
+      (error) => {
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.toastService.error('Something went Wrong!');
+      }
+    );
+  }
 }

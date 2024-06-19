@@ -29,7 +29,7 @@ export class SeminarService {
     return this.http.put(this.routes.updatePath(id), payload);
   }
 
-  getSeminarById(id) {
+  getSeminarById(id) {  
     return this.http.get(this.routes.getByIdPath(id));
   }
 

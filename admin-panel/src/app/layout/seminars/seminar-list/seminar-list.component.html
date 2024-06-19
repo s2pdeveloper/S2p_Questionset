@@ -8,7 +8,7 @@
         <div class="col-auto">
           <button
             type="button"
-            (click)="navigateTo('seminars/seminars-form', null)"
+            (click)="navigateTo('seminars/seminars-form', null, 'create')"
             class="btn btn-outline-primary"
           >
             <i class="fa fa-plus-circle me-1"></i>
@@ -71,7 +71,7 @@
               <td>{{ s.createdAt | date }}</td>
               <td>
                 <button
-                  (click)="navigateTo('/seminars/seminars-form', s._id)"
+                  (click)="navigateTo('/seminars/seminars-form', s._id, 'edit')"
                   class="btn btn-sm btn-outline-success me-1"
                   ngbTooltip="Edit Seminar"
                 >
@@ -86,7 +86,7 @@
                   <i class="fa fa-trash me-1"></i>
                 </button>
                 <button
-                  (click)="navigateTo('/seminars/seminars-form', s._id)"
+                  (click)="navigateTo('/seminars/seminars-form', s._id, 'view')"
                   class="btn btn-sm btn-outline-success me-1"
                   ngbTooltip="View Seminar"
                 >

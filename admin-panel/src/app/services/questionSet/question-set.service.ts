@@ -9,7 +9,9 @@ export class QuestionSetService {
     createPath: (id) => `questionSet/${id}`,
     getPath: (params) =>
       `questionSet/getAll?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
-    updatePath: (id) => `questionSet/${id}`
+    getByIdPath: (id) => `questionSet/${id}`,
+    updatePath: (id) => `questionSet/${id}`,
+    deletePath: (id) => `questionSet/${id}`,
   };
 
   constructor(private http: ApiService) {}
@@ -22,7 +24,15 @@ export class QuestionSetService {
     return this.http.post(this.routes.createPath(id), data);
   }
 
-  updateQuestionSet(data, id){
+  updateQuestionSet(data, id) {
     return this.http.put(this.routes.updatePath(id), data);
+  }
+
+  getQuestionSetById(id) {
+    return this.http.get(this.routes.getByIdPath(id));
+  }
+
+  deleteSetById(id){
+    return this.http.delete(this.routes.deletePath(id));
   }
 }
