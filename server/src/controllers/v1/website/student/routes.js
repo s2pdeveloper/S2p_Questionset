@@ -13,5 +13,6 @@ app.post('/submitTest',Student.submitTest)
 app.get('/getResultByQuestionSetId/:id',Student.getResultByQuestionSetId)
 app.get('/rankedResult',Student.rankedResult);
 app.post('/:id', Student.registerStudent);
+app.get('/allResultOfStudent', Student.allResultOfStudent);
 
 module.exports = app;
