@@ -44,7 +44,6 @@ import { ChangepwdComponent } from './views/changepwd/changepwd.component';
 import { DeleteAlertComponent } from './modal/delete-alert/delete-alert.component';
 
 
-
 @NgModule({
   imports: [
     BrowserModule,

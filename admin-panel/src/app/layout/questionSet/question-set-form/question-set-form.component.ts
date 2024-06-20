@@ -40,7 +40,6 @@ export class QuestionSetFormComponent implements OnInit {
   ngOnInit(): void {
     this.getSeminarList();
     this.actRoutes.queryParams.subscribe((params) => {
-      this.action = params.action;
       if (params.id) {
         this.getSetById(params.id);
       }
@@ -74,7 +73,7 @@ export class QuestionSetFormComponent implements OnInit {
   submit() {
     this.submitted = true;
     if (this.questionSetForm.invalid) {
-      this.toastService.warning('Please fill all required field!');
+      this.toastService.warning('Please fill all required fields!');
       return;
     }
     let formData = this.questionSetForm.value;

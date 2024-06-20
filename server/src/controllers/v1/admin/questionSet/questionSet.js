@@ -153,7 +153,8 @@ const questionsetOjbect = {
           duration:1,
           serialNumber:1,
           isVisible:1,
-          passingMarks:1
+          passingMarks:1,
+          seminarId:1
         },
       };
       const pipeline = [

@@ -12,6 +12,7 @@ export class QuestionSetService {
     getByIdPath: (id) => `questionSet/${id}`,
     updatePath: (id) => `questionSet/${id}`,
     deletePath: (id) => `questionSet/${id}`,
+    visibilityPath: (id) => `questionSet/changeVisibility/${id}`
   };
 
   constructor(private http: ApiService) {}
@@ -34,5 +35,9 @@ export class QuestionSetService {
 
   deleteSetById(id){
     return this.http.delete(this.routes.deletePath(id));
+  }
+
+  changeSetVisibility(id, info){
+    return this.http.put(this.routes.visibilityPath(id), info);
   }
 }

@@ -18,6 +18,7 @@ export class QuestionSetListComponent implements OnInit {
   page = 1;
   pageSize = 5;
   search: any = '';
+  visibility: any = {};
 
   constructor(
     private router: Router,
@@ -44,6 +45,9 @@ export class QuestionSetListComponent implements OnInit {
         this.sets = success?.result?.data;
         this.totalSets = success?.result?.totalCount;
         this.spinner.hide();
+        this.sets.forEach((set) => {
+          this.visibility[set._id] = set.isVisible;
+        });
       },
       (error) => {
         this.spinner.hide();
@@ -53,18 +57,41 @@ export class QuestionSetListComponent implements OnInit {
   }
 
   onChangePage(pageNo) {
-    if (pageNo > 0) { 
+    if (pageNo > 0) {
       this.page = pageNo;
     }
     this.getAllSets();
   }
 
-  navigateTo(path, id, action) {
+  navigateTo(path, id) {
     if (id) {
-      this.router.navigate([path], { queryParams: { id, action } });
+      this.router.navigate([path], { queryParams: { id } });
     } else {
-      this.router.navigate([path], { queryParams: { action } });
+      this.router.navigate([path]);
     }
+  }
+
+  switchVisibility(row) {
+    this.selectedRow = row;
+    let seminarInfo = {
+      seminarId: row.seminarId,
+    };
+    this.spinner.show();
+    this.questionSetService.changeSetVisibility(row._id, seminarInfo).subscribe(
+      (success) => {
+        console.log('visibility', success);
+        this.spinner.hide();
+        this.toastService.success(success.result.message);
+
+        this.sets.forEach((set) => {
+          this.visibility[set._id] = set._id === row._id;
+        });
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong');
+      }
+    );
   }
 
   refreshList(title) {

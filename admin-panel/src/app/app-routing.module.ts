@@ -90,9 +90,13 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./layout/questionSet/question-set.module').then((m) => m.QuestionSetModule),
       },
+      {
+        path: 'questions',
+        loadChildren: () =>
+          import('./layout/questions/question.module').then((m) => m.QuestionModule),
+      },
     ],
   },
-
   { path: '**', component: P404Component },
 ];
 
