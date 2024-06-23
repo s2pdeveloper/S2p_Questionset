@@ -6,7 +6,6 @@ const { validate } = require('../../../../middleware/Validators');
 const AuthHelper = require('../../../../models/helpers/AuthHelper');
 const { helpers } = require('handlebars');
 
-
 app.get('/getAllQuestionSetOfSeminar',Student.getAllQuestionSetOfSeminar)
 app.get('/testByQuestionSet/:id',Student.testByQuestionSet)
 app.post('/submitTest',Student.submitTest)

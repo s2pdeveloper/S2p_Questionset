@@ -10,9 +10,11 @@ const questionsetOjbect = {
       const data = req.body;
       data.seminarId = req.params.id;
       const questionSets = await QuestionSet.find({ seminarId: req.params.id }).sort({serialNumber:1});
-      data.serialNumber=questionSets.length+1;
+      console.log("***your question Sets******",questionSets);
+      const serialNumber = questionSets.length > 0 ? questionSets[questionSets.length - 1].serialNumber + 1 : 1;
+      data.serialNumber=serialNumber;
+      console.log("***********serialNUmber************",serialNumber);
 
-    
 
      const questionSet = await QuestionSet.create(data);
       return res.success({
@@ -206,17 +208,16 @@ const questionsetOjbect = {
     }
   },
 
+
   update: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({
         _id: req.params.id,
       });
-
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
-
       await QuestionSet.findOneAndUpdate({ _id: req.params.id }, req.body);
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('QuestionSet'),
@@ -231,31 +232,12 @@ const questionsetOjbect = {
   delete: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({ _id: req.params.id });
-
-    
-
-
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
       await QuestionSet.findOneAndDelete({ _id: req.params.id });
-
-
-      const seminarId=req.body.seminarId;
-      const questionSets = await QuestionSet.find({ seminarId: seminarId}).sort({serialNumber:1});
-     
-
-      //Arranging the Serail Number if one of the Question set deleted so the question will get disturb
-      questionSets.map(async(questionset,index)=>{
-        if(questionset.serialNumber!==index+1){  
-       await QuestionSet.findOneAndUpdate({_id:questionset._id},{serialNumber:index+1});
-        }
-      })
-
-
-
-
+      
       return res.success({
         message: MESSAGES.apiSuccessStrings.DELETED('QuestionSet'),
       });
