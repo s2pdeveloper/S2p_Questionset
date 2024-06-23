@@ -14,7 +14,6 @@ const QuestionSchema = mongoose.Schema(
         hint: {
            type:String,
            default:null
-           
         },
         questionSetId: {
             type: mongoose.Schema.Types.ObjectId,
@@ -31,6 +30,7 @@ const QuestionSchema = mongoose.Schema(
         collection: "Question",
     }
 );
+
 QuestionSchema.index({"$**": "text"});
 const Question = mongoose.model("Question", QuestionSchema);
 module.exports = Question;

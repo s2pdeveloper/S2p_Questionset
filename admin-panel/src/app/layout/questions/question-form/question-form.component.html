@@ -1,1 +1,150 @@
-<p>question-form works!</p>
+<div class="container-fluid animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <h3 class="mb-0">Question Form</h3>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-danger" (click)="goBack()">
+            <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="questionForm" class="form-horizontal">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Question
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                formControlName="question"
+                type="text"
+                class="form-control"
+                placeholder="Enter Question Statement"
+                [ngClass]="{
+                  'is-invalid':
+                    form.question.invalid &&
+                    submitted &&
+                    (form.question.touched || form.question.dirty)
+                }"
+              />
+              <validation-messages [control]="form['question']">
+              </validation-messages>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Type of Question
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="type"
+                class="form-select"
+                placeholder="Select Type of Question"
+                [ngClass]="{
+                  'is-invalid':
+                    form.type.invalid &&
+                    submitted &&
+                    (form.type.touched || form.type.dirty)
+                }"
+              >
+                <option disabled value="">Select Type</option>
+                <option value="MCQ">MCQ</option>
+                <option value="TEXT">Text</option>
+                <option value="NUMBER">Number</option>
+              </select>
+              <validation-messages [control]="form['type']">
+              </validation-messages>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label"> Hint </label>
+              <input
+                formControlName="hint"
+                type="text"
+                class="form-control"
+                placeholder="Give Hint"
+              />
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Options
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                (input)="onTextChange($event)"
+                formControlName="options"
+                type="text"
+                placeholder="Enter Options"
+                class="form-control"
+                [ngClass]="{
+                  'is-invalid':
+                    form.options.invalid &&
+                    submitted &&
+                    (form.options.touched || form.options.dirty)
+                }"
+              />
+              <validation-messages
+                [control]="form['options']"
+              ></validation-messages>
+            </div>
+          </div>
+        </div>
+        <!-- <h3>{{option.value}}</h3> -->
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Correct Option
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="correctOption"
+                class="form-select"
+                placeholder="Select Correct  Option"
+                [ngClass]="{
+                  'is-invalid':
+                    form.correctOption.invalid &&
+                    submitted &&
+                    (form.correctOption.touched || form.correctOption.dirty)
+                }"
+              > 
+                <option disabled value="">Select Option</option>
+                <option *ngFor="let opt of splitArray" [value]="opt">
+                  {{ opt }}
+                </option>
+              </select>
+              <validation-messages
+                [control]="form['correctOption']"
+              ></validation-messages>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="text-center">
+        <button
+          [disabled] ="act==='view'"
+          (click)="submit()"
+          type="submit"
+          class="btn btn-success text-white"
+        >
+          {{ form._id.value ? "Update" : "Save" }}
+        </button>
+        <button (click)="goBack()" class="btn btn-danger">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

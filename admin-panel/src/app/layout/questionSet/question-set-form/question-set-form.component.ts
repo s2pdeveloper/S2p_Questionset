@@ -66,7 +66,7 @@ export class QuestionSetFormComponent implements OnInit {
   getSetById(id) {
     this.questionSetService.getQuestionSetById(id).subscribe((success) => {
       // console.log("Print" ,success);
-      this.questionSetForm.patchValue(success.result[0]);
+      this.questionSetForm.patchValue(success?.result[0]);
     });
   }
 
