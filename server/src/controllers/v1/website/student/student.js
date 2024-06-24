@@ -7,6 +7,7 @@ const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
 const { eq } = require('lodash');
+const { use } = require('chai');
 
 const customerobj = {
   registerStudent: async (req, res) => {
@@ -219,6 +220,31 @@ const customerobj = {
       const result = await Result.create(resultData);
 
       res.success(result);
+    } catch (error) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+
+  login: async (req, res) => {
+    try {
+     console.log("hit the login of student");
+      const { phone } = req.body;
+
+      const user=await Student.findOne({phone:phone});
+      console.log("your student",user)
+      if(!user){
+        const errors = MESSAGES.apiErrorStrings.USER_NOT_EXISTS;
+     return   res.serverError(errors);
+        throw new Error(errors);
+
+      }
+  
+    const token=user.genToken();
+    const data={user:user,token:token}
+  
+      res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
