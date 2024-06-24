@@ -1,19 +1,28 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-start-test',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './start-test.component.html',
-  styleUrl: './start-test.component.css'
+  styleUrl: './start-test.component.css',
 })
-export class StartTestComponent {
-  constructor(private router: Router){}
-  startTest(subject: string): void {
-    if (subject === 'C') {
-      this.router.navigate(['/test']);
-    }
+export class StartTestComponent implements OnInit {
+  constructor(private router: Router, private actRoute: ActivatedRoute) {}
+
+  seminarId: string | null = null;
+
+  ngOnInit(): void {
+    this.actRoute.queryParams.subscribe((params: any) => {
+      this.seminarId = params.seminarId;
+      if (this.seminarId) {
+        this.startTest(this.seminarId);
+      }
+    });
+  }
+  startTest(seminarId: string): void {
+    this.router.navigate(['/test']);
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   ActivatedRoute,
   Router,
@@ -24,11 +24,23 @@ import { StudentService } from '../services/student.service';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
+
+  constructor(
+    private router: Router,
+    private actRoute: ActivatedRoute,
+    private formBuilder: FormBuilder,
+    private studentData: StudentService
+  ) {}
+
   users: any[] = [];
   branch = [
     {
       label: 'A',
       value: 'A',
+    },
+    {
+      label: 'B',
+      value: 'B',
     },
   ];
   degree = [
@@ -36,33 +48,36 @@ export class RegisterComponent implements OnInit {
       label: 'A',
       value: 'A',
     },
+    {
+      label: 'B',
+      value: 'B',
+    },
   ];
 
   seminarId: string | null = null;
 
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private studentData: StudentService
-  ) {}
+  submitted = false;
+  regForm = this.formBuilder.group({
+    _id: new FormControl(null),
+    firstName: new FormControl('', [Validators.required]),
+    lastName: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required]),
+    phone: new FormControl('', [Validators.required]),
+    gender: new FormControl('', [Validators.required]),
+    college: new FormControl('', [Validators.required]),
+    degree: new FormControl('', [Validators.required]),
+    branch: new FormControl('', [Validators.required]),
+    semester: new FormControl('', [Validators.required]),
+  });
 
   ngOnInit(): void {
-    this.route.queryParamMap.subscribe((param) => {
-      this.seminarId = param.get('seminarId');
+    this.actRoute.queryParams.subscribe((params: any) => {
+      // console.log(params);
+      // this.seminarId = params.get('seminarId');
+      this.seminarId = params.seminarId;
+      // console.log(this.seminarId);
     });
   }
-
-  regForm = new FormGroup({
-    firstName: new FormControl(''),
-    lastName: new FormControl(''),
-    email: new FormControl(''),
-    phone: new FormControl(''),
-    gender: new FormControl(''),
-    college: new FormControl(''),
-    degree: new FormControl(''),
-    branch: new FormControl(''),
-    semester: new FormControl(''),
-  });
 
   register() {
     console.log('value', this.regForm.value);
@@ -70,6 +85,6 @@ export class RegisterComponent implements OnInit {
       console.log(success);
     });
     this.regForm.reset();
-    this.router.navigate(['/start-test']);
+    this.router.navigate(['/start-test'], {queryParams : {seminarId: this.seminarId}});
   }
 }
