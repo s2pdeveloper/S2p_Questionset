@@ -36,7 +36,7 @@ const customerobj = {
       throw new Error(e);
     }
   },
-  getAllQuestionSetOfSeminar: async (req, res) => {
+  getVisibleQuestionSet: async (req, res) => {
     try {
       const seminarId = req.body.seminarId;
       let {
@@ -55,6 +55,9 @@ const customerobj = {
           ...(seminarId && {
             seminarId: new mongoose.Types.ObjectId(seminarId),
           }),
+
+         isVisible:true,
+
           ...(![undefined, null, ''].includes(search) && {
             $text: { $search: search },
           }),
@@ -94,7 +97,7 @@ const customerobj = {
         resp.length > 0 && resp[0].metadata.length > 0
           ? resp[0].metadata[0].total
           : 0;
-      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+      const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
       return res.success({ data, totalCount });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
