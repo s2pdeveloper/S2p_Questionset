@@ -9,7 +9,14 @@ const questionsetOjbect = {
     try {
       const data = req.body;
       data.seminarId = req.params.id;
-      const questionSet = await QuestionSet.create(data);
+      const questionSets = await QuestionSet.find({ seminarId: req.params.id }).sort({serialNumber:1});
+      console.log("***your question Sets******",questionSets);
+      const serialNumber = questionSets.length > 0 ? questionSets[questionSets.length - 1].serialNumber + 1 : 1;
+      data.serialNumber=serialNumber;
+      console.log("***********serialNUmber************",serialNumber);
+
+
+     const questionSet = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
         data: questionSet,
@@ -207,17 +214,16 @@ const questionsetOjbect = {
     }
   },
 
+
   update: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({
         _id: req.params.id,
       });
-
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
-
       await QuestionSet.findOneAndUpdate({ _id: req.params.id }, req.body);
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('QuestionSet'),
@@ -237,6 +243,7 @@ const questionsetOjbect = {
         return res.unprocessableEntity(errors);
       }
       await QuestionSet.findOneAndDelete({ _id: req.params.id });
+      
       return res.success({
         message: MESSAGES.apiSuccessStrings.DELETED('QuestionSet'),
       });

@@ -31,7 +31,8 @@ const resultSchema = mongoose.Schema(
     maxScore:{
         type:Number,
         
-    }
+    },
+    answers:[],
   },
   {
     timestamps: true,

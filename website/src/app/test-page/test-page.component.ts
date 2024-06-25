@@ -3,6 +3,7 @@ import { Component, NgZone, OnDestroy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, timer } from 'rxjs';
+import { StudentService } from '../services/student.service';
 
 @Component({
   selector: 'app-test-page',
@@ -12,11 +13,15 @@ import { Subject, takeUntil, timer } from 'rxjs';
   styleUrl: './test-page.component.css',
 })
 export class TestPageComponent implements OnDestroy {
-
   seminarId: string | null = null;
-  startButton : boolean = false;
+  startButton: boolean = false;
 
-  constructor(private zone: NgZone, private router: Router, private actRoute: ActivatedRoute) {}
+  constructor(
+    private zone: NgZone,
+    private router: Router,
+    private actRoute: ActivatedRoute,
+    private studentService: StudentService
+  ) {}
   destroy = new Subject();
   questions = [
     {
@@ -82,7 +87,7 @@ export class TestPageComponent implements OnDestroy {
       this.seminarId = params.seminarId;
     });
   }
-  
+
   startTest(): void {
     this.startButton = true;
     this.startTimer();

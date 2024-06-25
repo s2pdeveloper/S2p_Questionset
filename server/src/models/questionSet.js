@@ -17,7 +17,7 @@ const questionSetSchema = mongoose.Schema(
       required: false,
     },
     serialNumber: {
-      type: String,
+      type: Number,
       required: false,
     },
     isVisible: {

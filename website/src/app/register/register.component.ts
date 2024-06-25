@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
     private router: Router,
     private actRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private studentData: StudentService
+    private studentService: StudentService
   ) {}
 
   users: any[] = [];
@@ -79,10 +79,11 @@ export class RegisterComponent implements OnInit {
 
   register() {
     console.log('value', this.regForm.value);
-    this.studentData.registerStudent(this.regForm.value, this.seminarId).subscribe((success:any) =>{
+    this.studentService.registerStudent(this.regForm.value, this.seminarId).subscribe((success:any) =>{
       console.log(success);
     });
     this.regForm.reset();
+    this.studentService.getVisibleSet()
     this.router.navigate(['/test'], {queryParams : {seminarId: this.seminarId}});
   }
 }
