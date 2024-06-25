@@ -38,7 +38,7 @@ const customerobj = {
   },
   getVisibleQuestionSet: async (req, res) => {
     try {
-      const seminarId = req.body.seminarId;
+      const seminarId = req.query.id;
       let {
         page = 1,
         pageSize = 10,
@@ -93,12 +93,9 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-      const totalCount =
-        resp.length > 0 && resp[0].metadata.length > 0
-          ? resp[0].metadata[0].total
-          : 0;
+     
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
-      return res.success({ data, totalCount });
+      return res.success({ data });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
