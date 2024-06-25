@@ -6,7 +6,6 @@ import {
   RouterLink,
   RouterOutlet,
 } from '@angular/router';
-import { StartTestComponent } from '../start-test/start-test.component';
 import { CommonModule } from '@angular/common';
 import { StudentService } from '../services/student.service';
 
@@ -18,7 +17,6 @@ import { StudentService } from '../services/student.service';
     RouterOutlet,
     ReactiveFormsModule,
     RouterLink,
-    StartTestComponent,
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
@@ -85,6 +83,6 @@ export class RegisterComponent implements OnInit {
       console.log(success);
     });
     this.regForm.reset();
-    this.router.navigate(['/start-test'], {queryParams : {seminarId: this.seminarId}});
+    this.router.navigate(['/test'], {queryParams : {seminarId: this.seminarId}});
   }
 }

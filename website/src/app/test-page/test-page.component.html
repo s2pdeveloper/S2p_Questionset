@@ -1,12 +1,71 @@
-<div class="container mt-5">
+<div class="container mt-5" *ngIf="startButton === false">
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card shadow">
-        <div class="card-header text-center bg-primary ">
-            <h2 class="text-center my-3 heading">MCQ Test</h2>
+        <div class="card-header text-center bg-primary">
+          <h2 class="text-center my-3 heading">Test Info</h2>
         </div>
         <div class="card-body">
-          
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p><strong>Subject:</strong> C</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Duration:</strong> 10 minutes</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Total Questions:</strong> 10</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p><strong>Marks per Question:</strong> 1</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Total Marks:</strong> 10</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <p><strong>Negative Marking:</strong> No</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Passing Marks:</strong> 4</p>
+            </div>
+          </div>
+          <div class="row mb-3">
+            <div class="col-md-12">
+              <p>
+                <strong>Instructions:</strong> Please ensure you have a stable
+                internet connection. Do not refresh the page during the test.
+                Once you start the test, you cannot pause it.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-center">
+          <button class="btn btn-primary" (click)="startTest()">
+            Start Test
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container mt-5" *ngIf="startButton === true">
+  <div class="row">
+    <div class="col-md-12 mb-4">
+      <div class="card shadow">
+        <div class="card-header text-center bg-primary">
+          <h2 class="text-center my-3 heading">MCQ Test</h2>
+        </div>
+        <div class="card-body">
           <div class="d-flex justify-content-between mb-3">
             <span><strong>Name:</strong> John Doe</span>
             <span class="badge bg-primary p-2"
@@ -34,7 +93,6 @@
             <button class="btn btn-primary" (click)="submit()">Submit</button>
           </div>
         </div>
-      
       </div>
     </div>
   </div>
