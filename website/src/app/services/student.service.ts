@@ -7,7 +7,8 @@ import { Injectable } from '@angular/core';
 export class StudentService {
 
   routes : any = {
-    registerPath : (seminarId) => `http://localhost:2024/api/v1/website/student/${seminarId}`
+    registerPath : (seminarId) => `http://localhost:2024/api/v1/website/student/${seminarId}`,
+    getVisibleSetPath : (params) => `http://localhost:2024/api/v1/website/student/getVisibleQuestionSet?id=${params.id}`
   }
 
   constructor(private http : HttpClient) { }
@@ -15,7 +16,7 @@ export class StudentService {
   registerStudent(data: any, seminarId){
     return this.http.post(this.routes.registerPath(seminarId), data);
   }
-  getVisibleSet(){
-    return this.http.get(``)
+  getVisibleSet(params){
+    return this.http.get(this.routes.getVisibleSetPath(params));
   }
 }

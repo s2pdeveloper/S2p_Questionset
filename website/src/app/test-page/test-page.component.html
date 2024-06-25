@@ -8,34 +8,18 @@
         <div class="card-body">
           <div class="row mb-3">
             <div class="col-md-6">
-              <p><strong>Subject:</strong> C</p>
+              <p><strong>Name:</strong>{{data?.name}}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Duration:</strong> 10 minutes</p>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p><strong>Type:</strong> Multiple Choice Questions (MCQ)</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Total Questions:</strong> 10</p>
+              <p><strong>Duration:</strong> {{data?.duration}} Hour</p>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
-              <p><strong>Marks per Question:</strong> 1</p>
+              <p><strong>Total Questions:</strong>  {{data?.noOfQuestion}}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Total Marks:</strong> 10</p>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <p><strong>Negative Marking:</strong> No</p>
-            </div>
-            <div class="col-md-6">
-              <p><strong>Passing Marks:</strong> 4</p>
+              <p><strong>Passing Marks:</strong> {{data?.passingMarks}}</p>
             </div>
           </div>
           <div class="row mb-3">

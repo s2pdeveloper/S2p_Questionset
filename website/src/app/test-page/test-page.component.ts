@@ -13,8 +13,10 @@ import { StudentService } from '../services/student.service';
   styleUrl: './test-page.component.css',
 })
 export class TestPageComponent implements OnDestroy {
+
   seminarId: string | null = null;
   startButton: boolean = false;
+  data: any;
 
   constructor(
     private zone: NgZone,
@@ -85,6 +87,17 @@ export class TestPageComponent implements OnDestroy {
   ngOnInit() {
     this.actRoute.queryParams.subscribe((params: any) => {
       this.seminarId = params.seminarId;
+    });
+    this.getSetDetails();
+  }
+
+  getSetDetails(){
+    let params = {
+      id: this.seminarId,
+    };
+    this.studentService.getVisibleSet(params).subscribe((success: any) => {
+      console.log('Set Details', success);
+      this.data = success?.result?.data;
     });
   }
 

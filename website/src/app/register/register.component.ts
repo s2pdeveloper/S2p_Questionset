@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import {
   ActivatedRoute,
   Router,
@@ -12,17 +18,11 @@ import { StudentService } from '../services/student.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterOutlet,
-    ReactiveFormsModule,
-    RouterLink,
-  ],
+  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, RouterLink],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
-
   constructor(
     private router: Router,
     private actRoute: ActivatedRoute,
@@ -79,11 +79,14 @@ export class RegisterComponent implements OnInit {
 
   register() {
     console.log('value', this.regForm.value);
-    this.studentService.registerStudent(this.regForm.value, this.seminarId).subscribe((success:any) =>{
-      console.log(success);
-    });
+    this.studentService
+      .registerStudent(this.regForm.value, this.seminarId)
+      .subscribe((success: any) => {
+        console.log(success);
+      });
     this.regForm.reset();
-    this.studentService.getVisibleSet()
-    this.router.navigate(['/test'], {queryParams : {seminarId: this.seminarId}});
+    this.router.navigate(['/test'], {
+      queryParams: { seminarId: this.seminarId },
+    });
   }
 }

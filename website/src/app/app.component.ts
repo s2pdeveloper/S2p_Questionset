@@ -25,9 +25,9 @@ export class AppComponent implements OnInit {
       this.seminarId = params.seminarId;
       // console.log(this.seminarId);
       
-      if (this.seminarId) {
-        this.router.navigate(['/register'], {queryParams: {seminarId: this.seminarId}});
-      }
+      // if (this.seminarId) {
+      //   this.router.navigate(['/register'], {queryParams: {seminarId: this.seminarId}});
+      // }
     })
   }
 }
