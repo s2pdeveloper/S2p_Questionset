@@ -25,58 +25,9 @@ export class TestPageComponent implements OnDestroy {
     private studentService: StudentService
   ) {}
   destroy = new Subject();
-  questions = [
-    {
-      text: 'What is the capital of France?',
-      options: ['Paris', 'London', 'Berlin', 'Madrid'],
-      answer: '',
-    },
-    {
-      text: 'Which planet is known as the Red Planet?',
-      options: ['Earth', 'Mars', 'Jupiter', 'Saturn'],
-      answer: '',
-    },
-    {
-      text: 'Who wrote "Hamlet"?',
-      options: ['Shakespeare', 'Dante', 'Homer', 'Cervantes'],
-      answer: '',
-    },
-    {
-      text: 'What is the largest ocean on Earth?',
-      options: ['Pacific', 'Atlantic', 'Indian', 'Arctic'],
-      answer: '',
-    },
-    {
-      text: 'What is the speed of light?',
-      options: ['300,000 km/s', '150,000 km/s', '450,000 km/s', '600,000 km/s'],
-      answer: '',
-    },
-    {
-      text: 'Who painted the Mona Lisa?',
-      options: ['Da Vinci', 'Van Gogh', 'Picasso', 'Rembrandt'],
-      answer: '',
-    },
-    {
-      text: 'What is the chemical symbol for gold?',
-      options: ['Au', 'Ag', 'Pb', 'Fe'],
-      answer: '',
-    },
-    {
-      text: 'Who discovered penicillin?',
-      options: ['Fleming', 'Curie', 'Einstein', 'Newton'],
-      answer: '',
-    },
-    {
-      text: 'What is the tallest mountain in the world?',
-      options: ['Everest', 'K2', 'Kangchenjunga', 'Lhotse'],
-      answer: '',
-    },
-    {
-      text: 'What is the smallest prime number?',
-      options: ['2', '1', '3', '5'],
-      answer: '',
-    },
-  ];
+  questions: any[] = [];
+
+  selectedAnswers: any[] = [];
 
   timeRemaining: string = '';
   interval: any = null;
@@ -98,6 +49,8 @@ export class TestPageComponent implements OnDestroy {
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       console.log('Set Details', success);
       this.data = success?.result?.data;
+      this.questions = success?.result?.data?.questions;
+      this.selectedAnswers = new Array(this.questions.length).fill('');
     });
   }
 
@@ -132,11 +85,29 @@ export class TestPageComponent implements OnDestroy {
       });
     });
   }
-  answerChange(ans, i: number) {
-    this.questions[i].answer = ans;
+
+  answerChange(option: any, index: number) {
+    this.selectedAnswers[index] = option;
   }
+  clearSelection(index: number){
+    this.selectedAnswers[index] = '';
+  }
+
   submit() {
-    console.log(this.questions);
+    const answers = this.questions.map((question, index) => {
+      return { [question._id]: this.selectedAnswers[index] || '' };
+    });
+    console.log("selected answers", this.selectedAnswers);
+
+    const payload = {
+      studentId : localStorage.getItem('StudentId'),
+      seminarId : this.seminarId,
+      questionSetId : this.data?._id,
+      answers: answers,
+    }
+    this.studentService.submitTest(payload).subscribe((success) =>{
+      console.log("Submit success", success);
+    })
     this.router.navigate(['/report']);
   }
 }

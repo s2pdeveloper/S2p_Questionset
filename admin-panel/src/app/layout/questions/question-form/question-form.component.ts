@@ -74,8 +74,9 @@ export class QuestionFormComponent implements OnInit {
       return;
     }
     let formData = this.questionForm.value;
-    console.log(formData);
+    formData.options = this.splitArray;
 
+    console.log(formData);
     if (formData._id) {
       this.update(formData);
     } else {

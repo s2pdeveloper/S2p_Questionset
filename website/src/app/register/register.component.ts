@@ -56,7 +56,7 @@ export class RegisterComponent implements OnInit {
 
   submitted = false;
   regForm = this.formBuilder.group({
-    _id: new FormControl(null),
+    id: new FormControl(null),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
@@ -74,6 +74,7 @@ export class RegisterComponent implements OnInit {
       // this.seminarId = params.get('seminarId');
       this.seminarId = params.seminarId;
       // console.log(this.seminarId);
+      localStorage.removeItem('StudentId');
     });
   }
 
@@ -82,7 +83,8 @@ export class RegisterComponent implements OnInit {
     this.studentService
       .registerStudent(this.regForm.value, this.seminarId)
       .subscribe((success: any) => {
-        console.log(success);
+        console.log('success----', success);
+        localStorage.setItem('StudentId', success?.studentId);
       });
     this.regForm.reset();
     this.router.navigate(['/test'], {

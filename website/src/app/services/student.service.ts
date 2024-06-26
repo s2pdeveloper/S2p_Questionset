@@ -2,21 +2,28 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class StudentService {
+  routes: any = {
+    registerPath: (seminarId) =>
+      `http://localhost:2024/api/v1/website/student/${seminarId}`,
+    getVisibleSetPath: (params) =>
+      `http://localhost:2024/api/v1/website/student/getVisibleQuestionSet?id=${params.id}`,
+    submitPath: `http://localhost:2024/api/v1/website/student/submitTest`,
+  };
 
-  routes : any = {
-    registerPath : (seminarId) => `http://localhost:2024/api/v1/website/student/${seminarId}`,
-    getVisibleSetPath : (params) => `http://localhost:2024/api/v1/website/student/getVisibleQuestionSet?id=${params.id}`
-  }
+  constructor(private http: HttpClient) {}
 
-  constructor(private http : HttpClient) { }
-
-  registerStudent(data: any, seminarId){
+  registerStudent(data: any, seminarId) {
     return this.http.post(this.routes.registerPath(seminarId), data);
   }
-  getVisibleSet(params){
+
+  getVisibleSet(params) {
     return this.http.get(this.routes.getVisibleSetPath(params));
+  }
+
+  submitTest(data: any) {
+    return this.http.post(this.routes.submitPath, data);
   }
 }

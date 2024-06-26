@@ -19,6 +19,8 @@ const customerobj = {
         const errors = 'Email Already Exist';
         return res.serverError(errors);
       }
+      delete data.id;
+      delete data._id;
       const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
@@ -56,7 +58,7 @@ const customerobj = {
             seminarId: new mongoose.Types.ObjectId(seminarId),
           }),
 
-         isVisible:true,
+          isVisible: true,
 
           ...(![undefined, null, ''].includes(search) && {
             $text: { $search: search },
@@ -93,7 +95,7 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-     
+
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
       return res.success({ data });
     } catch (e) {
@@ -214,7 +216,7 @@ const customerobj = {
         obtainMarks,
         passingMarks,
         maxScore,
-        answers
+        answers,
       };
 
       const result = await Result.create(resultData);
@@ -229,21 +231,20 @@ const customerobj = {
 
   login: async (req, res) => {
     try {
-     console.log("hit the login of student");
+      console.log('hit the login of student');
       const { phone } = req.body;
 
-      const user=await Student.findOne({phone:phone});
-      console.log("your student",user)
-      if(!user){
+      const user = await Student.findOne({ phone: phone });
+      console.log('your student', user);
+      if (!user) {
         const errors = MESSAGES.apiErrorStrings.USER_NOT_EXISTS;
-     return   res.serverError(errors);
+        return res.serverError(errors);
         throw new Error(errors);
-
       }
-  
-    const token=user.genToken();
-    const data={user:user,token:token}
-  
+
+      const token = user.genToken();
+      const data = { user: user, token: token };
+
       res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -331,7 +332,13 @@ const customerobj = {
         $unwind: '$studentInfo', // Unwind to get each studentInfo object separately
       };
 
-      const pipeline = [matchStage,lookupStage,unwindStage, { $sort: { obtainMarks: -1 } }, facetStage];
+      const pipeline = [
+        matchStage,
+        lookupStage,
+        unwindStage,
+        { $sort: { obtainMarks: -1 } },
+        facetStage,
+      ];
       const resp = await Result.aggregate(pipeline);
 
       resp[0].data.forEach((item, index) => {
@@ -381,12 +388,11 @@ const customerobj = {
       const studentId = req.body.studentId;
       const seminarId = req.body.seminarId;
       const Results = [];
-    
+
       const results = await Result.find({ studentId, seminarId });
-    
-      for (const eachResult of results) 
-      {
-        const questionSetId = eachResult.questionSetId;   
+
+      for (const eachResult of results) {
+        const questionSetId = eachResult.questionSetId;
         const matchStage = {
           $match: {
             _id: new mongoose.Types.ObjectId(questionSetId), // Use questionSetId from each result
@@ -400,22 +406,22 @@ const customerobj = {
             as: 'questions',
           },
         };
-        const pipeline = [
-          matchStage,
-          lookupStage,
-        ];   
-        const resp = await QuestionSet.aggregate(pipeline);      
+        const pipeline = [matchStage, lookupStage];
+        const resp = await QuestionSet.aggregate(pipeline);
         const data = {
-          questionSet: resp[0], 
-         
+          questionSet: resp[0],
         };
 
-        data.result=await resultOverView(req,eachResult.questionSetId,eachResult.studentId,eachResult.seminarId)
+        data.result = await resultOverView(
+          req,
+          eachResult.questionSetId,
+          eachResult.studentId,
+          eachResult.seminarId
+        );
 
-      
         Results.push(data);
       }
-    
+
       res.status(200).json({ Results });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -427,11 +433,7 @@ const customerobj = {
 
 module.exports = customerobj;
 
-
-
-
- async function resultOverView(req,questionSetId,studentId,seminarId){
-
+async function resultOverView(req, questionSetId, studentId, seminarId) {
   let {
     page = 1,
     pageSize = 9999,
@@ -481,7 +483,6 @@ module.exports = customerobj;
     }
     if (item.studentId.equals(studentId)) {
       student = { ...item, rank: index + 1 };
-     
     }
     if (index < top) {
       topStudent.push(item);
@@ -499,7 +500,7 @@ module.exports = customerobj;
   percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
   percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
 
- return {
+  return {
     totalStudent,
     noOfAttemptedStudent,
     noOfUnattemptedStudent,
@@ -509,6 +510,5 @@ module.exports = customerobj;
     noOfFailStudent,
     topStudent,
     student,
-  }
-
+  };
 }

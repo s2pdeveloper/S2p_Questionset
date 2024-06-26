@@ -8,18 +8,18 @@
         <div class="card-body">
           <div class="row mb-3">
             <div class="col-md-6">
-              <p><strong>Name:</strong>{{data?.name}}</p>
+              <p><strong>Name:</strong> {{ data?.name }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Duration:</strong> {{data?.duration}} Hour</p>
+              <p><strong>Duration:</strong> {{ data?.duration }} Hour</p>
             </div>
           </div>
           <div class="row mb-3">
             <div class="col-md-6">
-              <p><strong>Total Questions:</strong>  {{data?.noOfQuestion}}</p>
+              <p><strong>Total Questions:</strong> {{ data?.noOfQuestion }}</p>
             </div>
             <div class="col-md-6">
-              <p><strong>Passing Marks:</strong> {{data?.passingMarks}}</p>
+              <p><strong>Passing Marks:</strong> {{ data?.passingMarks }}</p>
             </div>
           </div>
           <div class="row mb-3">
@@ -57,20 +57,28 @@
             >
           </div>
           <form>
-            <div class="mb-4" *ngFor="let question of questions; let i = index">
+            <div class="mb-4" *ngFor="let que of questions; let i = index">
               <p class="mb-2">
-                <strong>{{ i + 1 }}. {{ question.text }}</strong>
+                <strong>{{ i + 1 }}. {{ que?.question }}</strong>
               </p>
-              <div class="form-check" *ngFor="let option of question.options">
+              <div class="form-check" *ngFor="let option of que?.options">
                 <input
                   (change)="answerChange(option, i)"
                   class="form-check-input"
                   type="radio"
-                  [name]="'question' + i"
+                  [name]="'que' + i"
                   [value]="option"
+                  [checked]="selectedAnswers[i] === option"
                 />
                 <label class="form-check-label">{{ option }}</label>
               </div>
+              <button
+                type="button"
+                class="btn btn-secondary mt-2"
+                (click)="clearSelection(i)"
+              >
+                Clear
+              </button>
             </div>
           </form>
           <div class="text-center">
