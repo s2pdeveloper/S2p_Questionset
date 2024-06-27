@@ -13,7 +13,6 @@ import { StudentService } from '../services/student.service';
   styleUrl: './test-page.component.css',
 })
 export class TestPageComponent implements OnDestroy {
-
   seminarId: string | null = null;
   startButton: boolean = false;
   data: any;
@@ -24,6 +23,7 @@ export class TestPageComponent implements OnDestroy {
     private actRoute: ActivatedRoute,
     private studentService: StudentService
   ) {}
+
   destroy = new Subject();
   questions: any[] = [];
 
@@ -33,7 +33,7 @@ export class TestPageComponent implements OnDestroy {
   interval: any = null;
 
   rxjsTimer = timer(1000, 1000);
-  timer: number = 30 * 60;
+  timer: number = 0;
 
   ngOnInit() {
     this.actRoute.queryParams.subscribe((params: any) => {
@@ -42,7 +42,7 @@ export class TestPageComponent implements OnDestroy {
     this.getSetDetails();
   }
 
-  getSetDetails(){
+  getSetDetails() {
     let params = {
       id: this.seminarId,
     };
@@ -56,6 +56,7 @@ export class TestPageComponent implements OnDestroy {
 
   startTest(): void {
     this.startButton = true;
+    this.timer = this.data?.duration * 60 * 60;
     this.startTimer();
   }
 
@@ -89,7 +90,7 @@ export class TestPageComponent implements OnDestroy {
   answerChange(option: any, index: number) {
     this.selectedAnswers[index] = option;
   }
-  clearSelection(index: number){
+  clearSelection(index: number) {
     this.selectedAnswers[index] = '';
   }
 
@@ -97,17 +98,27 @@ export class TestPageComponent implements OnDestroy {
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
     });
-    console.log("selected answers", this.selectedAnswers);
+    console.log('selected answers', this.selectedAnswers);
 
     const payload = {
-      studentId : localStorage.getItem('StudentId'),
-      seminarId : this.seminarId,
-      questionSetId : this.data?._id,
+      studentId: localStorage.getItem('StudentId'),
+      seminarId: this.seminarId,
+      questionSetId: this.data?._id,
       answers: answers,
-    }
-    this.studentService.submitTest(payload).subscribe((success) =>{
-      console.log("Submit success", success);
-    })
-    this.router.navigate(['/report']);
+    };
+
+    console.log('This is Payload', payload);
+
+    this.studentService.submitTest(payload).subscribe((success: any) => {
+      console.log('Submit success', success);
+
+      this.router.navigate(['/report'], {
+        queryParams: {
+          questionSetId: success?.result?.questionSetId,
+          seminarId: success?.result?.seminarId,
+          studentId: success?.result?.studentId,
+        },
+      });
+    });
   }
 }

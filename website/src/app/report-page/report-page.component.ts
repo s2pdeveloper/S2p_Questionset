@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NzProgressModule, NzProgressStatusType } from 'ng-zorro-antd/progress';
+import { StudentService } from '../services/student.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-report-page',
@@ -9,6 +11,11 @@ import { NzProgressModule, NzProgressStatusType } from 'ng-zorro-antd/progress';
   styleUrl: './report-page.component.css',
 })
 export class ReportPageComponent implements OnInit {
+
+  constructor(private studentService : StudentService, private actRoute: ActivatedRoute) {}
+
+
+
   totalStudents: number = 20;
   stuAttempted: number = 16;
   stuNotAttempted: number = 4;
@@ -29,9 +36,24 @@ export class ReportPageComponent implements OnInit {
   questionsAttempted: number = 9;
 
   ngOnInit(): void {
+    this.actRoute.queryParams.subscribe((params) => {
+      console.log("Report Params *********", params);
+      if(params){
+        this.obtainResults(params);
+      }
+    })
     this.calculatePercentages();
     this.calculateMarksPercentage();
     this.calculateQuesAttemptPercentage();
+  }
+
+  obtainResults(params: object){
+    // console.log("Params in result function", params);
+    
+    this.studentService.getRankedResult(params).subscribe((success) => {
+      console.log("Ranked Result Success" , success);
+      
+    })
   }
 
   calculatePercentages(): void {
@@ -66,9 +88,11 @@ export class ReportPageComponent implements OnInit {
     else if (this.marksPercent > 40) return null;
     else return 'exception';
   }
+
   QuestionStatusFormat(): NzProgressStatusType {
     if (this.questionsPercent > 70) return 'success';
     else if (this.questionsPercent > 40) return null;
     else return 'exception';
   }
+
 }
