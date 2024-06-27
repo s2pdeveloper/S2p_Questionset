@@ -30,10 +30,14 @@ export class ReportPageComponent implements OnInit {
   questionsPercent: number = 0;
 
   totalMarks: number = 0;
-  passingMarks: number = 4;
-  marksObtained: number = 7;
-  totalQuestions: number = 10;
-  questionsAttempted: number = 9;
+  passingMarks: number = 0;
+  marksObtained: number = 0;
+
+  rank: number = 0;
+  status: string = '';
+
+  // totalQuestions: number = 10;
+  // questionsAttempted: number = 9;
 
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params) => {
@@ -52,16 +56,18 @@ export class ReportPageComponent implements OnInit {
       this.totalStudents = success?.totalStudent;
       this.stuAttempted = success?.noOfAttemptedStudent;
       this.stuNotAttempted = success?.noOfUnattemptedStudent;
+      this.totalMarks = success?.maxScore;
       this.passingMarks= success?.passingMarks;
       this.totalPassed = success?.noOfPassStudent;
       this.totalFailed = success?.noOfFailStudent;
       this.passPercentage = success?.percentageOfPassStudent;
       this.failPercentage = success?.percentageOfFailStudent;
-      this.totalMarks = success?.maxScore;
       this.marksObtained = success?.student?.obtainMarks;
+      this.rank = success?.student?.rank;
+      this.status = success?.student?.status;
       this.calculatePercentages();
       this.calculateMarksPercentage();
-      this.calculateQuesAttemptPercentage();
+      // this.calculateQuesAttemptPercentage();
     })
   }
 
@@ -81,26 +87,26 @@ export class ReportPageComponent implements OnInit {
       this.marksPercent = (this.marksObtained / this.totalMarks) * 100;
     }
   }
-  calculateQuesAttemptPercentage() {
-    if (this.totalQuestions > 0) {
-      this.questionsPercent =
-        (this.questionsAttempted / this.totalQuestions) * 100;
-    }
-  }
+  // calculateQuesAttemptPercentage() {
+  //   if (this.totalQuestions > 0) {
+  //     this.questionsPercent =
+  //       (this.questionsAttempted / this.totalQuestions) * 100;
+  //   }
+  // }
 
   percentFormat = (percent: number) => `${percent}%`;
   marksFormat = () => `${this.marksObtained}`;
-  questionsFormat = () => `${this.questionsAttempted}`;
+  // questionsFormat = () => `${this.questionsAttempted}`;
   MarkStatusFormat(): NzProgressStatusType {
     if (this.marksPercent > 70) return 'success';
     else if (this.marksPercent > 40) return null;
     else return 'exception';
   }
 
-  QuestionStatusFormat(): NzProgressStatusType {
-    if (this.questionsPercent > 70) return 'success';
-    else if (this.questionsPercent > 40) return null;
-    else return 'exception';
-  }
+  // QuestionStatusFormat(): NzProgressStatusType {
+  //   if (this.questionsPercent > 70) return 'success';
+  //   else if (this.questionsPercent > 40) return null;
+  //   else return 'exception';
+  // }
 
 }
