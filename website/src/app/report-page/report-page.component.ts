@@ -16,11 +16,11 @@ export class ReportPageComponent implements OnInit {
 
 
 
-  totalStudents: number = 20;
-  stuAttempted: number = 16;
-  stuNotAttempted: number = 4;
-  totalPassed: number = 12;
-  totalFailed: number = 4;
+  totalStudents: number = 0;
+  stuAttempted: number = 0;
+  stuNotAttempted: number = 0;
+  totalPassed: number = 0;
+  totalFailed: number = 0;
 
   passPercentage: number = 0;
   failPercentage: number = 0;
@@ -42,7 +42,6 @@ export class ReportPageComponent implements OnInit {
         this.obtainResults(params);
       }
     })
-    this.calculatePercentages();
     this.calculateMarksPercentage();
     this.calculateQuesAttemptPercentage();
   }
@@ -50,9 +49,16 @@ export class ReportPageComponent implements OnInit {
   obtainResults(params: object){
     // console.log("Params in result function", params);
     
-    this.studentService.getRankedResult(params).subscribe((success) => {
+    this.studentService.getRankedResult(params).subscribe((success: any) => {
       console.log("Ranked Result Success" , success);
-      
+      this.totalStudents = success?.totalStudent;
+      this.stuAttempted = success?.noOfAttemptedStudent;
+      this.stuNotAttempted = success?.noOfUnattemptedStudent;
+      this.totalPassed = success?.noOfPassStudent;
+      this.totalFailed = success?.noOfFailStudent;
+      this.passPercentage = success?.percentageOfPassStudent;
+      this.failPercentage = success?.percentageOfFailStudent;
+      this.calculatePercentages();
     })
   }
 
@@ -61,10 +67,9 @@ export class ReportPageComponent implements OnInit {
       this.attemptPercentage = (this.stuAttempted / this.totalStudents) * 100;
       this.notAttemptPercentage =
         (this.stuNotAttempted / this.totalStudents) * 100;
-    }
-    if (this.stuAttempted > 0) {
-      this.passPercentage = (this.totalPassed / this.stuAttempted) * 100;
-      this.failPercentage = (this.totalFailed / this.stuAttempted) * 100;
+    }else{
+      this.attemptPercentage = 0;
+      this.notAttemptPercentage = 0;
     }
   }
 
