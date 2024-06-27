@@ -11,7 +11,7 @@ app.post('/login',Student.login);
 app.get('/testByQuestionSet/:id',Student.testByQuestionSet)
 app.post('/submitTest',Student.submitTest)
 app.get('/getResultByQuestionSetId/:id',Student.getResultByQuestionSetId)
-app.get('/rankedResult',Student.rankedResult);
+app.post('/rankedResult',Student.rankedResult);
 app.post('/:id', Student.registerStudent);
 app.get('/allResultOfStudent', Student.allResultOfStudent);
 

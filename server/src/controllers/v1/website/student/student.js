@@ -95,6 +95,8 @@ const customerobj = {
       const resp = await QuestionSet.aggregate(pipeline);
      
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
+
+      console.log("your data",data.option)
       return res.success({ data });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
