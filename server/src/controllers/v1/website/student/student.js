@@ -368,8 +368,10 @@ const customerobj = {
         percentageOfFailStudent,
         noOfPassStudent,
         noOfFailStudent,
+        maxScore:student.maxScore,
+        passingMarks:student.passingMarks,
         topStudent,
-        student,
+        student
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
