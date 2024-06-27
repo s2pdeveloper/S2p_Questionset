@@ -162,7 +162,7 @@ const customerobj = {
 
   submitTest: async (req, res) => {
     try {
-      const marksPerQuestion = 10;
+      const marksPerQuestion = 1;
       const { studentId, seminarId, questionSetId, answers } = req.body;
       // Fetch question set details
       const questionSet = await Questionset.findById(questionSetId);
