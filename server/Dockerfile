@@ -1,9 +1,10 @@
-FROM node:18-alpine
+FROM node:16-alpine
+RUN npm install -g nodemon
 RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
 WORKDIR /home/node/app
-COPY package*.json ./
-USER node
+COPY package.json ./
 RUN npm install
 COPY . .
+USER node
 EXPOSE 2024
-CMD [ "node", "app.js" ]
+CMD [ "nodemon", "app.js" ]
