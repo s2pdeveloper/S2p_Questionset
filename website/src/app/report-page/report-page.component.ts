@@ -29,7 +29,7 @@ export class ReportPageComponent implements OnInit {
   marksPercent: number = 0;
   questionsPercent: number = 0;
 
-  totalMarks: number = 10;
+  totalMarks: number = 0;
   passingMarks: number = 4;
   marksObtained: number = 7;
   totalQuestions: number = 10;
@@ -42,8 +42,6 @@ export class ReportPageComponent implements OnInit {
         this.obtainResults(params);
       }
     })
-    this.calculateMarksPercentage();
-    this.calculateQuesAttemptPercentage();
   }
 
   obtainResults(params: object){
@@ -54,11 +52,16 @@ export class ReportPageComponent implements OnInit {
       this.totalStudents = success?.totalStudent;
       this.stuAttempted = success?.noOfAttemptedStudent;
       this.stuNotAttempted = success?.noOfUnattemptedStudent;
+      this.passingMarks= success?.passingMarks;
       this.totalPassed = success?.noOfPassStudent;
       this.totalFailed = success?.noOfFailStudent;
       this.passPercentage = success?.percentageOfPassStudent;
       this.failPercentage = success?.percentageOfFailStudent;
+      this.totalMarks = success?.maxScore;
+      this.marksObtained = success?.student?.obtainMarks;
       this.calculatePercentages();
+      this.calculateMarksPercentage();
+      this.calculateQuesAttemptPercentage();
     })
   }
 
