@@ -6,7 +6,7 @@ const mongoose = require('mongoose');
 const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
-const { eq } = require('lodash');
+const { eq, result } = require('lodash');
 const { use } = require('chai');
 
 const customerobj = {
@@ -56,7 +56,7 @@ const customerobj = {
             seminarId: new mongoose.Types.ObjectId(seminarId),
           }),
 
-         isVisible:true,
+          isVisible: true,
 
           ...(![undefined, null, ''].includes(search) && {
             $text: { $search: search },
@@ -93,10 +93,10 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-     
+
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
 
-      console.log("your data",data.option)
+      console.log('your data', data.option);
       return res.success({ data });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -216,12 +216,13 @@ const customerobj = {
         obtainMarks,
         passingMarks,
         maxScore,
-        answers
+        answers,
       };
+      await Result.create(resultData);
 
-      const result = await Result.create(resultData);
-
-      res.success(result);
+      res.success({
+        message: 'Test Submited',
+      });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -231,21 +232,20 @@ const customerobj = {
 
   login: async (req, res) => {
     try {
-     console.log("hit the login of student");
+      console.log('hit the login of student');
       const { phone } = req.body;
 
-      const user=await Student.findOne({phone:phone});
-      console.log("your student",user)
-      if(!user){
+      const user = await Student.findOne({ phone: phone });
+      console.log('your student', user);
+      if (!user) {
         const errors = MESSAGES.apiErrorStrings.USER_NOT_EXISTS;
-     return   res.serverError(errors);
+        return res.serverError(errors);
         throw new Error(errors);
-
       }
-  
-    const token=user.genToken();
-    const data={user:user,token:token}
-  
+
+      const token = user.genToken();
+      const data = { user: user, token: token };
+
       res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -279,12 +279,16 @@ const customerobj = {
       let {
         page = 1,
         pageSize = 9999,
-        search = null,
-        column = 'obtainMarks',
         direction = -1,
       } = req.query;
 
       const questionSetId = req.body.questionSetId;
+      const existing=await QuestionSet.findById(questionSetId);
+      if(!existing){
+
+      const errors = "Question set Not Exist";
+        return res.serverError(errors);
+      }
       const studentId = req.user ? req.user._id : req.body.studentId;
       const seminarId = req.user ? req.user.seminarId : req.body.seminarId;
       let top = req.query.top || 3;
@@ -322,21 +326,41 @@ const customerobj = {
         },
       };
 
-      const facetStage = {
-        $facet: {
-          metadata: [{ $count: 'total' }],
-          data: [{ $skip: skip }, { $limit: pageSize }],
-        },
-      };
+      const project={  
+          $project: {
+            maxScore: 0,
+            passingMarks:0,
+            answers:0,
+            createdAt:0,
+            updatedAt:0,
+            seminarId:0,
+            questionsetId:0,
+            __v:0,
+            "studentInfo.createdAt":0,
+            "studentInfo.updatedAt":0,
+            "studentInfo.isDelete":0,
+            "studentInfo.degree":0,
+            "studentInfo.seminarId":0,
+            "studentInfo.__v":0,
+            "studentInfo.branch":0,
+          },
+        
+      }
 
       const unwindStage = {
         $unwind: '$studentInfo', // Unwind to get each studentInfo object separately
       };
 
-      const pipeline = [matchStage,lookupStage,unwindStage, { $sort: { obtainMarks: -1 } }, facetStage];
+      const pipeline = [
+        matchStage,
+        lookupStage,
+        unwindStage,
+        project,
+        { $sort: { obtainMarks: -1 } },
+      ];
       const resp = await Result.aggregate(pipeline);
-
-      resp[0].data.forEach((item, index) => {
+      console.log("your resp",resp)
+      resp.forEach((item, index) => {
         item.rank = index + 1;
         if (item.status == 'PASS') {
           noOfPassStudent++;
@@ -353,12 +377,12 @@ const customerobj = {
         seminarId: seminarId,
       });
 
-      noOfAttemptedStudent = resp[0].data.length;
+      noOfAttemptedStudent = resp.length;
       noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
       noOfFailStudent = totalStudent - noOfPassStudent;
 
-      percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
-      percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
+      percentageOfFailStudent =((noOfFailStudent / totalStudent)* 100).toFixed(2);
+      percentageOfPassStudent = ((noOfPassStudent / totalStudent)* 100).toFixed(2);
 
       res.status(200).json({
         totalStudent,
@@ -368,10 +392,10 @@ const customerobj = {
         percentageOfFailStudent,
         noOfPassStudent,
         noOfFailStudent,
-        maxScore:student.maxScore,
-        passingMarks:student.passingMarks,
+        maxScore: existing.noOfQuestion,
+        passingMarks: existing.passingMarks,
         topStudent,
-        student
+        student,
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -385,12 +409,10 @@ const customerobj = {
       const studentId = req.body.studentId;
       const seminarId = req.body.seminarId;
       const Results = [];
-    
       const results = await Result.find({ studentId, seminarId });
-    
-      for (const eachResult of results) 
-      {
-        const questionSetId = eachResult.questionSetId;   
+      for (const eachResult of results)
+     {
+        const questionSetId = eachResult.questionSetId;
         const matchStage = {
           $match: {
             _id: new mongoose.Types.ObjectId(questionSetId), // Use questionSetId from each result
@@ -404,22 +426,55 @@ const customerobj = {
             as: 'questions',
           },
         };
-        const pipeline = [
-          matchStage,
-          lookupStage,
-        ];   
-        const resp = await QuestionSet.aggregate(pipeline);      
-        const data = {
-          questionSet: resp[0], 
-         
-        };
 
-        data.result=await resultOverView(req,eachResult.questionSetId,eachResult.studentId,eachResult.seminarId)
+
+        const projectStage={
+          $project:{
+            createdAt:0,
+            updatedAt:0,
+            __v:0,
+            isClose:0,
+            isVisible:0,
+            serialNumber:0,
+            "questions.updatedAt":0,
+            "questions.createdAt":0,
+            "questions.__v":0
+          }
+        }
+
+        const pipeline = [matchStage, lookupStage,projectStage];
+        const resp = await QuestionSet.aggregate(pipeline);
 
       
-        Results.push(data);
+        const data = {
+          questionSet: resp[0],
+        };
+
+        data.result = await resultOverView(  
+          req,
+          eachResult.questionSetId,
+          eachResult.studentId,
+          eachResult.seminarId
+        );
+
+      
+
+       //appending the student answer to particular question of question_set
+     data.result.student.answers.map((answer)=>{
+             data.questionSet.questions.forEach((question)=>{
+              if(Object.keys(answer)[0]==question._id){
+                question.studentAnswer=answer[Object.keys(answer)[0]];
+              }
+             })
+     })
+
+
+        Results.push(data);//appending the data to results array 
       }
-    
+
+
+      console.log("result",Result)
+
       res.status(200).json({ Results });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -431,11 +486,7 @@ const customerobj = {
 
 module.exports = customerobj;
 
-
-
-
- async function resultOverView(req,questionSetId,studentId,seminarId){
-
+async function resultOverView(req, questionSetId, studentId, seminarId) {
   let {
     page = 1,
     pageSize = 9999,
@@ -467,15 +518,42 @@ module.exports = customerobj;
       ...(questionSetId && {
         questionSetId: new mongoose.Types.ObjectId(questionSetId),
       }),
-    },
+    }, 
+   
   };
+
+  const projectStage= {
+    $project: {
+      seminarId:0,
+     
+      createdAt:0,
+      updatedAt:0,
+      __v:0,
+      // passingMarks:0,
+      // answers:0,
+      // createdAt:0,
+      // updatedAt:0,
+      // seminarId:0,
+      // questionsetId:0,
+      // __v:0,
+      // "studentInfo.createdAt":0,
+      // "studentInfo.updatedAt":0,
+      // "studentInfo.isDelete":0,
+      // "studentInfo.degree":0,
+      // "studentInfo.seminarId":0,
+      // "studentInfo.__v":0,
+      // "studentInfo.branch":0,
+    },
+  }
+
+
   const facetStage = {
     $facet: {
       metadata: [{ $count: 'total' }],
       data: [{ $skip: skip }, { $limit: pageSize }],
     },
   };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } }, facetStage];
+  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },projectStage, facetStage];
 
   const resp = await Result.aggregate(pipeline);
   resp[0].data.forEach((item, index) => {
@@ -485,7 +563,6 @@ module.exports = customerobj;
     }
     if (item.studentId.equals(studentId)) {
       student = { ...item, rank: index + 1 };
-     
     }
     if (index < top) {
       topStudent.push(item);
@@ -500,10 +577,10 @@ module.exports = customerobj;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
   noOfFailStudent = totalStudent - noOfPassStudent;
 
-  percentageOfFailStudent = (noOfFailStudent / totalStudent) * 100;
-  percentageOfPassStudent = (noOfPassStudent / totalStudent) * 100;
+  percentageOfFailStudent =Math.round(( (noOfFailStudent / totalStudent) * 100));
+  percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
 
- return {
+  return {
     totalStudent,
     noOfAttemptedStudent,
     noOfUnattemptedStudent,
@@ -513,6 +590,6 @@ module.exports = customerobj;
     noOfFailStudent,
     topStudent,
     student,
-  }
+  };
 
 }
