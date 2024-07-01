@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+
 const { Student } = require('../../../../models/student');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
@@ -6,8 +6,7 @@ const mongoose = require('mongoose');
 const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
-const { eq, result } = require('lodash');
-const { use } = require('chai');
+
 
 const customerobj = {
   registerStudent: async (req, res) => {
