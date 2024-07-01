@@ -41,7 +41,7 @@ export class QuestionSetListComponent implements OnInit {
     };
     this.questionSetService.getAllQuestionSet(params).subscribe(
       (success) => {
-        console.log(success);
+        console.log('Question Sets', success);
         this.sets = success?.result?.data;
         this.totalSets = success?.result?.totalCount;
         this.spinner.hide();
@@ -79,7 +79,7 @@ export class QuestionSetListComponent implements OnInit {
     this.spinner.show();
     this.questionSetService.changeSetVisibility(row._id, seminarInfo).subscribe(
       (success) => {
-        console.log('visibility', success);
+        // console.log('visibility', success);
         this.spinner.hide();
         this.toastService.success(success.result.message);
 

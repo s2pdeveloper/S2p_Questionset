@@ -12,6 +12,7 @@ export class StudentService {
       `http://localhost:2024/api/v1/website/student/getVisibleQuestionSet?id=${params.id}`,
     submitPath: `http://localhost:2024/api/v1/website/student/submitTest`,
     rankedResultPath: `http://localhost:2024/api/v1/website/student/rankedResult`,
+    getAllResultPath: `http://localhost:2024/api/v1/website/student/allResultOfStudent`,
   };
 
   constructor(private http: HttpClient) {}
@@ -28,7 +29,11 @@ export class StudentService {
     return this.http.post(this.routes.submitPath, data);
   }
 
-  getRankedResult(payload: any){
+  getRankedResult(payload: any) {
     return this.http.post(this.routes.rankedResultPath, payload);
+  }
+
+  getAllResult(data: any) {
+    return this.http.post(this.routes.getAllResultPath, data);
   }
 }

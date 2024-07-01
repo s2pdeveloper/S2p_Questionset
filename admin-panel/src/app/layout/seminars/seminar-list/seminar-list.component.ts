@@ -31,7 +31,7 @@ export class SeminarListComponent implements OnInit {
   ngOnInit(): void {
     this.getAll();
   }
-  
+
   getAll() {
     this.spinner.show();
     let params = {
@@ -41,9 +41,9 @@ export class SeminarListComponent implements OnInit {
     };
     this.seminarService.getAllSeminars(params).subscribe(
       (success) => {
-        console.log(success);
+        console.log('Seminars', success);
         this.seminars = success?.result?.data;
-        console.log(this.seminars);
+        // console.log(this.seminars);
         this.totalSeminars = success.result.totalCount;
         this.spinner.hide();
         // console.log(this.seminarDetails);
@@ -57,7 +57,7 @@ export class SeminarListComponent implements OnInit {
   }
 
   onChangePage(pageNo) {
-    if (pageNo > 0) { 
+    if (pageNo > 0) {
       this.page = pageNo;
     }
     this.getAll();
@@ -65,9 +65,9 @@ export class SeminarListComponent implements OnInit {
 
   navigateTo(path, id, action) {
     if (id) {
-      this.router.navigate([path], { queryParams: { id, action} });
+      this.router.navigate([path], { queryParams: { id, action } });
     } else {
-      this.router.navigate([path], { queryParams: {action}});
+      this.router.navigate([path], { queryParams: { action } });
     }
   }
 
@@ -97,5 +97,4 @@ export class SeminarListComponent implements OnInit {
       }
     );
   }
-
 }

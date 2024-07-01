@@ -12,7 +12,7 @@ app.get('/testByQuestionSet/:id',Student.testByQuestionSet)
 app.post('/submitTest',Student.submitTest)
 app.get('/getResultByQuestionSetId/:id',Student.getResultByQuestionSetId)
 app.post('/rankedResult',Student.rankedResult);
+app.post('/allResultOfStudent', Student.allResultOfStudent);
 app.post('/:id', Student.registerStudent);
-app.get('/allResultOfStudent', Student.allResultOfStudent);
 
 module.exports = app;

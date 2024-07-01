@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
-  FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -74,6 +73,7 @@ export class RegisterComponent implements OnInit {
       // this.seminarId = params.get('seminarId');
       this.seminarId = params.seminarId;
       // console.log(this.seminarId);
+      localStorage.setItem('SeminarId', this.seminarId);
       localStorage.removeItem('StudentId');
     });
   }
@@ -87,8 +87,6 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem('StudentId', success?.studentId);
       });
     this.regForm.reset();
-    this.router.navigate(['/test'], {
-      queryParams: { seminarId: this.seminarId },
-    });
+    this.router.navigate(['/test'],);
   }
 }

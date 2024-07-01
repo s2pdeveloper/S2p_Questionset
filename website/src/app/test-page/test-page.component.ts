@@ -4,11 +4,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil, timer } from 'rxjs';
 import { StudentService } from '../services/student.service';
+import { HeaderComponent } from '../header/header.component';
 
 @Component({
   selector: 'app-test-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HeaderComponent],
   templateUrl: './test-page.component.html',
   styleUrl: './test-page.component.css',
 })
@@ -36,15 +37,12 @@ export class TestPageComponent implements OnDestroy {
   timer: number = 0;
 
   ngOnInit() {
-    this.actRoute.queryParams.subscribe((params: any) => {
-      this.seminarId = params.seminarId;
-    });
     this.getSetDetails();
   }
 
   getSetDetails() {
     let params = {
-      id: this.seminarId,
+      id: localStorage.getItem('SeminarId'),
     };
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       console.log('Set Details', success);
@@ -98,11 +96,10 @@ export class TestPageComponent implements OnDestroy {
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
     });
-    console.log('selected answers', this.selectedAnswers);
 
     const payload = {
       studentId: localStorage.getItem('StudentId'),
-      seminarId: this.seminarId,
+      seminarId: localStorage.getItem('SeminarId'),
       questionSetId: this.data?._id,
       answers: answers,
     };
@@ -112,7 +109,7 @@ export class TestPageComponent implements OnDestroy {
     this.studentService.submitTest(payload).subscribe((success: any) => {
       console.log('Submit success', success);
 
-      this.router.navigate(['/report'], {
+      this.router.navigate(['/result'], {
         queryParams: {
           questionSetId: success?.result?.questionSetId,
           seminarId: success?.result?.seminarId,

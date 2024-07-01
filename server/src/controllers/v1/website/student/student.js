@@ -393,7 +393,10 @@ const customerobj = {
       const seminarId = req.body.seminarId;
       const Results = [];
 
-      const results = await Result.find({ studentId, seminarId });
+
+      const results = await Result.find({ studentId:new mongoose.Types.ObjectId(studentId), seminarId:new mongoose.Types.ObjectId(seminarId) });
+
+      console.log('results----',results);
 
       for (const eachResult of results) {
         const questionSetId = eachResult.questionSetId;

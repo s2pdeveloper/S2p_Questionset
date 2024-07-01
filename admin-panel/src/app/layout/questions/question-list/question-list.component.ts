@@ -33,7 +33,7 @@ export class QuestionListComponent implements OnInit {
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
       this.setId = params.id;
-      console.log('set id in list', this.setId, params.id);
+      // console.log('set id in list', this.setId, params.id);
       if (this.setId) {
         this.getQuestionsOfSet(this.setId);
       }

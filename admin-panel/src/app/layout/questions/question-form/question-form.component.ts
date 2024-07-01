@@ -61,8 +61,10 @@ export class QuestionFormComponent implements OnInit {
 
   getById(id) {
     this.questionService.getQuestionById(id).subscribe((success) => {
-      // console.log("get by id", success);
-      this.splitArray = success?.result[0]?.options[0]?.split(',');
+      console.log("get by id", success);
+      // this.splitArray = success?.result[0]?.options[0]?.split(',');
+      this.splitArray = success?.result[0]?.options;
+
       this.questionForm.patchValue(success?.result[0]);
     });
   }
