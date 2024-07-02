@@ -29,8 +29,8 @@ export class ResultPageComponent implements OnInit {
   totalPassed: number = 0;
   totalFailed: number = 0;
 
-  passPercentage: number = 0;
-  failPercentage: number = 0;
+  passPercentage: any = 0;
+  failPercentage: any = 0;
   attemptPercentage: number = 0;
   notAttemptPercentage: number = 0;
   marksPercent: number = 0;
@@ -58,8 +58,12 @@ export class ResultPageComponent implements OnInit {
         console.log('Result in result page result data' , this.resultData);
         
       if (this.resultData) {
+        console.log('this.resultData',this.resultData);
+
         this.processResultData(this.resultData);
       } else if (this.questionSetId) {
+        console.log('this.questionSetId',this.questionSetId);
+        
         this.obtainResults(this.questionSetId);
       }
     });
@@ -72,6 +76,9 @@ export class ResultPageComponent implements OnInit {
       seminarId: this.seminarId,
       studentId: localStorage.getItem('StudentId'),
     };
+
+    console.log("Obtain result payload",payload);
+    
 
     this.studentService.getRankedResult(payload).subscribe((success: any) => {
       console.log('Ranked Result Success', success);
