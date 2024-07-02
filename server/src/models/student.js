@@ -52,7 +52,6 @@ const StudentSchema = mongoose.Schema(
       ref: 'Seminar',
       required: true, 
     }
-    
   },
   
   {

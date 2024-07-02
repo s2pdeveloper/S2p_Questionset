@@ -380,8 +380,8 @@ const customerobj = {
       noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
       noOfFailStudent = totalStudent - noOfPassStudent;
 
-      percentageOfFailStudent =((noOfFailStudent / totalStudent)* 100).toFixed(2);
-      percentageOfPassStudent = ((noOfPassStudent / totalStudent)* 100).toFixed(2);
+      percentageOfFailStudent =Number(((noOfFailStudent / totalStudent)* 100).toFixed(0));
+      percentageOfPassStudent = Number(((noOfPassStudent / totalStudent)* 100).toFixed(0));
 
       res.status(200).json({
         totalStudent,
@@ -466,11 +466,8 @@ const customerobj = {
               }
              })
      })
-
-
         Results.push(data);//appending the data to results array 
       }
-
 
       console.log("result",Result)
 
