@@ -53,8 +53,8 @@ const StudentSchema = mongoose.Schema(
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
-      required: true,
-    },
+      required: true, 
+    }
   },
 
   {

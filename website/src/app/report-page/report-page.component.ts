@@ -30,10 +30,12 @@ export class ReportPageComponent implements OnInit {
     };
     this.studentService.getAllResult(payload).subscribe((success: any) => {
       console.log('Get All result of Student^^^^^^^^^^^', success);
-      this.results = success?.Results;
+      this.results = success?.Results || [];
       console.log('Result array', this.results);
       if (this.results.length > 0) {
         this.currentQuestionSet = this.results[0];
+      }else {
+        this.currentQuestionSet = null;
       }
     });
   }
@@ -44,6 +46,15 @@ export class ReportPageComponent implements OnInit {
       this.currentQuestionSet = this.results[currentIndex + 1];
     } else {
       this.currentQuestionSet = this.results[0]; // Loop back to the first set
+    }
+  }
+
+  previousQuestionSet(): void{
+    const currentIndex = this.results.findIndex(result => result.questionSet._id === this.currentQuestionSet.questionSet._id);
+    if (currentIndex > 0 && currentIndex <= this.results.length - 1) {
+      this.currentQuestionSet = this.results[currentIndex - 1];
+    }else {
+      this.currentQuestionSet = this.results[this.results.length - 1]; // Loop back to the first set
     }
   }
 
