@@ -1,2 +1,43 @@
-<h2>You are in report page</h2>
+<app-header></app-header>
+<div class="row m-3">
+  <div class="col-12">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-center">
+        <h4 class="my-3 heading">Reports</h4>
+      </div>
 
+      <div class="card-body">
+        <div *ngIf="currentQuestionSet" class="question-set">
+          <h3>{{ currentQuestionSet?.questionSet?.name }}</h3>
+          <ul class="list-group mb-3">
+            <li
+              *ngFor="let question of currentQuestionSet?.questionSet?.questions"
+              class="list-group-item"
+            >
+              <div class="question">
+                <strong>Q: {{ question?.question }}</strong>
+              </div>
+              <div class="correct-option">
+                <em>Correct Option: {{ question?.correctOption }}</em>
+              </div>
+            </li>
+          </ul>
+          <div class="d-flex justify-content-between">
+            <button
+              class="btn btn-primary"
+              (click)="viewDetails(currentQuestionSet)"
+            >
+              View Result
+            </button>
+            <button class="btn btn-secondary" (click)="nextQuestionSet()">
+              Next Set
+            </button>
+          </div>
+        </div>
+        <div *ngIf="!currentQuestionSet" class="text-center">
+          <p>No question set available.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

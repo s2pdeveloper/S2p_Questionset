@@ -1,6 +1,38 @@
-.card{
-    padding-top: 30px;
-    padding-bottom: 20px;
-    border-radius: 10px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.card-header {
+  background-color: #007bff;
+  color: white;
+}
+
+.question-set h3 {
+  margin-top: 0;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+}
+
+.question {
+  font-size: 1.1em;
+}
+
+.correct-option {
+  font-size: 0.9em;
+  color: #6c757d;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.text-center {
+  text-align: center;
 }

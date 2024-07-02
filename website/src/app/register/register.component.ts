@@ -87,6 +87,6 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem('StudentId', success?.studentId);
       });
     this.regForm.reset();
-    this.router.navigate(['/test'],);
+    this.router.navigate(['/test']);
   }
 }

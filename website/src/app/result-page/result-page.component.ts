@@ -19,7 +19,10 @@ export class ResultPageComponent implements OnInit {
     private actRoute: ActivatedRoute
   ) {}
 
-  seminarId: string | null = null;
+  questionSetId: string | null = null;
+  seminarId: string | null = localStorage.getItem('SeminarId');
+  resultData: any = null;
+
   totalStudents: number = 0;
   stuAttempted: number = 0;
   stuNotAttempted: number = 0;
@@ -48,17 +51,29 @@ export class ResultPageComponent implements OnInit {
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params: any) => {
       console.log('Report Params *********', params);
-      this.seminarId = params?.seminarId;
-      if (params) {
-        this.obtainResults(params);
+      this.questionSetId = params.questionSetId;
+      this.resultData = params.resultData
+        ? JSON.parse(params.resultData)
+        : null;
+        console.log('Result in result page result data' , this.resultData);
+        
+      if (this.resultData) {
+        this.processResultData(this.resultData);
+      } else if (this.questionSetId) {
+        this.obtainResults(this.questionSetId);
       }
     });
   }
 
-  obtainResults(params: object) {
+  obtainResults(setId: string) {
     // console.log("Params in result function", params);
+    let payload = {
+      questionSetId: setId,
+      seminarId: this.seminarId,
+      studentId: localStorage.getItem('StudentId'),
+    };
 
-    this.studentService.getRankedResult(params).subscribe((success: any) => {
+    this.studentService.getRankedResult(payload).subscribe((success: any) => {
       console.log('Ranked Result Success', success);
       this.totalStudents = success?.totalStudent;
       this.stuAttempted = success?.noOfAttemptedStudent;
@@ -77,6 +92,26 @@ export class ResultPageComponent implements OnInit {
       this.calculateMarksPercentage();
       // this.calculateQuesAttemptPercentage();
     });
+  }
+
+  processResultData(result: any) {
+    console.log('In process result', result);
+    
+    this.totalStudents = result?.totalStudent;
+    this.stuAttempted = result.noOfAttemptedStudent;
+    this.stuNotAttempted = result?.noOfUnattemptedStudent;
+    this.totalPassed = result?.noOfPassStudent;
+    this.totalFailed = result?.noOfFailStudent;
+    this.passPercentage = result?.percentageOfPassStudent;
+    this.failPercentage = result?.percentageOfFailStudent;
+    this.totalMarks = result?.student?.maxScore;
+    this.passingMarks = result?.student?.passingMarks;
+    this.marksObtained = result?.student?.obtainMarks;
+    this.rank = result?.student?.rank;
+    this.status = result?.student?.status;
+    this.topStudents = result?.topStudent;
+    this.calculatePercentages();
+    this.calculateMarksPercentage();
   }
 
   calculatePercentages(): void {

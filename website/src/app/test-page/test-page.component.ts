@@ -112,8 +112,6 @@ export class TestPageComponent implements OnDestroy {
       this.router.navigate(['/result'], {
         queryParams: {
           questionSetId: success?.result?.questionSetId,
-          seminarId: success?.result?.seminarId,
-          studentId: success?.result?.studentId,
         },
       });
     });
