@@ -521,41 +521,48 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
    
   };
 
+  const lookupStage={
+    $lookup: {
+      from: 'Student',
+      localField: 'studentId',
+      foreignField: '_id',
+      as: 'studentInfo',
+    },
+  }
+
   const projectStage= {
     $project: {
-      seminarId:0,
-     
+      seminarId:0, 
       createdAt:0,
       updatedAt:0,
       __v:0,
-      // passingMarks:0,
-      // answers:0,
-      // createdAt:0,
-      // updatedAt:0,
-      // seminarId:0,
-      // questionsetId:0,
-      // __v:0,
-      // "studentInfo.createdAt":0,
-      // "studentInfo.updatedAt":0,
-      // "studentInfo.isDelete":0,
-      // "studentInfo.degree":0,
-      // "studentInfo.seminarId":0,
-      // "studentInfo.__v":0,
-      // "studentInfo.branch":0,
+      "studentInfo.email":0,
+      "studentInfo.updatedAt":0,
+      "studentInfo.createdAt":0,
+      "studentInfo.seminarId":0,
+      "studentInfo.degree":0,
+      "studentInfo.phone":0,
+      "studentInfo.isDelete":0,
+      "studentInfo.branch":0,
+      "studentInfo.__v":0,
+      "studentInfo._id":0,
+      "studentInfo.gender":0,
     },
   }
 
 
-  const facetStage = {
-    $facet: {
-      metadata: [{ $count: 'total' }],
-      data: [{ $skip: skip }, { $limit: pageSize }],
-    },
-  };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },projectStage, facetStage];
+  // const facetStage = {
+  //   $facet: {
+  //     metadata: [{ $count: 'total' }],
+  //     data: [{ $skip: skip }, { $limit: pageSize }],
+  //   },
+  // };
+  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
 
   const resp = await Result.aggregate(pipeline);
-  resp[0].data.forEach((item, index) => {
+
+  console.log("your respose must watch",resp)
+  resp.forEach((item, index) => {
     item.rank = index + 1;
     if (item.status == 'PASS') {
       noOfPassStudent++;
@@ -572,7 +579,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     seminarId: seminarId,
   });
 
-  noOfAttemptedStudent = resp[0].data.length;
+  noOfAttemptedStudent = resp.length;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
   noOfFailStudent = totalStudent - noOfPassStudent;
 
