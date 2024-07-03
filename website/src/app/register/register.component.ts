@@ -17,7 +17,7 @@ import { StudentService } from '../services/student.service';
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, ReactiveFormsModule, RouterLink],
+  imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
@@ -68,25 +68,21 @@ export class RegisterComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.actRoute.queryParams.subscribe((params: any) => {
-      // console.log(params);
-      // this.seminarId = params.get('seminarId');
-      this.seminarId = params.seminarId;
-      // console.log(this.seminarId);
-      localStorage.setItem('SeminarId', this.seminarId);
-      localStorage.removeItem('StudentId');
-    });
+    this.seminarId = localStorage.getItem('SeminarId');
+    // console.log('Seminar ID in Register' ,this.seminarId);
+
+    localStorage.removeItem('StudentId');
   }
 
   register() {
-    console.log('value', this.regForm.value);
+    // console.log('value', this.regForm.value);
     this.studentService
       .registerStudent(this.regForm.value, this.seminarId)
       .subscribe((success: any) => {
         console.log('success----', success);
         localStorage.setItem('StudentId', success?.studentId);
+        this.regForm.reset();
+        this.router.navigate(['/test']);
       });
-    this.regForm.reset();
-    this.router.navigate(['/test']);
   }
 }

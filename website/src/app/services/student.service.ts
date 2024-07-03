@@ -13,6 +13,7 @@ export class StudentService {
     submitPath: `http://localhost:2024/api/v1/website/student/submitTest`,
     rankedResultPath: `http://localhost:2024/api/v1/website/student/rankedResult`,
     getAllResultPath: `http://localhost:2024/api/v1/website/student/allResultOfStudent`,
+    loginPath: `http://localhost:2024/api/v1/website/student/login`,
   };
 
   constructor(private http: HttpClient) {}
@@ -35,5 +36,9 @@ export class StudentService {
 
   getAllResult(data: any) {
     return this.http.post(this.routes.getAllResultPath, data);
+  }
+
+  loginStudent(data: any) {
+    return this.http.post(this.routes.loginPath, data);
   }
 }

@@ -58,6 +58,14 @@ export class ReportPageComponent implements OnInit {
     }
   }
 
+  isFirstSet(): boolean {
+    return this.results.findIndex(result => result.questionSet._id === this.currentQuestionSet.questionSet._id) === 0;
+  }
+
+  isLastSet(): boolean {
+    return this.results.findIndex(result => result.questionSet._id === this.currentQuestionSet.questionSet._id) === this.results.length - 1;
+  }
+
   viewDetails(currentSet: any) {
     this.router.navigate(['/result'], {
       queryParams: {

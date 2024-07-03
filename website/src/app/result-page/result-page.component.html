@@ -101,7 +101,8 @@
     </div>
   </div>
 </div>
-<div class="row m-3">
+
+<div class="row m-3 justify-content-center">
   <div class="col-md-6">
     <div class="card">
       <div class="card-head">
@@ -122,19 +123,6 @@
           </div>
         </div>
 
-        <!-- <div class="row mb-3">
-            <div class="col-4">
-              <h5>Questions Attempted</h5>
-            </div>
-            <div class="col-8">
-              <nz-progress
-                [nzPercent]="questionsPercent.toFixed(0)"
-                [nzFormat]="questionsFormat"
-                [nzStatus]="QuestionStatusFormat()"
-                nzStrokeLinecap="round"
-              ></nz-progress>
-            </div>
-          </div> -->
         <div class="row mb-3">
           <h5>Result Status: {{ status }}</h5>
         </div>
@@ -144,15 +132,7 @@
       </div>
     </div>
   </div>
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-head">
-        <h4 class="d-flex justify-content-center"></h4>
-      </div>
-      <div class="card-body"></div>
-    </div>
-  </div>
-  <div>
-    <button class="btn btn-primary" (click)="nextSet()">Next</button>
-  </div>
+</div>
+<div class="col-md-12 d-flex align-items-center justify-content-center">
+  <button class="btn btn-primary btn-lg" (click)="nextSet()">Next Test</button>
 </div>
