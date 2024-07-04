@@ -21,7 +21,6 @@ export class TestPageComponent implements OnDestroy {
   constructor(
     private zone: NgZone,
     private router: Router,
-    private actRoute: ActivatedRoute,
     private studentService: StudentService
   ) {}
 

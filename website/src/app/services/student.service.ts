@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from "../../environment/environment";
 
 @Injectable({
   providedIn: 'root',
@@ -7,13 +8,13 @@ import { Injectable } from '@angular/core';
 export class StudentService {
   routes: any = {
     registerPath: (seminarId) =>
-      `http://localhost:2024/api/v1/website/student/${seminarId}`,
+      `${environment.apiEndpoint}student/${seminarId}`,
     getVisibleSetPath: (params) =>
-      `http://localhost:2024/api/v1/website/student/getVisibleQuestionSet?id=${params.id}`,
-    submitPath: `http://localhost:2024/api/v1/website/student/submitTest`,
-    rankedResultPath: `http://localhost:2024/api/v1/website/student/rankedResult`,
-    getAllResultPath: `http://localhost:2024/api/v1/website/student/allResultOfStudent`,
-    loginPath: `http://localhost:2024/api/v1/website/student/login`,
+      `${environment.apiEndpoint}student/getVisibleQuestionSet?id=${params.id}`,
+    submitPath: `${environment.apiEndpoint}student/submitTest`,
+    rankedResultPath: `${environment.apiEndpoint}student/rankedResult`,
+    getAllResultPath: `${environment.apiEndpoint}student/allResultOfStudent`,
+    loginPath: `${environment.apiEndpoint}student/login`,
   };
 
   constructor(private http: HttpClient) {}
