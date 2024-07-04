@@ -15,6 +15,7 @@ import { HeaderComponent } from '../header/header.component';
 })
 export class TestPageComponent implements OnDestroy {
   seminarId: string | null = null;
+  studentId: string | null = null;
   startButton: boolean = false;
   data: any;
 
@@ -36,12 +37,14 @@ export class TestPageComponent implements OnDestroy {
   timer: number = 0;
 
   ngOnInit() {
+    this.seminarId = localStorage.getItem('SeminarId');
+    this.studentId = localStorage.getItem('StudentId');
     this.getSetDetails();
   }
 
   getSetDetails() {
     let params = {
-      id: localStorage.getItem('SeminarId'),
+      id: this.seminarId,
     };
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       console.log('Set Details', success);
@@ -63,18 +66,22 @@ export class TestPageComponent implements OnDestroy {
   }
 
   startTimer() {
-    const minutes = Math.floor(this.timer / 60);
+    const hours = Math.floor(this.timer / 3600);
+    const minutes = Math.floor((this.timer % 3600) / 60);
     const seconds = this.timer % 60;
-    this.timeRemaining = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+    this.timeRemaining = `${hours}:${minutes < 10 ? '0' + minutes : minutes}:${
+      seconds < 10 ? '0' + seconds : seconds
+    }`;
 
     this.rxjsTimer.pipe(takeUntil(this.destroy)).subscribe(() => {
       this.zone.run(() => {
         this.timer = this.timer - 1;
-        const minutes = Math.floor(this.timer / 60);
+        const hours = Math.floor(this.timer / 3600);
+        const minutes = Math.floor((this.timer % 3600) / 60);
         const seconds = this.timer % 60;
-        this.timeRemaining = `${minutes}:${
-          seconds < 10 ? '0' + seconds : seconds
-        }`;
+        this.timeRemaining = `${hours}:${
+          minutes < 10 ? '0' + minutes : minutes
+        }:${seconds < 10 ? '0' + seconds : seconds}`;
 
         if (this.timer === 0) {
           this.destroy.next('');
@@ -87,6 +94,7 @@ export class TestPageComponent implements OnDestroy {
   answerChange(option: any, index: number) {
     this.selectedAnswers[index] = option;
   }
+
   clearSelection(index: number) {
     this.selectedAnswers[index] = '';
   }
@@ -97,13 +105,13 @@ export class TestPageComponent implements OnDestroy {
     });
 
     const payload = {
-      studentId: localStorage.getItem('StudentId'),
-      seminarId: localStorage.getItem('SeminarId'),
+      studentId: this.studentId,
+      seminarId: this.seminarId,
       questionSetId: this.data?._id,
       answers: answers,
     };
 
-    console.log('This is Payload', payload);
+    // console.log('This is Payload', payload);
 
     this.studentService.submitTest(payload).subscribe((success: any) => {
       console.log('Submit success', success);
