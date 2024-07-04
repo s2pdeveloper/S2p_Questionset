@@ -37,6 +37,9 @@ app.use(
 app.use('/images', express.static(path.join(__dirname, 'assets')));
 
 app.use(cors('*'));
+app.use('/health',function(req, res) {
+	res.send("HEllo Docker from port 2024");
+});
 app.use('/', apiRouter);
 if (NODE_ENV !== 'production') {
   app.use(logger('dev'));
