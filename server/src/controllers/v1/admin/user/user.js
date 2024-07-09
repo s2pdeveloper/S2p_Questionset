@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../../../../models/User');
+const  User  = require('../../../../models/User');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');

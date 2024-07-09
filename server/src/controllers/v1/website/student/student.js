@@ -1,5 +1,5 @@
 
-const { Student } = require('../../../../models/student');
+const Student = require('../../../../models/student');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const mongoose = require('mongoose');
