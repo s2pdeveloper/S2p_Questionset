@@ -205,7 +205,7 @@ const questionsetOjbect = {
       existing.isVisible =true;
       await existing.save();
       return res.success({
-        message: MESSAGES.apiSuccessStrings.UPDATE('visibility of QuestionSet'),
+        message: MESSAGES.apiSuccessStrings.UPDATE('Visibility'),
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
