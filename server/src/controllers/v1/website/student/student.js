@@ -23,10 +23,10 @@ const customerobj = {
       const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
-        console.log('token', token);
+      
 
         res.status(201).json({
-          message: MESSAGES.apiSuccessStrings.ADDED('Student'),
+          message: "Registration Successful",
           studentId: student._id,
           token: token,
         });
@@ -245,7 +245,7 @@ const customerobj = {
       }
 
       const token = user.genToken();
-      const data = { user: user, token: token };
+      const data = { message:"Login successful", user: user, token: token };
 
       res.success(data);
     } catch (error) {

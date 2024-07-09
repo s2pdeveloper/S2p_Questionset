@@ -91,5 +91,5 @@ StudentSchema.methods.genToken = function () {
 // });
 
 const Student = mongoose.model('Student', StudentSchema);
+module.exports=Student;
 
-exports.Student = Student;

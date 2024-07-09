@@ -42,8 +42,9 @@ if (NODE_ENV !== 'production') {
   app.use(logger('dev'));
 }
 
+const swaggerHandler=require("./utils/swaggerHandler")
 app.set('port', PORT || 3000);
-
+swaggerHandler.setup(app);
 const server = app.listen(app.get('port'), () => {
   console.log(
   
