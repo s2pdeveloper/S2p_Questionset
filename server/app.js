@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const express = require('express');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
+const serverless = require("serverless-http")
 
 // const lodash = require('lodash');
 const apiRouter = require('./src/routes');
@@ -30,52 +31,43 @@ app.use(cookieParser());
 app.set('view engine','ejs')
 app.set('views',path.resolve("./views"));
 
-app.use(
-  '/',
-  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
-);
+// app.use(
+//   '/',
+//   express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
+// );
+app.use(cors('*'));
+
 app.use('/images', express.static(path.join(__dirname, 'assets')));
 
-app.use(cors('*'));
+
 app.use('/health',function(req, res) {
 	res.send("HEllo Docker from port 2024");
 });
-app.use('/', apiRouter);
-if (NODE_ENV !== 'production') {
-  app.use(logger('dev'));
-}
 
-app.set('port', PORT || 3000);
+app.use('/question-service', apiRouter);
+// if (NODE_ENV !== 'production') {
+//   app.use(logger('dev'));
+// }
 
-const server = app.listen(app.get('port'), () => {
-  console.log(
+// app.set('port', PORT || 3000);
+
+// const server = app.listen(app.get('port'), () => {
+//   console.log(
   
-    '%s App is running at http://localhost:%d in %s mode',
-    chalk.green('✓'),
-    app.get('port'),
-    app.get('env')
-  );
-  console.log('Press CTRL-C to stop\n');
-});
-
-process.on('unhandledRejection', (reason, p) => {
-  console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
-});
-
-if (process.env.NODE_ENV === 'development') {
-  app.use(errorHandler());
-}
-
-// Socket
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: '*',
-//     methods: ['GET', 'POST'],
-//   },
+//     '%s App is running at http://localhost:%d in %s mode',
+//     chalk.green('✓'),
+//     app.get('port'),
+//     app.get('env')
+//   );
+//   console.log('Press CTRL-C to stop\n');
 // });
-// app.set('socketIo', io);
-// app.use((req, res, next) => {
-//   req.io = io;
-//   next();
+
+// process.on('unhandledRejection', (reason, p) => {
+//   console.log('Unhandled Rejection at: Promise', p, 'reason:', reason);
 // });
-// require('./src/routes/socket')(io);
+
+// if (process.env.NODE_ENV === 'development') {
+//   app.use(errorHandler());
+// }
+
+module.exports.handler = serverless(app);

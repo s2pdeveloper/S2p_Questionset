@@ -1,10 +1,5 @@
-FROM node:16-alpine
-RUN npm install -g nodemon
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
-WORKDIR /home/node/app
-COPY package.json ./
+FROM public.ecr.aws/lambda/nodejs:16
+COPY package*.json ./
 RUN npm install
 COPY . .
-USER node
-EXPOSE 2024
-CMD [ "nodemon", "app.js" ]
+CMD ["app.handler"]
