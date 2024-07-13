@@ -2412,8 +2412,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const environment = {
     production: true,
-    // apiEndpoint: 'http://localhost:2024/api/v1/admin/',
-    apiEndpoint: './api/v1/admin/',
+    // apiEndpoint: 'http://localhost:1988/api/v1/admin/',
+    apiEndpoint: './api/v1/admin',
 };
 
 
@@ -2957,4 +2957,4 @@ module.exports = "<!-- <div class=\"app-body bg-color\">\n  <main class=\"main d
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.1fcaa295662e1c6d.js.map
+//# sourceMappingURL=main.4573d8b6b82477fc.js.map

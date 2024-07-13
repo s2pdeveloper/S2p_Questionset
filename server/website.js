@@ -8,18 +8,13 @@ const express = require('express');
 const errorHandler = require('errorhandler');
 const cookieParser = require('cookie-parser');
 
-// const lodash = require('lodash');
-const apiRouter = require('./src/routes');
-const CustomResponses = require('./src/models/helpers/CustomResponses');
-require('./src/config/DbConnection');
 const app = express();
 require('dotenv').config();
 // global._ = lodash;
-const { PORT, NODE_ENV } = process.env;
+const { WEBPORT, NODE_ENV } = process.env;
 
 app.set('env', NODE_ENV);
 app.use(logger('dev'));
-app.use(CustomResponses);
 app.use(helmet({
   crossOriginResourcePolicy: false,
   contentSecurityPolicy:false
@@ -33,19 +28,15 @@ app.set('views',path.resolve("./views"));
 
 app.use(
   '/',
-  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, 'website'), { maxAge: 31557600000 })
 );
-app.use('/images', express.static(path.join(__dirname, 'assets')));
 
 app.use(cors('*'));
-app.use('/', apiRouter);
 if (NODE_ENV !== 'production') {
   app.use(logger('dev'));
 }
 
-const swaggerHandler=require("./utils/swaggerHandler")
-app.set('port', PORT || 3000);
-swaggerHandler.setup(app);
+app.set('port', WEBPORT);
 const server = app.listen(app.get('port'), () => {
   console.log(
   
@@ -65,16 +56,3 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler());
 }
 
-// Socket
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: '*',
-//     methods: ['GET', 'POST'],
-//   },
-// });
-// app.set('socketIo', io);
-// app.use((req, res, next) => {
-//   req.io = io;
-//   next();
-// });
-// require('./src/routes/socket')(io);
