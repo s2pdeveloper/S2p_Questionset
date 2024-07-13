@@ -6,8 +6,10 @@ const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { generateCreateData } = OPTIONS;
+const httpProxy = require('http-proxy');
 
 const Seminar = require('../../../../models/seminar');
+const proxy = httpProxy.createProxyServer();
 
 const seminaryObject = {
   getAll: async (req, res) => {
@@ -128,6 +130,23 @@ const seminaryObject = {
       return res.success({
         message: MESSAGES.apiSuccessStrings.DELETED('Seminar'),
       });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
+  proxy: async (req, res) => {
+    try {
+      console.log("INSIDE PROXY");
+      req.url = '/healthCheck'; // Set the desired path for the target server
+      proxy.web(req, res, { target: 'http://0.0.0.0:8000' }, (error) => {
+        console.error(`Error proxying request to ${targetServer}:`, error);
+        res.status(500).send('Proxy error');
+      });
+  // return res.send("hello");
+    
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
