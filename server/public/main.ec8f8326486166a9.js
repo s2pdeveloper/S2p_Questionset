@@ -2413,7 +2413,7 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
     production: true,
     // apiEndpoint: 'http://localhost:1988/api/v1/admin/',
-    apiEndpoint: './api/v1/admin',
+    apiEndpoint: './api/v1/admin/',
 };
 
 
@@ -2957,4 +2957,4 @@ module.exports = "<!-- <div class=\"app-body bg-color\">\n  <main class=\"main d
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.4573d8b6b82477fc.js.map
+//# sourceMappingURL=main.ec8f8326486166a9.js.map

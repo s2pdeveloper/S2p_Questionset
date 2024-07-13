@@ -65,16 +65,3 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler());
 }
 
-// Socket
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: '*',
-//     methods: ['GET', 'POST'],
-//   },
-// });
-// app.set('socketIo', io);
-// app.use((req, res, next) => {
-//   req.io = io;
-//   next();
-// });
-// require('./src/routes/socket')(io);
