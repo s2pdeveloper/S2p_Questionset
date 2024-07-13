@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { User } = require('../../../../models/User');
+const  User  = require('../../../../models/User');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');
@@ -9,10 +9,8 @@ const UserHelper = require('../../../../models/helpers/UserHelper');
 const ObjectId = mongoose.Types.ObjectId;
 
 const userObj = {
-
   create: async (req, res) => {
     try {
-     
       let user = await User.create(req.body);
       res.status(200).json({
         user,
@@ -23,6 +21,59 @@ const userObj = {
       throw new Error(e);
     }
   },
+  getAll: async (req, res) => {
+    try {
+      // let existingUser = await User.findOne({});
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        role=req.query?req.query.role:null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+
+      page = parseInt(page, 10);
+      pageSize = parseInt(pageSize, 10);
+      direction = parseInt(direction, 10);
+
+      const skip = Math.max(0, page - 1) * pageSize;
+
+      console.log("skip",skip)
+
+      const matchStage = {
+        $match: {
+          ...(role && {
+            role: role,
+          }) 
+        },
+      };
+
+      const sortStage = { $sort: { [column]: direction } };
+
+      const facetStage = {
+        $facet: {
+          metadata: [{ $count: 'total' }],
+          data: [{ $skip: skip }, { $limit: pageSize }],
+        },
+      };
+      const pipeline = [matchStage, sortStage, facetStage];
+      const resp = await User.aggregate(pipeline);
+
+      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
+const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      return res.success({
+        data,
+        totalCount
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
   login: async (req, res) => {
     try {
       let existingUser = await User.findOne({ email: req.body.email });

@@ -8,8 +8,14 @@ const ObjectId = mongoose.Types.ObjectId;
 const { generateCreateData } = OPTIONS;
 
 const Seminar = require('../../../../models/seminar');
+const QuestionSet=require('../../../../models/questionSet')
+const Student=require('../../../../models/student');
+const Result = require('../../../../models/result');
 
 const seminaryObject = {
+
+  
+
   getAll: async (req, res) => {
     try {
       let {
@@ -51,6 +57,72 @@ const seminaryObject = {
       throw new Error(e);
     }
   },
+
+  getAllQuestionSet: async (req, res) => {
+    try {
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+        seminarId
+      } = req.query;
+      const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
+
+      const pipeline = [
+        {
+          $match: {
+             ...(seminarId && {
+              seminarId: new mongoose.Types.ObjectId(seminarId),
+            }),
+           
+          },
+        },
+        { $sort: { [column]: direction } },
+        {
+          $facet: {
+            metadata: [{ $count: 'total' }],
+            data: [{ $skip: skip }, { $limit: parseInt(pageSize, 10) }],
+          },
+        },
+      ];
+      const resp = await QuestionSet.aggregate(pipeline);
+      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
+      const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+    
+      return res.success({
+        data,
+        totalCount
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
+
+  questionSetOverview: async (req, res) => {
+    try {
+
+     const questionSet=await QuestionSet.findOne({_id:req.params.id});
+    //  const student=await Student.find({seminarId:questionSet.seminaryObject});
+    //  const result=await Result.find({questionSetId:req.params.id}); 
+  const overView=await questionSetOverview(req,questionSet.seminarId,req.params.id)
+     
+      return res.success({
+        data:overView
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
+  
+
   getList: async (req, res) => {
     try {
       
@@ -137,3 +209,8 @@ const seminaryObject = {
 };
 
 module.exports = seminaryObject;
+
+
+
+
+

@@ -6,6 +6,7 @@ const AuthHelper = require('../../../../models/helpers/AuthHelper');
 
 
 app.get('/seminarAllQuestionSet/:id', QuestionSet.getAllBySeminaryId);
+app.get('/questionSetOverView/:id', QuestionSet.questionSetOverview);
 app.get('/getAll', QuestionSet.getAll);
 app.post('/:id', QuestionSet.createForSeminar);
 app.put('/changeVisibility/:id', QuestionSet.changeVisibility);
