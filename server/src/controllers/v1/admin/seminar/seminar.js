@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-
+const QRCode=require("qrcode")
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');
@@ -9,13 +9,29 @@ const { generateCreateData } = OPTIONS;
 
 const Seminar = require('../../../../models/seminar');
 const QuestionSet=require('../../../../models/questionSet')
-const Student=require('../../../../models/student');
-const Result = require('../../../../models/result');
+
+
+
+
 
 const seminaryObject = {
 
   
 
+  generateQrCode: async (req, res) => {
+    try {
+const frontEndBaseUrl=process.env.FRONTEND_BASE_URL?process.env.FRONTEND_BASE_URL:"http://localhost:2024"      
+const Url=`${frontEndBaseUrl}/login?seminarId=${req.params.id}`
+const QrImage=await QRCode.toDataURL(Url);
+const QrImageData=QrImage.replace(/^data:image\/png;base64,/,"")
+res.setHeader("content-Type","image/png")
+res.send(Buffer.from(QrImageData,"base64"));
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
   getAll: async (req, res) => {
     try {
       let {
@@ -57,6 +73,8 @@ const seminaryObject = {
       throw new Error(e);
     }
   },
+
+
 
   getAllQuestionSet: async (req, res) => {
     try {

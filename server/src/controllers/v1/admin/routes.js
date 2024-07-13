@@ -9,7 +9,7 @@ const user = require('./user/routes')
 const result=require("./result/routes")
 
 
-router.use('/seminar',AuthHelper.authenticateJWT(usersRoles.getAdmin()), seminar);
+router.use('/seminar', seminar);
 router.use('/questionSet',AuthHelper.authenticateJWT(usersRoles.getAdmin()), questionSet);
 router.use('/question',AuthHelper.authenticateJWT(usersRoles.getAdmin()), question);
 router.use('/user',  user);
