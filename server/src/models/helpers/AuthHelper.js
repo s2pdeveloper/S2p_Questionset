@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const { User } = require('../User');
+const User  = require('../User');
 const OPTIONS = require('../../config/Options');
 const { resCode, apiErrorStrings, errorTypes } = require('./MessagesHelper');
 const { default: mongoose } = require('mongoose');
@@ -23,6 +23,7 @@ const verifyJwt = async (token, roles, force) => {
       };
     }
     if (jwtPayload && jwtPayload.id) {
+      console.log(jwtPayload.id);
       const existingUser = await User.findOne({
         _id: new mongoose.Types.ObjectId(jwtPayload.id),
         status: { $ne: OPTIONS.defaultStatus.DELETED },

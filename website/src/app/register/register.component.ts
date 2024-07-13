@@ -5,28 +5,31 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  ActivatedRoute,
-  Router,
-  RouterLink,
-  RouterOutlet,
-} from '@angular/router';
+import { Router } from '@angular/router';
+
 import { CommonModule } from '@angular/common';
 import { StudentService } from '../services/student.service';
+import { ToastrService } from 'ngx-toastr';
+import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    NgxSpinnerModule,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
   constructor(
     private router: Router,
-    private actRoute: ActivatedRoute,
     private formBuilder: FormBuilder,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private toastService: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   users: any[] = [];
@@ -76,13 +79,22 @@ export class RegisterComponent implements OnInit {
 
   register() {
     // console.log('value', this.regForm.value);
-    this.studentService
-      .registerStudent(this.regForm.value, this.seminarId)
-      .subscribe((success: any) => {
+    let formData = this.regForm.value;
+    this.spinner.show();
+    this.studentService.registerStudent(formData, this.seminarId).subscribe(
+      (success: any) => {
         console.log('success----', success);
+        this.spinner.hide();
         localStorage.setItem('StudentId', success?.studentId);
+        this.toastService.success(success?.message);
         this.regForm.reset();
         this.router.navigate(['/test']);
-      });
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Registration failed');
+      }
+    );
   }
+
 }

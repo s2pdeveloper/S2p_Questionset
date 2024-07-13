@@ -3,7 +3,7 @@ const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
 const { generateCreateData } = OPTIONS;
 const Question = require('../../../../models/question');
-const { User } = require('../../../../models/User');
+const User = require('../../../../models/User');
 const questionsetOjbect = {
   getAllQuestionOfQuestionSet: async (req, res) => {
     try {

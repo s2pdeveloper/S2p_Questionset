@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { StudentService } from '../services/student.service';
 import {
   FormBuilder,
@@ -11,7 +11,7 @@ import {
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink, RouterOutlet],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.submitted = true;
-    console.log('Login form value', this.loginForm.value);
+    // console.log('Login form value', this.loginForm.value);
     let formData = this.loginForm.value;
 
     this.studentService.loginStudent(formData).subscribe((success: any) => {
@@ -53,10 +53,4 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/test']);
     });
   }
-
-  // goToRegister() {
-  //   this.router.navigate(['/register'], {
-  //     queryParams: { seminarId: this.seminarId },
-  //   });
-  // }
 }

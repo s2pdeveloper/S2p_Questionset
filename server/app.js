@@ -22,6 +22,7 @@ app.use(logger('dev'));
 app.use(CustomResponses);
 app.use(helmet({
   crossOriginResourcePolicy: false,
+  contentSecurityPolicy:false
 }));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: false }));
@@ -64,16 +65,3 @@ if (process.env.NODE_ENV === 'development') {
   app.use(errorHandler());
 }
 
-// Socket
-// const io = require('socket.io')(server, {
-//   cors: {
-//     origin: '*',
-//     methods: ['GET', 'POST'],
-//   },
-// });
-// app.set('socketIo', io);
-// app.use((req, res, next) => {
-//   req.io = io;
-//   next();
-// });
-// require('./src/routes/socket')(io);

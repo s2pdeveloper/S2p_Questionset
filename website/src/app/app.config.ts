@@ -9,6 +9,8 @@ import { FormsModule } from '@angular/forms';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './core/helpers/jwt.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 registerLocaleData(en);
 
@@ -17,6 +19,8 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideNzI18n(en_US),
     importProvidersFrom(FormsModule),
+    importProvidersFrom(ToastrModule.forRoot()),
+    importProvidersFrom(NgxSpinnerModule.forRoot()),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([jwtInterceptor])),
   ],
