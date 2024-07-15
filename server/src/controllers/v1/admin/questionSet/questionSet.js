@@ -1,8 +1,9 @@
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
-const { generateCreateData } = OPTIONS;
 const QuestionSet = require('../../../../models/questionSet');
+const Result = require('../../../../models/result');
+const Student = require('../../../../models/student');
 
 const questionsetOjbect = {
   createForSeminar: async (req, res) => {
@@ -109,6 +110,26 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
+
+
+  questionSetOverview: async (req, res) => {
+    try {
+
+     const questionSet=await QuestionSet.findOne({_id:req.params.id});
+    //  const student=await Student.find({seminarId:questionSet.seminaryObject});
+    //  const result=await Result.find({questionSetId:req.params.id}); 
+  const overView=await questionSetAllData(req,questionSet.seminarId,req.params.id)
+     
+      return res.success({
+        data:overView
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+
   getAll: async (req, res) => {
     try {
       let {
@@ -213,8 +234,6 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
-
-
   update: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({
@@ -234,7 +253,6 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
-
   delete: async (req, res) => {
     try {
       let existing = await QuestionSet.findOne({ _id: req.params.id });
@@ -256,3 +274,116 @@ const questionsetOjbect = {
 };
 
 module.exports = questionsetOjbect;
+
+
+async function  questionSetAllData(req,seminarId,questionSetId){
+
+  let {
+    page = 1,
+    pageSize = 9999,
+    search = null,
+    column = 'obtainMarks',
+    direction = -1,
+  } = req.query;
+
+  let top = req.query.top || 3;
+  let noOfPassStudent = 0;
+  let noOfFailStudent = 0;
+  let percentageOfFailStudent = null;
+  let percentageOfPassStudent = null;
+  let noOfAttemptedStudent = 0;
+  let noOfUnattemptedStudent = 0;
+  let topStudent = [];
+  let totalStudent = null;
+
+  page = parseInt(page, 10);
+  pageSize = parseInt(pageSize, 10);
+  direction = parseInt(direction, 10);
+  const skip = Math.max(0, page - 1) * pageSize;
+  const matchStage = {
+    $match: {
+      ...(seminarId && {
+        seminarId: new mongoose.Types.ObjectId(seminarId),
+      }),
+      ...(questionSetId && {
+        questionSetId: new mongoose.Types.ObjectId(questionSetId),
+      }),
+    }, 
+   
+  };
+
+  const lookupStage={
+    $lookup: {
+      from: 'Student',
+      localField: 'studentId',
+      foreignField: '_id',
+      as: 'studentInfo',
+    },
+  }
+
+  const projectStage= {
+    $project: {
+      seminarId:0, 
+      createdAt:0,
+      updatedAt:0,
+      answers:0,
+      __v:0,
+      "studentInfo.email":0,
+      "studentInfo.updatedAt":0,
+      "studentInfo.createdAt":0,
+      "studentInfo.seminarId":0,
+      "studentInfo.degree":0,
+      "studentInfo.phone":0,
+      "studentInfo.isDelete":0,
+      "studentInfo.branch":0,
+      "studentInfo.__v":0,
+      "studentInfo._id":0,
+      "studentInfo.gender":0,
+    },
+  }
+
+
+  // const facetStage = {
+  //   $facet: {
+  //     metadata: [{ $count: 'total' }],
+  //     data: [{ $skip: skip }, { $limit: pageSize }],
+  //   },
+  // };
+  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
+
+  const resp = await Result.aggregate(pipeline);
+
+  console.log("your respose must watch",resp)
+  resp.forEach((item, index) => {
+    item.rank = index + 1;
+    if (item.status == 'PASS') {
+      noOfPassStudent++;
+    }
+    if (index < top) {
+      topStudent.push(item);
+    }
+  });
+
+  totalStudent = await Student.countDocuments({
+    seminarId: seminarId,
+  });
+
+  noOfAttemptedStudent = resp.length;
+  noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
+  noOfFailStudent = totalStudent - noOfPassStudent;
+
+  percentageOfFailStudent =Math.round(( (noOfFailStudent / totalStudent) * 100));
+  percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
+
+  return {
+    totalStudent,
+    noOfAttemptedStudent,
+    noOfUnattemptedStudent,
+    percentageOfPassStudent,
+    percentageOfFailStudent,
+    noOfPassStudent,
+    noOfFailStudent,
+    topStudent,
+  };
+
+}

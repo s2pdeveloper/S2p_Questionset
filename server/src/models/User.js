@@ -71,7 +71,7 @@ const UserSchema = mongoose.Schema(
     role: {
       type: String,
       required: true,
-      default:'STUDENT',
+      default:usersRoles.USER,
       enum:usersRoles.getAllRolesAsArray()
 
     },

@@ -35,14 +35,14 @@ const OPTIONS = {
     ADMIN: 'ADMIN',
     SHOP: 'SHOP',
     CUSTOMER: 'CUSTOMER',
-   STUDENT:'STUDENT',
+   USER:'USER',
     getAllRolesAsArray: function () {
       return [
         OPTIONS.usersRoles.SUPER_ADMIN,
         OPTIONS.usersRoles.ADMIN,
         OPTIONS.usersRoles.SHOP,
         OPTIONS.usersRoles.CUSTOMER,
-        OPTIONS.usersRoles.STUDENT,
+        OPTIONS.usersRoles.USER,
       ];
     },
     getAdmin: () => [OPTIONS.usersRoles.SUPER_ADMIN, OPTIONS.usersRoles.ADMIN],

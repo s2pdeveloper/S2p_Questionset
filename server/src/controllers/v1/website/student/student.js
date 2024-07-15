@@ -259,7 +259,7 @@ const customerobj = {
     try {
       const questionSetId = req.params.id;
       const studentId = req.user ? req.user._id : req.body.studentId;
-      const seminarId = req.user ? req.user.seminarId : req.body.seminarId;
+     
       const result = await Result.findOne({
         studentId: studentId,
         questionSetId: questionSetId,
@@ -407,6 +407,7 @@ const customerobj = {
 
   allResultOfStudent: async (req, res) => {
     try {
+
       const studentId = req.body.studentId;
       const seminarId = req.body.seminarId;
       const Results = [];
@@ -457,8 +458,6 @@ const customerobj = {
           eachResult.studentId,
           eachResult.seminarId
         );
-
-      
 
        //appending the student answer to particular question of question_set
      data.result.student.answers.map((answer)=>{

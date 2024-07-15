@@ -23,6 +23,13 @@ app.put(
   UserController.update
 );
 
+app.get(
+  '/getAll',
+  UserController.getAll
+)
+
+app.getAll
+
 app.patch('/status/:id', UserController.changeStatus);
 app.delete('/deleteById/:id', validate('checkParamId'), UserController.delete);
 app.put('/resetPassword/:id', UserController.resetPassword);
