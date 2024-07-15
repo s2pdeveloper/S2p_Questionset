@@ -78,6 +78,7 @@ export class RegisterComponent implements OnInit {
   }
 
   register() {
+    this.submitted = true;
     // console.log('value', this.regForm.value);
     let formData = this.regForm.value;
     this.spinner.show();

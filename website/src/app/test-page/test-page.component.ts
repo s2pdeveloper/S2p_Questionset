@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, NgZone, OnDestroy } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Subject, takeUntil, timer } from 'rxjs';
 import { StudentService } from '../services/student.service';
 import { HeaderComponent } from '../header/header.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-test-page',
@@ -22,7 +23,8 @@ export class TestPageComponent implements OnDestroy {
   constructor(
     private zone: NgZone,
     private router: Router,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private modalService: NgbModal
   ) {}
 
   destroy = new Subject();
@@ -99,10 +101,14 @@ export class TestPageComponent implements OnDestroy {
     this.selectedAnswers[index] = '';
   }
 
+  open(content) {
+    this.modalService.open(content, { centered: true });
+  }
+
   submit() {
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
-    });
+    }); 0
 
     const payload = {
       studentId: this.studentId,

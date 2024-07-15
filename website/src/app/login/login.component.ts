@@ -1,5 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/router';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterOutlet,
+} from '@angular/router';
 import { StudentService } from '../services/student.service';
 import {
   FormBuilder,
@@ -7,6 +12,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +27,9 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private studentService: StudentService,
     private formBuilder: FormBuilder,
-    private actRoute: ActivatedRoute
+    private actRoute: ActivatedRoute,
+    private toastService: ToastrService,
+    private spinner: NgxSpinnerService
   ) {}
 
   seminarId: string | null = null;
@@ -45,12 +54,19 @@ export class LoginComponent implements OnInit {
     this.submitted = true;
     // console.log('Login form value', this.loginForm.value);
     let formData = this.loginForm.value;
-
-    this.studentService.loginStudent(formData).subscribe((success: any) => {
-      console.log('Login Success', success);
-      localStorage.setItem('StudentId', success?.result?.user?.id);
-      this.loginForm.reset();
-      this.router.navigate(['/test']);
-    });
+    this.spinner.show();
+    this.studentService.loginStudent(formData).subscribe(
+      (success: any) => {
+        console.log('Login Success', success);
+        this.spinner.hide();
+        localStorage.setItem('StudentId', success?.result?.user?.id);
+        this.loginForm.reset();
+        this.router.navigate(['/test']);
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Registration failed');
+      }
+    );
   }
 }
