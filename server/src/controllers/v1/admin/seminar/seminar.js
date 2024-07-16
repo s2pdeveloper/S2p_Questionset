@@ -81,6 +81,7 @@ res.send(Buffer.from(QrImageData,"base64"));
   seminarOverView: async (req, res) => {
     try {
 
+      const seminar=await Seminar.findOne({_id:req.params.id})
       const questionset=await Questionset.find({seminarId:req.params.id})
       console.log("your questionSet",questionset);
       
@@ -91,11 +92,41 @@ res.send(Buffer.from(QrImageData,"base64"));
           return data;
         })
       );
-      
 
-      res.success({
-        data:questionSetOverView
+      var noOfAttemptedStudent=0;
+      var noOfUnattemptedStudent=0;
+      var percentageOfPassStudent=0;
+      var percentageOfFailStudent=0;
+      var noOfPassStudent=0;
+      var noOfFailStudent=0;
+
+      var numberOfSet=questionSetOverView.length;
+      console.log("length of set",numberOfSet)
+
+      questionSetOverView.map((eachSet)=>{
+        noOfAttemptedStudent+=eachSet.noOfAttemptedStudent;
+        noOfUnattemptedStudent+=eachSet.noOfUnattemptedStudent;
+        percentageOfPassStudent+=eachSet.percentageOfPassStudent;
+        percentageOfFailStudent+=eachSet.percentageOfFailStudent;
+        noOfPassStudent+=eachSet.noOfPassStudent;
+        noOfFailStudent+=eachSet.noOfFailStudent;
       })
+     
+      console.log("nofofAttempted student",noOfAttemptedStudent)
+
+      data={
+      name:seminar.name,
+      NoOfStudent:questionSetOverView[0]?questionSetOverView[0].totalStudent:0,
+        avgNoOfAttemptedStudent:noOfAttemptedStudent/numberOfSet,
+        avgNoOfUnattemptedStudent:noOfUnattemptedStudent/numberOfSet,
+        avgPercentageOfPassStudent:percentageOfPassStudent/numberOfSet,
+        avgPercentageOfFailStudent:percentageOfFailStudent/numberOfSet,
+        avgNoOfPassStudent:noOfPassStudent/numberOfSet,
+        avgNoOfFailStudent:noOfFailStudent/numberOfSet,
+        setsData:questionSetOverView
+      }
+
+      res.success(data)
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -306,6 +337,8 @@ async function  questionSetAllData(req,seminarId,questionSetId){
     },
   }
 
+  
+
   const projectStage= {
     $project: {
       seminarId:0, 
@@ -336,6 +369,8 @@ async function  questionSetAllData(req,seminarId,questionSetId){
   // };
   const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
 
+  const questionSet=await Questionset.findById(questionSetId)
+
   const resp = await Result.aggregate(pipeline);
 
   console.log("your respose must watch",resp)
@@ -361,6 +396,7 @@ async function  questionSetAllData(req,seminarId,questionSetId){
   percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
 
   return {
+    name:questionSet.name,
     totalStudent,
     noOfAttemptedStudent,
     noOfUnattemptedStudent,

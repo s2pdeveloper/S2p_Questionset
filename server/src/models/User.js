@@ -39,7 +39,7 @@ const UserSchema = mongoose.Schema(
     },
     phone: {
       type: Number,
-      required: true,
+      required: false,
     },
    
     emailVerified: {
