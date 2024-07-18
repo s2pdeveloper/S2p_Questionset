@@ -7,6 +7,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { QRCodeModule } from 'angularx-qrcode';
 // import { IconModule, IconSetModule, IconSetService } from '@coreui/icons-angular';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
   suppressScrollX: true,
@@ -64,6 +65,7 @@ import { DeleteAlertComponent } from './modal/delete-alert/delete-alert.componen
     ReactiveFormsModule,
     HttpClientModule,
     NgxSpinnerModule,
+    QRCodeModule,
   ],
   declarations: [
     AppComponent,

@@ -10,13 +10,12 @@ export class SeminarService {
     getByIdPath: (id) => `seminar/${id}`,
     updatePath: (id) => `seminar/${id}`,
     deletePath: (id) => `seminar/${id}`,
+    getSeminarOverViewPath: (id) => `seminar/seminarOverView/${id}`,
     getSeminars: (params) =>
       `seminar?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
     getSeminarList: `seminar/list`,
   };
-
   constructor(private http: ApiService) {}
-
   getAllSeminars(params) {
     return this.http.get(this.routes.getSeminars(params));
   }
@@ -31,6 +30,11 @@ export class SeminarService {
 
   getSeminarById(id) {  
     return this.http.get(this.routes.getByIdPath(id));
+  }
+
+
+  getSeminarOverView(id) {  
+    return this.http.get(this.routes.getSeminarOverViewPath(id));
   }
 
   deleteSeminar(id) {

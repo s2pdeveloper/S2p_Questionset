@@ -86,12 +86,20 @@
                   <i class="fa fa-trash mx-1"></i>
                 </button>
                 <button
-                  (click)="navigateTo('/seminars/seminars-form', s._id, 'view')"
-                  class="btn btn-sm btn-outline-success mx-1"
-                  ngbTooltip="View Seminar"
+                class="btn btn-sm btn-outline-danger mx-1"
+                data-toggle="modal"
+                (click)="showQr(s, qrCodeModal)"
+                ngbTooltip="Generate QR"
                 >
-                  <i class="fa fa-eye mx-1"></i>
+                <i class="fa fa-qrcode mx-1" aria-hidden="true"></i>
                 </button>
+                <button
+                (click)="navigateTo('/seminars/seminars-OverView', s._id, 'edit')"
+                class="btn btn-sm btn-outline-success mx-1"
+                ngbTooltip="Over View"
+              >
+              <i class="fa fa-pie-chart" aria-hidden="true"></i>
+              </button>
               </td>
             </tr>
           </tbody>
@@ -106,6 +114,9 @@
     </div>
   </div>
 </div>
+
+
+
 <ng-template #alertMsg let-modal>
   <div class="row mt-3 me-3">
     <div class="col-md-10 col-sm-10"></div>
@@ -147,5 +158,69 @@
         Cancel
       </button>
     </div>
+  </div>
+</ng-template>
+
+
+<ng-template #alertMsg1 let-modal>
+  <div class="row mt-3 me-3">
+    <div class="col-md-10 col-sm-10"></div>
+    <div class="col-md-2 col-sm-2 text-right">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body text-center px-0">
+    <!-- <img
+      src="../../../../assets/img/warning.png"
+      class="mb-3"
+      width="100"
+      alt=""
+    /> -->
+   
+   
+  
+    <h4 class="text-warning">Are you sure i want to show Qr code ?</h4>
+    <div class="clearfix modal-text">
+      <label *ngIf="selectedRow.name">
+        <h3>{{ selectedRow.name }}</h3>
+      </label>
+    </div>
+  </div>
+  <div class="model-footer border-0 text-center px-0 pb-4">
+    <div class="clearfix py-2">
+      <button
+        class="btn btn-danger me-2"
+        (click)="deleteSeminarById(this.selectedRow._id)"
+      >
+        OK
+      </button>
+      <button class="btn btn-success" (click)="modal.dismiss('Cross click')">
+        Cancel
+      </button>
+    </div>
+  </div>
+</ng-template>
+
+
+<ng-template #qrCodeModal let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title">QR Code MODEL Show</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body text-center">
+    <qrcode [qrdata]='qrCodeUrl'></qrcode>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('Close click')">Close</button>
   </div>
 </ng-template>

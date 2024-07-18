@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { SeminarListComponent } from './seminar-list/seminar-list.component';
 import { SeminarFormComponent } from './seminar-form/seminar-form.component';
+
 import { RouterModule, Routes } from '@angular/router';
+import { SeminarOverViewComponent } from './seminar-overView/seminar-form.component';
 
 const seminarRoutes: Routes = [
   {
@@ -24,6 +26,13 @@ const seminarRoutes: Routes = [
       {
         path: 'seminars-form',
         component: SeminarFormComponent,
+        data: {
+          title: 'Seminars Form',
+        },
+      },
+      {
+        path: 'seminars-OverView',
+        component: SeminarOverViewComponent,
         data: {
           title: 'Seminars Form',
         },

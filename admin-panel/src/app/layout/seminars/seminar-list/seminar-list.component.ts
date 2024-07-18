@@ -6,6 +6,7 @@ import { error } from '@angular/compiler/src/util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
+
 @Component({
   selector: 'app-seminar-list',
   templateUrl: './seminar-list.component.html',
@@ -19,6 +20,7 @@ export class SeminarListComponent implements OnInit {
   pageSize = 5;
   search: any = '';
   totalSeminars: any;
+  qrCodeUrl: string;
 
   constructor(
     private router: Router,
@@ -46,8 +48,7 @@ export class SeminarListComponent implements OnInit {
         // console.log(this.seminars);
         this.totalSeminars = success.result.totalCount;
         this.spinner.hide();
-        // console.log(this.seminarDetails);
-        // console.log(this.totalSeminars);
+
       },
       (error) => {
         this.spinner.hide();
@@ -77,7 +78,16 @@ export class SeminarListComponent implements OnInit {
   }
 
   open(s, content) {
+    console.log('your Qr code function runs from actual');
     this.selectedRow = s;
+    this.modalService.open(content, { centered: true });
+  }
+
+  showQr(s, content) {
+  
+    this.selectedRow = s;
+    this.qrCodeUrl = `https://your-qr-code-url.com/seminar/${s._id}`;
+    console.log('your Qr code function runs',this.qrCodeUrl);
     this.modalService.open(content, { centered: true });
   }
 

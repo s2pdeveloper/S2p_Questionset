@@ -429,7 +429,6 @@ const customerobj = {
           },
         };
 
-
         const projectStage={
           $project:{
             createdAt:0,

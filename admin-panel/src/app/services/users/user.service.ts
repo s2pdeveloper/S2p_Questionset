@@ -10,7 +10,7 @@ export class UserService {
   routes: any = {
     createPath: `user/register`,
     getByIdPath: (id) => `user/${id}`,
-    getAllPath :(params) =>`user/admins?pageNo=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
+    getAllPath :(params) =>`user/getAll?pageNo=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
     updatePath: (id) => `user/${id}`,
     deletePath: (id) => `user/${id}`, 
     getAttenderPath :(params) =>`user/attenders?pageNo=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
