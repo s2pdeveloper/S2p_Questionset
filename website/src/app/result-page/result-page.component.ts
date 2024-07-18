@@ -55,15 +55,15 @@ export class ResultPageComponent implements OnInit {
       this.resultData = params.resultData
         ? JSON.parse(params.resultData)
         : null;
-        console.log('Result in result page result data' , this.resultData);
-        
+      console.log('Result in result page result data', this.resultData);
+
       if (this.resultData) {
-        console.log('this.resultData',this.resultData);
+        console.log('this.resultData', this.resultData);
 
         this.processResultData(this.resultData);
       } else if (this.questionSetId) {
-        console.log('this.questionSetId',this.questionSetId);
-        
+        console.log('this.questionSetId', this.questionSetId);
+
         this.obtainResults(this.questionSetId);
       }
     });
@@ -77,8 +77,7 @@ export class ResultPageComponent implements OnInit {
       studentId: localStorage.getItem('StudentId'),
     };
 
-    console.log("Obtain result payload",payload);
-    
+    console.log('Obtain result payload', payload);
 
     this.studentService.getRankedResult(payload).subscribe((success: any) => {
       console.log('Ranked Result Success', success);
@@ -103,7 +102,7 @@ export class ResultPageComponent implements OnInit {
 
   processResultData(result: any) {
     console.log('In process result', result);
-    
+
     this.totalStudents = result?.totalStudent;
     this.stuAttempted = result.noOfAttemptedStudent;
     this.stuNotAttempted = result?.noOfUnattemptedStudent;
@@ -139,9 +138,7 @@ export class ResultPageComponent implements OnInit {
   }
 
   nextSet() {
-    this.router.navigate(['/test'], {
-      queryParams: { seminarId: this.seminarId },
-    });
+    this.router.navigate(['/test']);
   }
 
   // calculateQuesAttemptPercentage() {

@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.seminarId = localStorage.getItem('SeminarId');
-    // console.log('Seminar ID in Register' ,this.seminarId);
+    // console.log('Seminar ID in Register' , this.seminarId);
 
     localStorage.removeItem('StudentId');
   }

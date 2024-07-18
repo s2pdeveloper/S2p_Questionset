@@ -24,6 +24,7 @@ app.use(helmet({
   crossOriginResourcePolicy: false,
   contentSecurityPolicy:false
 }));
+app.use(cors('*'));
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(cookieParser());
@@ -37,7 +38,6 @@ app.use(
 );
 app.use('/images', express.static(path.join(__dirname, 'assets')));
 
-app.use(cors('*'));
 app.use('/', apiRouter);
 if (NODE_ENV !== 'production') {
   app.use(logger('dev'));
