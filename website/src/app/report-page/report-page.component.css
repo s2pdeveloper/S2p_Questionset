@@ -2,9 +2,20 @@
   background: linear-gradient(45deg, #3b8dff, #1a53ff);
 }
 
-.heading {
-  font-weight: bold;
-  color: white;
+.heading{
+  font-family: Champion Gothic;
+  font-size: 2rem;
+  margin: 0.2rem;
+}
+
+.head{
+  font-family: Champion Gothic;
+  font-size: 1.5rem;
+}
+.subhead{
+  font-family: Champion Gothic;
+    font-size: 1rem;
+    margin: 0;
 }
 
 .list-group-item {
@@ -12,21 +23,39 @@
   border-bottom: 1px solid #ddd;
 }
 
-.question {
-  font-size: 1.1em;
-  color: #000;
-}
 
 .correct-option, .student-answer {
   color: #5e5e5e;
+  font-family: Champion Gothic;
+  font-size: 0.9rem;
+  margin: 0;
 }
 
-.btn-primary {
-  background-color: #007bff;
-  border-color: #007bff;
+.result,
+.result:focus {
+  font-size: 16px;
+  font-family: Champion Gothic;
+  color: #fff;
+  padding: 5px 30px;
+  border-radius: 0.7rem;
+  background-image: linear-gradient(rgb(137, 105, 244), rgb(89, 40, 252));
+  border: 1px solid rgb(50, 50, 50);
+  border-bottom: 2px solid rgb(50, 50, 50);
+  box-shadow: 0px 1px 6px 0px rgb(60, 0, 255);
+  transform: translate(0, -2px);
+  cursor: pointer;
+  transition: 0.2s;
+  transition-timing-function: linear;
 }
+
+.result:active {
+  transform: translate(0, 0);
+  border-bottom: 2px solid rgb(50, 50, 50);
+}
+
 
 .btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
+  font-family: Champion Gothic;
 }

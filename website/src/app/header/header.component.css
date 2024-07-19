@@ -1,25 +1,28 @@
 .custom-header {
-  background-color: #343a40; /* Dark gray background color */
-  padding: 1rem 0;
+  background: linear-gradient(to right,#f79521, #ff7e5f, #ff7e5f, #f79521);
+  padding: 0.8rem 0;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-
-.custom-header .btn-link {
-  color: #ffffff;
-  text-decoration: none;
-  cursor: pointer;
-  font-weight: 500;
-  background: none;
-  border: none;
-  padding: 0;
-}
-
-.custom-header .btn-link:hover {
-  text-decoration: underline;
-}
-
-.custom-header h1 {
+.head{
+  font-family: Champion Gothic;
   font-size: 1.5rem;
   color: #ffffff;
   margin: 0;
 }
+
+.btn-link {
+  color: #ffffff;
+  text-decoration: none;
+  cursor: pointer;
+  font-family: Champion Gothic;
+  font-size: 1rem;
+  background: none;
+  border: none;
+  padding: 0;
+}
+.btn-link:hover {
+  font-size: 1.2rem;
+}
+
+
+

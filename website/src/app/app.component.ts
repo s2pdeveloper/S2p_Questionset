@@ -3,11 +3,12 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { RegisterComponent } from './register/register.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { ReportPageComponent } from './report-page/report-page.component';
+import { HeaderComponent } from './header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent],
+  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent, HeaderComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
