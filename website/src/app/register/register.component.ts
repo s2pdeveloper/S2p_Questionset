@@ -11,6 +11,7 @@ import { CommonModule } from '@angular/common';
 import { StudentService } from '../services/student.service';
 import { ToastrService } from 'ngx-toastr';
 import { NgxSpinnerService, NgxSpinnerModule } from 'ngx-spinner';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -29,7 +30,8 @@ export class RegisterComponent implements OnInit {
     private formBuilder: FormBuilder,
     private studentService: StudentService,
     private toastService: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute
   ) {}
 
   users: any[] = [];
@@ -71,13 +73,20 @@ export class RegisterComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    this.seminarId = localStorage.getItem('SeminarId');
-    // console.log('Seminar ID in Register' ,this.seminarId);
+    // this.seminarId = localStorage.getItem('SeminarId');
+    // console.log('Seminar ID in Register' , this.seminarId);
 
-    localStorage.removeItem('StudentId');
+    // localStorage.removeItem('StudentId');
+
+    const id = this.route.snapshot.paramMap.get('id');
+    this.seminarId=id;
+  if (id) {
+    localStorage.setItem('SeminarId', id);
+  }
   }
 
   register() {
+    this.submitted = true;
     // console.log('value', this.regForm.value);
     let formData = this.regForm.value;
     this.spinner.show();

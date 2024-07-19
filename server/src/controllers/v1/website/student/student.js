@@ -11,6 +11,7 @@ const Result = require('../../../../models/result');
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
+      console.log('Your Data******' , req.body);
       const data = req.body;
       data.seminarId = req.params.id;
       const existing = await Student.findOne({ email: req.body.email });

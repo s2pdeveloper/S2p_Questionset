@@ -12,7 +12,7 @@ export const routes: Routes = [
     component: LoginComponent,
   },
   {
-    path: 'register',
+    path: 'register/:id',
     title: 'Registration',
     component: RegisterComponent,
   },

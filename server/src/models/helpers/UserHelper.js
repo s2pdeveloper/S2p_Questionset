@@ -28,12 +28,7 @@ exports.modifyOutputData = (existingUser) => {
     firstName: existingUser.firstName,
     lastName: existingUser.lastName,
     userName:existingUser.userName,
-    address:existingUser.address,
-    // profilePicture: existingUser.profilePicture,
-    phone: existingUser.phone,
-    // countryCode: existingUser.countryCode,
-    phoneVerified: existingUser.phoneVerified,
-    emailVerified: existingUser.emailVerified,
+ 
     token: existingUser.genToken(),
     // address: existingUser.address,
     status: existingUser.status,

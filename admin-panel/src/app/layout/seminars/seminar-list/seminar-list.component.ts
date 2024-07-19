@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SeminarService } from '../../../services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
-import { error } from '@angular/compiler/src/util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';

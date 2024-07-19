@@ -76,6 +76,7 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
 
   login: async (req, res) => {
     try {
+      // console.log("Request Login *******" ,req);
       let existingUser = await User.findOne({ email: req.body.email });
       console.log('your found', existingUser);
       if (
@@ -92,7 +93,7 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       }
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
+      res.serverError(e);
       throw new Error(e);
     }
   },
