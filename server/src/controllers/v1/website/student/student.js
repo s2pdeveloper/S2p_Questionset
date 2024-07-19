@@ -236,8 +236,9 @@ const customerobj = {
     try {
       console.log('hit the login of student');
       const { phone } = req.body;
-
+     
       const user = await Student.findOne({ phone: phone });
+      console.log("***checking user****",user)
       console.log('your student', user);
       if (!user) {
         const errors = MESSAGES.apiErrorStrings.USER_NOT_EXISTS;

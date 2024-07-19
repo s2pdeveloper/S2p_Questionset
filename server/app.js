@@ -18,7 +18,7 @@ const app = express();
 require('dotenv').config();
 // global._ = lodash;
 const { PORT, NODE_ENV } = process.env;
-
+app.use(cors())
 app.set('env', NODE_ENV);
 app.use(logger('dev'));
 app.use(CustomResponses);
