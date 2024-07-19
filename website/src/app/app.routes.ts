@@ -7,7 +7,7 @@ import { ResultPageComponent } from './result-page/result-page.component';
 
 export const routes: Routes = [
   {
-    path: '',
+    path: 'login/:id',
     title: 'Login',
     component: LoginComponent,
   },

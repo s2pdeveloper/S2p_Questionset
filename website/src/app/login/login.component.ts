@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+
 import {
   ActivatedRoute,
   Router,
@@ -29,7 +30,8 @@ export class LoginComponent implements OnInit {
     private formBuilder: FormBuilder,
     private actRoute: ActivatedRoute,
     private toastService: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private route: ActivatedRoute
   ) {}
 
   seminarId: string | null = null;
@@ -43,9 +45,11 @@ export class LoginComponent implements OnInit {
     this.actRoute.queryParams.subscribe((params: any) => {
       console.log('Login Params****', params);
 
-      this.seminarId = params.seminarId;
-      // console.log(this.seminarId);
-      localStorage.setItem('SeminarId', this.seminarId);
+      const id = this.route.snapshot.paramMap.get('id');
+      this.seminarId=id;
+    if (id) {
+      localStorage.setItem('SeminarId', id);
+    }
       localStorage.removeItem('StudentId');
     });
   }
