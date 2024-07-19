@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { error } from '@angular/compiler/src/util';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { environment } from 'src/environments/environment';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class SeminarListComponent implements OnInit {
   search: any = '';
   totalSeminars: any;
   qrCodeUrl: string;
+  baseUrl:String;
 
   constructor(
     private router: Router,
@@ -84,9 +86,10 @@ export class SeminarListComponent implements OnInit {
   }
 
   showQr(s, content) {
-  
+    this.baseUrl=
+     
     this.selectedRow = s;
-    this.qrCodeUrl = `https://your-qr-code-url.com/seminar/${s._id}`;
+    this.qrCodeUrl = `${environment.QrCodeUrl}/register/${s._id}`;
     console.log('your Qr code function runs',this.qrCodeUrl);
     this.modalService.open(content, { centered: true });
   }

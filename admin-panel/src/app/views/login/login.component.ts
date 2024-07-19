@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
     this.spinner.show();
     this.authService.login(this.loginForm.value).subscribe(
       (success) => {
-        console.log('success', success);
+        console.log('success 12', success);
 
         if (typeof window !== 'undefined') {
           localStorage.setItem('user', JSON.stringify(success.result));

@@ -82,8 +82,9 @@ res.send(Buffer.from(QrImageData,"base64"));
     try {
 
       const seminar=await Seminar.findOne({_id:req.params.id})
+      console.log("*********find the seminar******* ",seminar)
       const questionset=await Questionset.find({seminarId:req.params.id})
-      console.log("your questionSet",questionset);
+      console.log("*****your questionSet*******",questionset);
       
 
       const questionSetOverView = await Promise.all(
