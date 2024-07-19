@@ -205,8 +205,10 @@ const customerobj = {
       });
 
       if (existing) {
-        let errors = 'Test Already Submited';
-        return res.unprocessableEntity(errors);
+      return  res.status(409).json({
+          success:false,
+          message:"Test Already Submited"
+        })
       }
 
       // Create result data object
