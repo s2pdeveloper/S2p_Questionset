@@ -85,8 +85,6 @@ export class SeminarListComponent implements OnInit {
   }
 
   showQr(s, content) {
-    this.baseUrl=
-     
     this.selectedRow = s;
     this.qrCodeUrl = `${environment.QrCodeUrl}/login/${s._id}`;
     console.log('your Qr code function runs',this.qrCodeUrl);
