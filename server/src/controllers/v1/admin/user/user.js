@@ -93,7 +93,7 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       }
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
-      res.serverError(errors);
+      res.serverError(e);
       throw new Error(e);
     }
   },
