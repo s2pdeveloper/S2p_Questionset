@@ -37,7 +37,7 @@ app.set('views', path.resolve('./views'));
 
 app.use(
   '/',
-  express.static(path.join(__dirname, 'public'), { maxAge: 31557600000 })
+  express.static(path.join(__dirname, 'website'), { maxAge: 31557600000 })
 );
 app.use('/images', express.static(path.join(__dirname, 'assets')));
 
