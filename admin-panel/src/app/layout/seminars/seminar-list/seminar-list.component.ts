@@ -86,7 +86,7 @@ export class SeminarListComponent implements OnInit {
 
   showQr(s, content) {
     this.selectedRow = s;
-    this.qrCodeUrl = `${environment.QrCodeUrl}/login/${s._id}`;
+    this.qrCodeUrl = `${environment.QrCodeUrl}login/${s._id}`;
     console.log('your Qr code function runs',this.qrCodeUrl);
     this.modalService.open(content, { centered: true });
   }
