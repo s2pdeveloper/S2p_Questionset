@@ -4,8 +4,14 @@ import { RegisterComponent } from './register/register.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { ReportPageComponent } from './report-page/report-page.component';
 import { ResultPageComponent } from './result-page/result-page.component';
+import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 
 export const routes: Routes = [
+  // {
+  //   path: '',
+  //   redirectTo: 'test',
+  //   pathMatch:'full'
+  // },
   {
     path: 'login/:id',
     title: 'Login',
@@ -30,5 +36,10 @@ export const routes: Routes = [
     path: 'report',
     title: 'Reports',
     component: ReportPageComponent,
+  },
+  {
+    path: '**',
+    title:"Page Not Found",
+    component: NotFoundPageComponent,
   },
 ];

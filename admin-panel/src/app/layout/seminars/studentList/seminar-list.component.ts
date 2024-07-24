@@ -4,15 +4,15 @@ import { SeminarService } from '../../../services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../../../src/environments/environment';
 
 
 @Component({
-  selector: 'app-seminar-list',
+  selector: 'app-student-list',
   templateUrl: './seminar-list.component.html',
   styleUrls: ['./seminar-list.component.scss'],
 })
-export class SeminarListComponent implements OnInit {
+export class StudentListComponent implements OnInit {
   selectedRow: any = {};
   seminarDetails: any = {};
   seminars: any;
@@ -86,7 +86,7 @@ export class SeminarListComponent implements OnInit {
 
   showQr(s, content) {
     this.selectedRow = s;
-    this.qrCodeUrl = `${environment.QrCodeUrl}login/${s._id}`;
+    this.qrCodeUrl = `${environment.QrCodeUrl}/login/${s._id}`;
     console.log('your Qr code function runs',this.qrCodeUrl);
     this.modalService.open(content, { centered: true });
   }

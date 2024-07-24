@@ -17,7 +17,7 @@ mongoose.connect(mongoUrl, {
 mongoose.set("strictQuery", false);
 console.log("Mongo URL----",mongoUrl);
 mongoose.connection.on("connected", () => {
-  console.log(chalk.green("✓"), "Mongoose connection establish successfully");
+  console.log(chalk.green("✓"), "Mongoose connection establish successfully",process.env.PROD_DATABASE_URL);
 });
 
 // If the connection throws an error

@@ -4,6 +4,9 @@ import { SeminarFormComponent } from './seminar-form/seminar-form.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { SeminarOverViewComponent } from './seminar-overView/seminar-form.component';
+import {StudentListComponent} from './studentList/seminar-list.component'
+
+
 
 const seminarRoutes: Routes = [
   {
@@ -34,7 +37,14 @@ const seminarRoutes: Routes = [
         path: 'seminars-OverView',
         component: SeminarOverViewComponent,
         data: {
-          title: 'Seminars Form',
+          title: 'Seminar OverView',
+        },
+      },
+      {
+        path: 'studentList',
+        component: StudentListComponent,
+        data: {
+          title: 'Student List',
         },
       },
     ],

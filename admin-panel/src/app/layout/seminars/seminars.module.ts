@@ -7,13 +7,13 @@ import { SeminarOverViewComponent } from './seminar-overView/seminar-form.compon
 import { CoreModule } from '../../core/core.module';
  import { QRCodeModule } from 'angularx-qrcode'; 
  import { NgApexchartsModule } from 'ng-apexcharts';
-
+ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 
 
 
 @NgModule({
   declarations: [SeminarFormComponent, SeminarListComponent,SeminarOverViewComponent],
-  imports: [SeminarsRoutingModule, CoreModule.forRoot(),QRCodeModule,NgApexchartsModule],
+  imports: [SeminarsRoutingModule, CoreModule.forRoot(),QRCodeModule,NgApexchartsModule,NgbAccordionModule],
 })
 export class SeminarsModule {}

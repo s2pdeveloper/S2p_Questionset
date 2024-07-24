@@ -220,7 +220,7 @@ let SeminarListComponent = class SeminarListComponent {
     }
     showQr(s, content) {
         this.selectedRow = s;
-        this.qrCodeUrl = `${src_environments_environment__WEBPACK_IMPORTED_MODULE_3__.environment.QrCodeUrl}/login/${s._id}`;
+        this.qrCodeUrl = `${src_environments_environment__WEBPACK_IMPORTED_MODULE_3__.environment.QrCodeUrl}login/${s._id}`;
         console.log('your Qr code function runs', this.qrCodeUrl);
         this.modalService.open(content, { centered: true });
     }
@@ -298,6 +298,7 @@ let SeminarOverViewComponent = class SeminarOverViewComponent {
         this.spinner = spinner;
         this.submitted = false;
         this.action = '';
+        this.setChart = [];
         this.seminarForm = this.formBuilder.group({
             _id: new _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormControl(null),
             name: new _angular_forms__WEBPACK_IMPORTED_MODULE_3__.FormControl('', [_angular_forms__WEBPACK_IMPORTED_MODULE_3__.Validators.required]),
@@ -333,7 +334,7 @@ let SeminarOverViewComponent = class SeminarOverViewComponent {
                     type: 'pie'
                 },
                 title: {
-                    text: 'Participation Overview'
+                    text: 'Participation '
                 },
                 labels: ["Attempted", "Not Attempted"]
             };
@@ -348,6 +349,30 @@ let SeminarOverViewComponent = class SeminarOverViewComponent {
                 },
                 labels: ["FAIL", "PASS"]
             };
+            this.overViewData.setsData = this.overViewData.setsData.map((data) => {
+                var percentOfAttemptedStudent = Number(data.noOfAttemptedStudent / data.totalStudent) * 100;
+                var percentOfUnattemptedStudent = Number(data.noOfUnattemptedStudent / data.totalStudent) * 100;
+                var newData = Object.assign(Object.assign({}, data), { percentOfAttemptedStudent, percentOfUnattemptedStudent });
+                return newData;
+            });
+            // this.overViewData.setsData.forEach(element => {
+            //   console.log("@@@@@@@@@pushing the Data",element)
+            //   this.setChart.push(
+            //     {
+            //       series:[Number(element.percentageOfFailStudent),Number(element.percentageOfPassStudent)],
+            //       chart: {
+            //         height:200,
+            //         type: 'pie'
+            //       },
+            //       title: {
+            //         text: 'RESULT'
+            //       },
+            //       labels:["FAIL" ,"PASS"]  
+            //     }
+            //   )
+            //   console.log("your chRT",this.setChart)
+            // });
+            console.log("***********your Set data of chart*******", this.setChart);
         });
     }
     submit() {
@@ -384,9 +409,6 @@ let SeminarOverViewComponent = class SeminarOverViewComponent {
             this.router.navigate(['seminars/seminars']);
         });
     }
-    goBack() {
-        this.location.back();
-    }
 };
 SeminarOverViewComponent.ctorParameters = () => [
     { type: _services_seminar_seminar_service__WEBPACK_IMPORTED_MODULE_2__.SeminarService },
@@ -419,12 +441,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SeminarsRoutingModule": () => (/* binding */ SeminarsRoutingModule)
 /* harmony export */ });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ 42321);
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ 3184);
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! tslib */ 42321);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/core */ 3184);
 /* harmony import */ var _seminar_list_seminar_list_component__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./seminar-list/seminar-list.component */ 39702);
 /* harmony import */ var _seminar_form_seminar_form_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./seminar-form/seminar-form.component */ 1644);
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/router */ 52816);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/router */ 52816);
 /* harmony import */ var _seminar_overView_seminar_form_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./seminar-overView/seminar-form.component */ 84338);
+/* harmony import */ var _studentList_seminar_list_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./studentList/seminar-list.component */ 64686);
+
 
 
 
@@ -460,7 +484,14 @@ const seminarRoutes = [
                 path: 'seminars-OverView',
                 component: _seminar_overView_seminar_form_component__WEBPACK_IMPORTED_MODULE_2__.SeminarOverViewComponent,
                 data: {
-                    title: 'Seminars Form',
+                    title: 'Seminar OverView',
+                },
+            },
+            {
+                path: 'studentList',
+                component: _studentList_seminar_list_component__WEBPACK_IMPORTED_MODULE_3__.StudentListComponent,
+                data: {
+                    title: 'Student List',
                 },
             },
         ],
@@ -468,10 +499,10 @@ const seminarRoutes = [
 ];
 let SeminarsRoutingModule = class SeminarsRoutingModule {
 };
-SeminarsRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_3__.__decorate)([
-    (0,_angular_core__WEBPACK_IMPORTED_MODULE_4__.NgModule)({
-        imports: [_angular_router__WEBPACK_IMPORTED_MODULE_5__.RouterModule.forChild(seminarRoutes)],
-        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_5__.RouterModule],
+SeminarsRoutingModule = (0,tslib__WEBPACK_IMPORTED_MODULE_4__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_5__.NgModule)({
+        imports: [_angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterModule.forChild(seminarRoutes)],
+        exports: [_angular_router__WEBPACK_IMPORTED_MODULE_6__.RouterModule],
     })
 ], SeminarsRoutingModule);
 
@@ -498,6 +529,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _core_core_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../core/core.module */ 40294);
 /* harmony import */ var angularx_qrcode__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! angularx-qrcode */ 49876);
 /* harmony import */ var ng_apexcharts__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ng-apexcharts */ 20054);
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 97544);
 
 
 
@@ -508,14 +540,142 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 let SeminarsModule = class SeminarsModule {
 };
 SeminarsModule = (0,tslib__WEBPACK_IMPORTED_MODULE_5__.__decorate)([
     (0,_angular_core__WEBPACK_IMPORTED_MODULE_6__.NgModule)({
         declarations: [_seminar_form_seminar_form_component__WEBPACK_IMPORTED_MODULE_1__.SeminarFormComponent, _seminar_list_seminar_list_component__WEBPACK_IMPORTED_MODULE_2__.SeminarListComponent, _seminar_overView_seminar_form_component__WEBPACK_IMPORTED_MODULE_3__.SeminarOverViewComponent],
-        imports: [_seminars_routing_module__WEBPACK_IMPORTED_MODULE_0__.SeminarsRoutingModule, _core_core_module__WEBPACK_IMPORTED_MODULE_4__.CoreModule.forRoot(), angularx_qrcode__WEBPACK_IMPORTED_MODULE_7__.QRCodeModule, ng_apexcharts__WEBPACK_IMPORTED_MODULE_8__.NgApexchartsModule],
+        imports: [_seminars_routing_module__WEBPACK_IMPORTED_MODULE_0__.SeminarsRoutingModule, _core_core_module__WEBPACK_IMPORTED_MODULE_4__.CoreModule.forRoot(), angularx_qrcode__WEBPACK_IMPORTED_MODULE_7__.QRCodeModule, ng_apexcharts__WEBPACK_IMPORTED_MODULE_8__.NgApexchartsModule, _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_9__.NgbAccordionModule],
     })
 ], SeminarsModule);
+
+
+
+/***/ }),
+
+/***/ 64686:
+/*!***********************************************************************!*\
+  !*** ./src/app/layout/seminars/studentList/seminar-list.component.ts ***!
+  \***********************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StudentListComponent": () => (/* binding */ StudentListComponent)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! tslib */ 42321);
+/* harmony import */ var _seminar_list_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./seminar-list.component.html?ngResource */ 30148);
+/* harmony import */ var _seminar_list_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./seminar-list.component.scss?ngResource */ 46767);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! @angular/core */ 3184);
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ 52816);
+/* harmony import */ var _services_seminar_seminar_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../services/seminar/seminar.service */ 32277);
+/* harmony import */ var ngx_spinner__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ngx-spinner */ 42777);
+/* harmony import */ var ngx_toastr__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ngx-toastr */ 82808);
+/* harmony import */ var _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ng-bootstrap/ng-bootstrap */ 97544);
+/* harmony import */ var _src_environments_environment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../src/environments/environment */ 92340);
+
+
+
+
+
+
+
+
+
+
+let StudentListComponent = class StudentListComponent {
+    constructor(router, seminarService, toastService, modalService, spinner) {
+        this.router = router;
+        this.seminarService = seminarService;
+        this.toastService = toastService;
+        this.modalService = modalService;
+        this.spinner = spinner;
+        this.selectedRow = {};
+        this.seminarDetails = {};
+        this.page = 1;
+        this.pageSize = 5;
+        this.search = '';
+    }
+    ngOnInit() {
+        this.getAll();
+    }
+    getAll() {
+        this.spinner.show();
+        let params = {
+            page: this.page,
+            pageSize: this.pageSize,
+            search: this.search,
+        };
+        this.seminarService.getAllSeminars(params).subscribe((success) => {
+            var _a;
+            console.log('Seminars', success);
+            this.seminars = (_a = success === null || success === void 0 ? void 0 : success.result) === null || _a === void 0 ? void 0 : _a.data;
+            // console.log(this.seminars);
+            this.totalSeminars = success.result.totalCount;
+            this.spinner.hide();
+        }, (error) => {
+            this.spinner.hide();
+            this.toastService.error('Something Went Wrong!');
+        });
+    }
+    onChangePage(pageNo) {
+        if (pageNo > 0) {
+            this.page = pageNo;
+        }
+        this.getAll();
+    }
+    navigateTo(path, id, action) {
+        if (id) {
+            this.router.navigate([path], { queryParams: { id, action } });
+        }
+        else {
+            this.router.navigate([path], { queryParams: { action } });
+        }
+    }
+    refreshList(title) {
+        this.search = title == 'clear' ? '' : this.search;
+        this.getAll();
+    }
+    open(s, content) {
+        console.log('your Qr code function runs from actual');
+        this.selectedRow = s;
+        this.modalService.open(content, { centered: true });
+    }
+    showQr(s, content) {
+        this.selectedRow = s;
+        this.qrCodeUrl = `${_src_environments_environment__WEBPACK_IMPORTED_MODULE_3__.environment.QrCodeUrl}/login/${s._id}`;
+        console.log('your Qr code function runs', this.qrCodeUrl);
+        this.modalService.open(content, { centered: true });
+    }
+    deleteSeminarById(id) {
+        this.seminarService.deleteSeminar(id).subscribe((success) => {
+            console.log(success);
+            this.getAll();
+            this.selectedRow = {};
+            this.modalService.dismissAll();
+            this.toastService.success(success.result.message);
+        }, (error) => {
+            this.selectedRow = {};
+            this.modalService.dismissAll();
+            this.toastService.error('Something went Wrong!');
+        });
+    }
+};
+StudentListComponent.ctorParameters = () => [
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__.Router },
+    { type: _services_seminar_seminar_service__WEBPACK_IMPORTED_MODULE_2__.SeminarService },
+    { type: ngx_toastr__WEBPACK_IMPORTED_MODULE_5__.ToastrService },
+    { type: _ng_bootstrap_ng_bootstrap__WEBPACK_IMPORTED_MODULE_6__.NgbModal },
+    { type: ngx_spinner__WEBPACK_IMPORTED_MODULE_7__.NgxSpinnerService }
+];
+StudentListComponent = (0,tslib__WEBPACK_IMPORTED_MODULE_8__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_9__.Component)({
+        selector: 'app-student-list',
+        template: _seminar_list_component_html_ngResource__WEBPACK_IMPORTED_MODULE_0__,
+        styles: [_seminar_list_component_scss_ngResource__WEBPACK_IMPORTED_MODULE_1__]
+    })
+], StudentListComponent);
 
 
 
@@ -719,6 +879,16 @@ module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW
 
 /***/ }),
 
+/***/ 46767:
+/*!************************************************************************************!*\
+  !*** ./src/app/layout/seminars/studentList/seminar-list.component.scss?ngResource ***!
+  \************************************************************************************/
+/***/ ((module) => {
+
+module.exports = "\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzZW1pbmFyLWxpc3QuY29tcG9uZW50LnNjc3MifQ== */";
+
+/***/ }),
+
 /***/ 96631:
 /*!*************************************************************************************!*\
   !*** ./src/app/layout/seminars/seminar-form/seminar-form.component.html?ngResource ***!
@@ -735,7 +905,7 @@ module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div clas
   \*************************************************************************************/
 /***/ ((module) => {
 
-module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row justify-content-between align-items-center\">\r\n        <div class=\"col-auto\">\r\n          <h3 class=\"mb-0\">Seminars</h3>\r\n        </div>\r\n        <div class=\"col-auto\">\r\n          <button\r\n            type=\"button\"\r\n            (click)=\"navigateTo('seminars/seminars-form', null, 'create')\"\r\n            class=\"btn btn-outline-primary\"\r\n          >\r\n            <i class=\"fa fa-plus-circle me-1\"></i>\r\n            Seminar\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card-body\">\r\n      <div class=\"row mb-2\">\r\n        <div class=\"col-md-5\">\r\n          <form class=\"d-flex\">\r\n            <input\r\n              class=\"form-control\"\r\n              type=\"search\"\r\n              placeholder=\"Search\"\r\n              aria-label=\"Search\"\r\n              [(ngModel)]=\"search\"\r\n              [ngModelOptions]=\"{ standalone: true }\"\r\n              (keyup)=\"refreshList('search')\"\r\n            />\r\n            <button\r\n              class=\"btn btn-outline-danger\"\r\n              type=\"submit\"\r\n              (click)=\"refreshList('clear')\"\r\n              ngbTooltip=\"Clear Filter\"\r\n            >\r\n              <i class=\"fa fa-remove\"></i>\r\n            </button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n      <div class=\"table-responsive text-nowrap\">\r\n        <table\r\n          class=\"table table-striped table-hover table-bordered table-sticky\"\r\n        >\r\n          <thead class=\"table-primary\">\r\n            <tr>\r\n              <th>Sr.No</th>\r\n              <th>Name</th>\r\n              <th>Type</th>\r\n              <th>College</th>\r\n              <th>Seminar Date</th>\r\n              <th>Description</th>\r\n              <th>Duration</th>\r\n              <th>Created At</th>\r\n              <th>Actions</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let s of seminars; let i = index\">\r\n              <td>{{ pageSize * (page - 1) + (i + 1) }}</td>\r\n              <td>{{ s.name }}</td>\r\n              <td>{{ s.type }}</td>\r\n              <td>{{ s.college }}</td>\r\n              <td>{{ s.dateOfSeminar | date }}</td>\r\n              <td>{{ s.description }}</td>\r\n              <td>{{ s.duration }}</td>\r\n              <td>{{ s.createdAt | date }}</td>\r\n              <td>\r\n                <button\r\n                  (click)=\"navigateTo('/seminars/seminars-form', s._id, 'edit')\"\r\n                  class=\"btn btn-sm btn-outline-success mx-1\"\r\n                  ngbTooltip=\"Edit Seminar\"\r\n                >\r\n                  <i class=\"fa fa-pencil mx-1\"></i>\r\n                </button>\r\n                <button\r\n                  class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                  data-toggle=\"modal\"\r\n                  (click)=\"open(s, alertMsg)\"\r\n                  ngbTooltip=\"Delete Seminar\"\r\n                >\r\n                  <i class=\"fa fa-trash mx-1\"></i>\r\n                </button>\r\n                <button\r\n                class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                data-toggle=\"modal\"\r\n                (click)=\"showQr(s, qrCodeModal)\"\r\n                ngbTooltip=\"Generate QR\"\r\n                >\r\n                <i class=\"fa fa-qrcode mx-1\" aria-hidden=\"true\"></i>\r\n                </button>\r\n                <button\r\n                (click)=\"navigateTo('/seminars/seminars-OverView', s._id, 'edit')\"\r\n                class=\"btn btn-sm btn-outline-success mx-1\"\r\n                ngbTooltip=\"Over View\"\r\n              >\r\n              <i class=\"fa fa-pie-chart\" aria-hidden=\"true\"></i>\r\n              </button>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <app-custom-pagination\r\n        [(page)]=\"page\"\r\n        [(pageSize)]=\"pageSize\"\r\n        [(collection)]=\"totalSeminars\"\r\n        (myOutput)=\"onChangePage(page)\"\r\n      ></app-custom-pagination>\r\n    </div>\r\n  </div>\r\n</div>\r\n\r\n\r\n\r\n<ng-template #alertMsg let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    />\r\n    <h4 class=\"text-warning\">Are you sure you want to Delete ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #alertMsg1 let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <!-- <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    /> -->\r\n   \r\n   \r\n  \r\n    <h4 class=\"text-warning\">Are you sure i want to show Qr code ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #qrCodeModal let-modal>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\">QR Code MODEL Show</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body text-center\">\r\n    <qrcode [qrdata]='qrCodeUrl'></qrcode>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"modal.close('Close click')\">Close</button>\r\n  </div>\r\n</ng-template>";
+module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row justify-content-between align-items-center\">\r\n        <div class=\"col-auto\">\r\n          <h3 class=\"mb-0\">Seminars</h3>\r\n        </div>\r\n        <div class=\"col-auto\">\r\n          <button\r\n            type=\"button\"\r\n            (click)=\"navigateTo('seminars/seminars-form', null, 'create')\"\r\n            class=\"btn btn-outline-primary\"\r\n          >\r\n            <i class=\"fa fa-plus-circle me-1\"></i>\r\n            Seminar\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card-body\">\r\n      <div class=\"row mb-2\">\r\n        <div class=\"col-md-5\">\r\n          <form class=\"d-flex\">\r\n            <input\r\n              class=\"form-control\"\r\n              type=\"search\"\r\n              placeholder=\"Search\"\r\n              aria-label=\"Search\"\r\n              [(ngModel)]=\"search\"\r\n              [ngModelOptions]=\"{ standalone: true }\"\r\n              (keyup)=\"refreshList('search')\"\r\n            />\r\n            <button\r\n              class=\"btn btn-outline-danger\"\r\n              type=\"submit\"\r\n              (click)=\"refreshList('clear')\"\r\n              ngbTooltip=\"Clear Filter\"\r\n            >\r\n              <i class=\"fa fa-remove\"></i>\r\n            </button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n      <div class=\"table-responsive text-nowrap\">\r\n        <table\r\n          class=\"table table-striped table-hover table-bordered table-sticky\"\r\n        >\r\n          <thead class=\"table-primary\">\r\n            <tr>\r\n              <th>Sr.No</th>\r\n              <th>Name</th>\r\n              <th>Type</th>\r\n              <th>College</th>\r\n              <th>Seminar Date</th>\r\n              <th>Description</th>\r\n              <th>Duration</th>\r\n              <th>Created At</th>\r\n              <th>Actions</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let s of seminars; let i = index\">\r\n              <td>{{ pageSize * (page - 1) + (i + 1) }}</td>\r\n              <td>{{ s.name }}</td>\r\n              <td>{{ s.type }}</td>\r\n              <td>{{ s.college }}</td>\r\n              <td>{{ s.dateOfSeminar | date }}</td>\r\n              <td>{{ s.description }}</td>\r\n              <td>{{ s.duration }}</td>\r\n              <td>{{ s.createdAt | date }}</td>\r\n              <td>\r\n                <button\r\n                  (click)=\"navigateTo('/seminars/seminars-form', s._id, 'edit')\"\r\n                  class=\"btn btn-sm btn-outline-success mx-1\"\r\n                  ngbTooltip=\"Edit Seminar\"\r\n                >\r\n                  <i class=\"fa fa-pencil mx-1\"></i>\r\n                </button>\r\n                <button\r\n                  class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                  data-toggle=\"modal\"\r\n                  (click)=\"open(s, alertMsg)\"\r\n                  ngbTooltip=\"Delete Seminar\"\r\n                >\r\n                  <i class=\"fa fa-trash mx-1\"></i>\r\n                </button>\r\n                <button\r\n                class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                data-toggle=\"modal\"\r\n                (click)=\"showQr(s, qrCodeModal)\"\r\n                ngbTooltip=\"Generate QR\"\r\n                >\r\n                <i class=\"fa fa-qrcode mx-1\" aria-hidden=\"true\"></i>\r\n                </button>\r\n                <button\r\n                (click)=\"navigateTo('/seminars/seminars-OverView', s._id, 'edit')\"\r\n                class=\"btn btn-sm btn-outline-success mx-1\"\r\n                ngbTooltip=\"Over View\"\r\n              >\r\n              <i class=\"fa fa-pie-chart\" aria-hidden=\"true\"></i>\r\n              </button>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <app-custom-pagination\r\n        [(page)]=\"page\"\r\n        [(pageSize)]=\"pageSize\"\r\n        [(collection)]=\"totalSeminars\"\r\n        (myOutput)=\"onChangePage(page)\"\r\n      ></app-custom-pagination>\r\n    </div>\r\n   \r\n  </div>\r\n</div>\r\n\r\n\r\n\r\n<ng-template #alertMsg let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    />\r\n    <h4 class=\"text-warning\">Are you sure you want to Delete ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #alertMsg1 let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <!-- <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    /> -->\r\n   \r\n   \r\n  \r\n    <h4 class=\"text-warning\">Are you sure i want to show Qr code ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #qrCodeModal let-modal>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\">QR Code MODEL Show</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body text-center\">\r\n    <qrcode [qrdata]='qrCodeUrl'></qrcode>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"modal.close('Close click')\">Close</button>\r\n  </div>\r\n</ng-template>";
 
 /***/ }),
 
@@ -745,7 +915,17 @@ module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div clas
   \*****************************************************************************************/
 /***/ ((module) => {
 
-module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row justify-content-between align-items-center\">\r\n        <div class=\"col-auto\">\r\n          <h3 class=\"mb-0\">Seminar OverView</h3>\r\n        </div>\r\n        <div class=\"col-auto\">\r\n          <button type=\"button\" class=\"btn btn-danger\" (click)=\"goBack()\">\r\n            <i class=\"fa fa-arrow-left me-1\" aria-hidden=\"true\"></i>\r\n            Back\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"card-body\">\r\n      <form [formGroup]=\"seminarForm\" class=\"form-horizontal\">\r\n        <label class=\"form-label\">\r\n          Seminar Name\r\n          <span class=\"text-danger\">{{overViewData.name}}</span>\r\n        </label>  \r\n        <div class=\"row mt-5 d-flex justify-content-around\">\r\n          <div class=\"col-md-6  border\">\r\n            <apx-chart\r\n            [series]=\"chartOptions.series\"\r\n            [chart]=\"chartOptions.chart\"\r\n            [xaxis]=\"chartOptions.xaxis\"\r\n            [title]=\"chartOptions.title\"\r\n            [labels]=\"chartOptions.labels\"\r\n          ></apx-chart>    \r\n          </div>\r\n          <div class=\"col-md-6 border\">\r\n            <apx-chart\r\n            [series]=\"chartOptions2.series\"\r\n            [chart]=\"chartOptions2.chart\"\r\n            [xaxis]=\"chartOptions2.xaxis\"\r\n            [title]=\"chartOptions2.title\"\r\n            [labels]=\"chartOptions2.labels\"\r\n          ></apx-chart> \r\n        </div>    \r\n        </div>\r\n      </form> \r\n    </div>\r\n    <div class=\"accordion\" id=\"accordionExample\">\r\n      <div class=\"accordion-item\" *ngFor=\"let data of overViewData.setsData\">\r\n        <h2 class=\"accordion-header\" id=\"headingOne\">\r\n         <button class=\"accordion-button\" type=\"button\" data-bs-toggle=\"collapse\" data-bs-target=\"#collapseOne\" aria-expanded=\"true\" aria-controls=\"collapseOne\">\r\n           {{data.name}}\r\n          </button>\r\n        </h2>\r\n        <div id=\"collapseOne\" class=\"accordion-collapse collapse show\" aria-labelledby=\"headingOne\" data-bs-parent=\"#accordionExample\">\r\n          <div class=\"accordion-body\">\r\n            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.\r\n          </div>\r\n        </div>\r\n      </div>\r\n    </div>\r\n  </div>\r\n</div>\r\n";
+module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row justify-content-between align-items-center\">\r\n        <div class=\"col-auto\">\r\n          <h3 class=\"mb-0\">{{overViewData?.name}}</h3>\r\n        </div>\r\n        \r\n        <div class=\"col-auto\">\r\n          <button type=\"button\" class=\"btn btn-success\" style=\"color:white;\" (click)=\"goBack()\">\r\n            <!-- <i class=\"fa fa-arrow-left me-1\" aria-hidden=\"true\"></i> -->\r\n            <i class=\"fa fa-graduation-cap \" style=\"color: white;\" aria-hidden=\"true\"></i>\r\n           Student List\r\n          </button>\r\n\r\n          <button type=\"button\" class=\"btn btn-danger\" (click)=\"goBack()\">\r\n            <i class=\"fa fa-arrow-left me-1\" aria-hidden=\"true\"></i>\r\n            Back\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n    <div class=\"card-body\">\r\n      <form [formGroup]=\"seminarForm\" class=\"form-horizontal\">\r\n        <label class=\"form-label\">\r\n          Seminar Name\r\n          <span class=\"text-danger\">{{overViewData?.name}}</span>\r\n        </label>  \r\n        <div class=\"row mt-5 d-flex justify-content-around\">\r\n          <div class=\"col-md-6  \">\r\n            <apx-chart\r\n            [series]=\"chartOptions?.series\"\r\n            [chart]=\"chartOptions?.chart\"\r\n            [xaxis]=\"chartOptions?.xaxis\"\r\n            [title]=\"chartOptions?.title\"\r\n            [labels]=\"chartOptions?.labels\"\r\n          ></apx-chart>    \r\n          </div>\r\n          <div class=\"col-md-6 \">\r\n            <apx-chart\r\n            [series]=\"chartOptions2?.series\"\r\n            [chart]=\"chartOptions2?.chart\"\r\n            [xaxis]=\"chartOptions2?.xaxis\"\r\n            [title]=\"chartOptions2?.title\"\r\n            [labels]=\"chartOptions2?.labels\"\r\n          ></apx-chart> \r\n        </div>    \r\n        </div>\r\n      </form> \r\n    </div>\r\n \r\n    <ngb-accordion #acc=\"ngbAccordion\" activeIds=\"ngb-panel-0\"   >\r\n      <ngb-panel *ngFor=\"let d of overViewData.setsData;let i=index\" [title]=\"d.name\" >\r\n        <ng-template ngbPanelContent>\r\n        <div class=\"row\">\r\n          <div class=\"col-6 border\">\r\n            <div class=\"row\">\r\n              <div class=\"col-12\">\r\n                <apx-chart\r\n                [series]=[d.percentageOfFailStudent,d.percentageOfPassStudent]\r\n                [chart]=\"{ height:200, type: 'pie' }\"\r\n                [xaxis]=\"chartOptions2?.xaxis\"\r\n                [title]=\"chartOptions?.title\"\r\n                [labels]=\"['PASS' ,'Fail']\"  \r\n              ></apx-chart>\r\n              </div>\r\n              <div class=\"col-12\">\r\n                <apx-chart\r\n                [series]=[d.percentOfUnattemptedStudent,d.percentOfAttemptedStudent]\r\n                [chart]=\"{ height:200, type: 'pie' }\"\r\n                [xaxis]=\"chartOptions2?.xaxis\"\r\n                [title]=\"chartOptions2?.title\"\r\n                [labels]=\"['Attempted' ,'NotAttempted']\"\r\n              ></apx-chart> \r\n              </div>\r\n            </div>\r\n          \r\n          \r\n         \r\n          </div>\r\n          <div class=\"col-6 \">\r\n            <h4 class=\"text-center\">Top Students</h4>\r\n\r\n            <div class=\"table-responsive text-nowrap\">\r\n              <table\r\n                class=\"table table-striped table-hover table-bordered table-sticky\"\r\n              >\r\n                <thead class=\"table-primary\">\r\n                  <tr>\r\n                    <th>Rank</th>\r\n                    <th>Name</th>\r\n                    <th>email</th>\r\n                    <th>Phone</th>\r\n                    \r\n                  </tr>\r\n                </thead>\r\n                <tbody>\r\n                  <tr *ngFor=\"let s of d.topStudent; let i = index\">\r\n                    <td>{{ s.rank }}</td>\r\n                    <td>{{ s.studentInfo[0].firstName +\" \" +s.studentInfo[0].lastName }}</td>\r\n                    <td>{{ s.studentInfo[0].email }}</td>\r\n                    <td>{{ s.studentInfo[0].phone }}</td>            \r\n                  </tr>\r\n                </tbody>\r\n              </table>\r\n            </div>\r\n\r\n          </div>\r\n        </div>\r\n        </ng-template>\r\n      </ngb-panel> </ngb-accordion>\r\n  \r\n  </div>\r\n</div>\r\n";
+
+/***/ }),
+
+/***/ 30148:
+/*!************************************************************************************!*\
+  !*** ./src/app/layout/seminars/studentList/seminar-list.component.html?ngResource ***!
+  \************************************************************************************/
+/***/ ((module) => {
+
+module.exports = "<div class=\"container-fluid animated fadeIn\">\r\n  <div class=\"card\">\r\n    <div class=\"card-header\">\r\n      <div class=\"row justify-content-between align-items-center\">\r\n        <div class=\"col-auto\">\r\n          <h3 class=\"mb-0\">Seminars</h3>\r\n        </div>\r\n        <div class=\"col-auto\">\r\n          <button\r\n            type=\"button\"\r\n            (click)=\"navigateTo('seminars/seminars-form', null, 'create')\"\r\n            class=\"btn btn-outline-primary\"\r\n          >\r\n            <i class=\"fa fa-plus-circle me-1\"></i>\r\n            Seminar\r\n          </button>\r\n        </div>\r\n      </div>\r\n    </div>\r\n\r\n    <div class=\"card-body\">\r\n      <div class=\"row mb-2\">\r\n        <div class=\"col-md-5\">\r\n          <form class=\"d-flex\">\r\n            <input\r\n              class=\"form-control\"\r\n              type=\"search\"\r\n              placeholder=\"Search\"\r\n              aria-label=\"Search\"\r\n              [(ngModel)]=\"search\"\r\n              [ngModelOptions]=\"{ standalone: true }\"\r\n              (keyup)=\"refreshList('search')\"\r\n            />\r\n            <button\r\n              class=\"btn btn-outline-danger\"\r\n              type=\"submit\"\r\n              (click)=\"refreshList('clear')\"\r\n              ngbTooltip=\"Clear Filter\"\r\n            >\r\n              <i class=\"fa fa-remove\"></i>\r\n            </button>\r\n          </form>\r\n        </div>\r\n      </div>\r\n      <div class=\"table-responsive text-nowrap\">\r\n        <table\r\n          class=\"table table-striped table-hover table-bordered table-sticky\"\r\n        >\r\n          <thead class=\"table-primary\">\r\n            <tr>\r\n              <th>Sr.No</th>\r\n              <th>Name</th>\r\n              <th>Type</th>\r\n              <th>College</th>\r\n              <th>Seminar Date</th>\r\n              <th>Description</th>\r\n              <th>Duration</th>\r\n              <th>Created At</th>\r\n              <th>Actions</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr *ngFor=\"let s of seminars; let i = index\">\r\n              <td>{{ pageSize * (page - 1) + (i + 1) }}</td>\r\n              <td>{{ s.name }}</td>\r\n              <td>{{ s.type }}</td>\r\n              <td>{{ s.college }}</td>\r\n              <td>{{ s.dateOfSeminar | date }}</td>\r\n              <td>{{ s.description }}</td>\r\n              <td>{{ s.duration }}</td>\r\n              <td>{{ s.createdAt | date }}</td>\r\n              <td>\r\n                <button\r\n                  (click)=\"navigateTo('/seminars/seminars-form', s._id, 'edit')\"\r\n                  class=\"btn btn-sm btn-outline-success mx-1\"\r\n                  ngbTooltip=\"Edit Seminar\"\r\n                >\r\n                  <i class=\"fa fa-pencil mx-1\"></i>\r\n                </button>\r\n                <button\r\n                  class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                  data-toggle=\"modal\"\r\n                  (click)=\"open(s, alertMsg)\"\r\n                  ngbTooltip=\"Delete Seminar\"\r\n                >\r\n                  <i class=\"fa fa-trash mx-1\"></i>\r\n                </button>\r\n                <button\r\n                class=\"btn btn-sm btn-outline-danger mx-1\"\r\n                data-toggle=\"modal\"\r\n                (click)=\"showQr(s, qrCodeModal)\"\r\n                ngbTooltip=\"Generate QR\"\r\n                >\r\n                <i class=\"fa fa-qrcode mx-1\" aria-hidden=\"true\"></i>\r\n                </button>\r\n                <button\r\n                (click)=\"navigateTo('/seminars/seminars-OverView', s._id, 'edit')\"\r\n                class=\"btn btn-sm btn-outline-success mx-1\"\r\n                ngbTooltip=\"Over View\"\r\n              >\r\n              <i class=\"fa fa-pie-chart\" aria-hidden=\"true\"></i>\r\n              </button>\r\n              </td>\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      </div>\r\n      <app-custom-pagination\r\n        [(page)]=\"page\"\r\n        [(pageSize)]=\"pageSize\"\r\n        [(collection)]=\"totalSeminars\"\r\n        (myOutput)=\"onChangePage(page)\"\r\n      ></app-custom-pagination>\r\n    </div>\r\n   \r\n  </div>\r\n</div>\r\n\r\n\r\n\r\n<ng-template #alertMsg let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    />\r\n    <h4 class=\"text-warning\">Are you sure you want to Delete ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #alertMsg1 let-modal>\r\n  <div class=\"row mt-3 me-3\">\r\n    <div class=\"col-md-10 col-sm-10\"></div>\r\n    <div class=\"col-md-2 col-sm-2 text-right\">\r\n      <button\r\n        type=\"button\"\r\n        class=\"close\"\r\n        data-dismiss=\"modal\"\r\n        aria-label=\"Close\"\r\n        (click)=\"modal.dismiss('Cross click')\"\r\n      >\r\n        <span aria-hidden=\"true\">&times;</span>\r\n      </button>\r\n    </div>\r\n  </div>\r\n  <div class=\"modal-body text-center px-0\">\r\n    <!-- <img\r\n      src=\"../../../../assets/img/warning.png\"\r\n      class=\"mb-3\"\r\n      width=\"100\"\r\n      alt=\"\"\r\n    /> -->\r\n   \r\n   \r\n  \r\n    <h4 class=\"text-warning\">Are you sure i want to show Qr code ?</h4>\r\n    <div class=\"clearfix modal-text\">\r\n      <label *ngIf=\"selectedRow.name\">\r\n        <h3>{{ selectedRow.name }}</h3>\r\n      </label>\r\n    </div>\r\n  </div>\r\n  <div class=\"model-footer border-0 text-center px-0 pb-4\">\r\n    <div class=\"clearfix py-2\">\r\n      <button\r\n        class=\"btn btn-danger me-2\"\r\n        (click)=\"deleteSeminarById(this.selectedRow._id)\"\r\n      >\r\n        OK\r\n      </button>\r\n      <button class=\"btn btn-success\" (click)=\"modal.dismiss('Cross click')\">\r\n        Cancel\r\n      </button>\r\n    </div>\r\n  </div>\r\n</ng-template>\r\n\r\n\r\n<ng-template #qrCodeModal let-modal>\r\n  <div class=\"modal-header\">\r\n    <h4 class=\"modal-title\">QR Code MODEL Show</h4>\r\n    <button type=\"button\" class=\"close\" aria-label=\"Close\" (click)=\"modal.dismiss('Cross click')\">\r\n      <span aria-hidden=\"true\">&times;</span>\r\n    </button>\r\n  </div>\r\n  <div class=\"modal-body text-center\">\r\n    <qrcode [qrdata]='qrCodeUrl'></qrcode>\r\n  </div>\r\n  <div class=\"modal-footer\">\r\n    <button type=\"button\" class=\"btn btn-secondary\" (click)=\"modal.close('Close click')\">Close</button>\r\n  </div>\r\n</ng-template>";
 
 /***/ }),
 
@@ -1174,4 +1354,4 @@ NgApexchartsModule.ɵinj = /* @__PURE__ */_angular_core__WEBPACK_IMPORTED_MODULE
 /***/ })
 
 }]);
-//# sourceMappingURL=src_app_layout_seminars_seminars_module_ts.974489d99a2a8ae5.js.map
+//# sourceMappingURL=src_app_layout_seminars_seminars_module_ts.97d0999186939b78.js.map
