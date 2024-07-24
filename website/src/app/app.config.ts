@@ -11,9 +11,8 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { jwtInterceptor } from './core/helpers/jwt.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
-
+import { LocationStrategy,HashLocationStrategy } from '@angular/common';
 registerLocaleData(en);
-
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
@@ -23,5 +22,9 @@ export const appConfig: ApplicationConfig = {
     importProvidersFrom(NgxSpinnerModule.forRoot()),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptors([jwtInterceptor])),
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy,
+    },
   ],
 };
