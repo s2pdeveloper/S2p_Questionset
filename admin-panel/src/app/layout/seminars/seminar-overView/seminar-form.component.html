@@ -3,9 +3,16 @@
     <div class="card-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-auto">
-          <h3 class="mb-0">Seminar OverView</h3>
+          <h3 class="mb-0">{{overViewData?.name}}</h3>
         </div>
+        
         <div class="col-auto">
+          <button type="button" class="btn btn-success" style="color:white;" (click)="goBack()">
+            <!-- <i class="fa fa-arrow-left me-1" aria-hidden="true"></i> -->
+            <i class="fa fa-graduation-cap " style="color: white;" aria-hidden="true"></i>
+           Student List
+          </button>
+
           <button type="button" class="btn btn-danger" (click)="goBack()">
             <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
             Back
@@ -17,43 +24,91 @@
       <form [formGroup]="seminarForm" class="form-horizontal">
         <label class="form-label">
           Seminar Name
-          <span class="text-danger">{{overViewData.name}}</span>
+          <span class="text-danger">{{overViewData?.name}}</span>
         </label>  
         <div class="row mt-5 d-flex justify-content-around">
-          <div class="col-md-6  border">
+          <div class="col-md-6  ">
             <apx-chart
-            [series]="chartOptions.series"
-            [chart]="chartOptions.chart"
-            [xaxis]="chartOptions.xaxis"
-            [title]="chartOptions.title"
-            [labels]="chartOptions.labels"
+            [series]="chartOptions?.series"
+            [chart]="chartOptions?.chart"
+            [xaxis]="chartOptions?.xaxis"
+            [title]="chartOptions?.title"
+            [labels]="chartOptions?.labels"
           ></apx-chart>    
           </div>
-          <div class="col-md-6 border">
+          <div class="col-md-6 ">
             <apx-chart
-            [series]="chartOptions2.series"
-            [chart]="chartOptions2.chart"
-            [xaxis]="chartOptions2.xaxis"
-            [title]="chartOptions2.title"
-            [labels]="chartOptions2.labels"
+            [series]="chartOptions2?.series"
+            [chart]="chartOptions2?.chart"
+            [xaxis]="chartOptions2?.xaxis"
+            [title]="chartOptions2?.title"
+            [labels]="chartOptions2?.labels"
           ></apx-chart> 
         </div>    
         </div>
       </form> 
     </div>
-    <div class="accordion" id="accordionExample">
-      <div class="accordion-item" *ngFor="let data of overViewData.setsData">
-        <h2 class="accordion-header" id="headingOne">
-         <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-           {{data.name}}
-          </button>
-        </h2>
-        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-          <div class="accordion-body">
-            <strong>This is the first item's accordion body.</strong> It is shown by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+ 
+    <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0"   >
+      <ngb-panel *ngFor="let d of overViewData.setsData;let i=index" [title]="d.name" >
+        <ng-template ngbPanelContent>
+        <div class="row">
+          <div class="col-6 border">
+            <div class="row">
+              <div class="col-12">
+                <apx-chart
+                [series]=[d.percentageOfFailStudent,d.percentageOfPassStudent]
+                [chart]="{ height:200, type: 'pie' }"
+                [xaxis]="chartOptions2?.xaxis"
+                [title]="chartOptions?.title"
+                [labels]="['PASS' ,'Fail']"  
+              ></apx-chart>
+              </div>
+              <div class="col-12">
+                <apx-chart
+                [series]=[d.percentOfUnattemptedStudent,d.percentOfAttemptedStudent]
+                [chart]="{ height:200, type: 'pie' }"
+                [xaxis]="chartOptions2?.xaxis"
+                [title]="chartOptions2?.title"
+                [labels]="['Attempted' ,'NotAttempted']"
+              ></apx-chart> 
+              </div>
+            </div>
+          
+          
+         
+          </div>
+          <div class="col-6 ">
+            <h4 class="text-center">Top Students</h4>
+
+            <div class="table-responsive text-nowrap">
+              <table
+                class="table table-striped table-hover table-bordered table-sticky"
+              >
+                <thead class="table-primary">
+                  <tr>
+                    <th>Rank</th>
+                    <th>Name</th>
+                    <th>email</th>
+                    <th>Phone</th>
+                    
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let s of d.topStudent; let i = index">
+                    <td>{{ s.rank }}</td>
+                    <td>{{ s.studentInfo[0].firstName +" " +s.studentInfo[0].lastName }}</td>
+                    <td>{{ s.studentInfo[0].email }}</td>
+                    <td>{{ s.studentInfo[0].phone }}</td>            
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
           </div>
         </div>
-      </div>
-    </div>
+        </ng-template>
+      </ngb-panel> </ngb-accordion>
+  
   </div>
 </div>

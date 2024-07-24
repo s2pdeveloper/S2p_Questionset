@@ -347,12 +347,12 @@ async function  questionSetAllData(req,seminarId,questionSetId){
       updatedAt:0,
       answers:0,
       __v:0,
-      "studentInfo.email":0,
+     
       "studentInfo.updatedAt":0,
       "studentInfo.createdAt":0,
       "studentInfo.seminarId":0,
       "studentInfo.degree":0,
-      "studentInfo.phone":0,
+     
       "studentInfo.isDelete":0,
       "studentInfo.branch":0,
       "studentInfo.__v":0,

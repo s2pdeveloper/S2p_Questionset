@@ -6,6 +6,11 @@ import { ReportPageComponent } from './report-page/report-page.component';
 import { ResultPageComponent } from './result-page/result-page.component';
 
 export const routes: Routes = [
+  // {
+  //   path: '',
+  //   redirectTo: 'test',
+  //   pathMatch:'full'
+  // },
   {
     path: 'login/:id',
     title: 'Login',

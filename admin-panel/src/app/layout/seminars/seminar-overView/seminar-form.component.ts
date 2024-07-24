@@ -20,6 +20,7 @@ export class SeminarOverViewComponent implements OnInit {
   notAttempted:any;
   chartOptions:any;
   chartOptions2:any;
+  setChart: any[] = [];
   seminarForm = this.formBuilder.group({
     _id: new FormControl(null),
     name: new FormControl('', [Validators.required]),
@@ -39,6 +40,8 @@ export class SeminarOverViewComponent implements OnInit {
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
+
+  
   
 
   
@@ -63,11 +66,8 @@ export class SeminarOverViewComponent implements OnInit {
       // this.seminarForm.patchValue(success.result);
       this.overViewData=success.result
       console.log("your form data in seminar over",this.overViewData)
-
-
     this.attempted= (this.overViewData.avgNoOfAttemptedStudent/ this.overViewData.NoOfStudent)*100;
     this.notAttempted= (this.overViewData.avgNoOfUnattemptedStudent/ this.overViewData.NoOfStudent)*100;
-
 
       this.chartOptions2 = {
         series:[this.attempted,this.notAttempted],
@@ -76,7 +76,7 @@ export class SeminarOverViewComponent implements OnInit {
           type: 'pie'
         },
         title: {
-          text: 'Participation Overview'
+          text: 'Participation '
         },
         labels:["Attempted" ,"Not Attempted"]        
       };
@@ -90,10 +90,42 @@ export class SeminarOverViewComponent implements OnInit {
         title: {
           text: 'RESULT'
         },
-        labels:["FAIL" ,"PASS"]
-       
-        
+        labels:["FAIL" ,"PASS"]  
       };
+
+   this.overViewData.setsData=this.overViewData.setsData.map((data)=>{
+  var percentOfAttemptedStudent=Number(data.noOfAttemptedStudent/data.totalStudent)*100
+  var percentOfUnattemptedStudent=Number(data.noOfUnattemptedStudent/data.totalStudent)*100
+   var newData={
+    ...data,
+    percentOfAttemptedStudent,percentOfUnattemptedStudent
+  }
+  return newData
+  })
+
+
+      // this.overViewData.setsData.forEach(element => {
+      //   console.log("@@@@@@@@@pushing the Data",element)
+      //   this.setChart.push(
+      //     {
+      //       series:[Number(element.percentageOfFailStudent),Number(element.percentageOfPassStudent)],
+      //       chart: {
+      //         height:200,
+      //         type: 'pie'
+      //       },
+      //       title: {
+      //         text: 'RESULT'
+      //       },
+      //       labels:["FAIL" ,"PASS"]  
+      //     }
+      //   )
+
+      //   console.log("your chRT",this.setChart)
+        
+      // });
+
+      console.log("***********your Set data of chart*******",this.setChart)
+     
     
     });
   }
@@ -134,7 +166,5 @@ export class SeminarOverViewComponent implements OnInit {
       });
   }
 
-  goBack() {
-    this.location.back();
-  }
+ 
 }

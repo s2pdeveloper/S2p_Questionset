@@ -18,4 +18,7 @@ export class HeaderComponent {
   viewReport() {
     this.router.navigate(['/report']);
   }
+  loginPage() {
+    this.router.navigate(['/login/15255']);
+  }
 }
