@@ -143,100 +143,103 @@
 
 <div class="limiter">
   <div class="container-register">
-    <div class="wrap-register">
-      <div class="register-pic">
-        <img src="../../assets/Checklist.jpg" alt="" />
+    <span class="register-form-title">Registration</span>
+    <div class="row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 left">
+            <img src="../../assets/register.png" class="img-fluid" alt="" />
       </div>
-      <form [formGroup]="regForm" class="register-form">
-        <span class="register-form-title">Registration</span>
-        <div class="row custom-row">
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="text"
-              formControlName="firstName"
-              placeholder="First Name"
-            />
+
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+        <form [formGroup]="regForm" class="register-form">
+          <div class="row custom-row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="text"
+                formControlName="firstName"
+                placeholder="First Name"
+              />
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="text"
+                formControlName="lastName"
+                placeholder="Last Name"
+              />
+            </div>
           </div>
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="text"
-              formControlName="lastName"
-              placeholder="Last Name"
-            />
+          <div class="row custom-row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="email"
+                formControlName="email"
+                placeholder="Email"
+              />
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="tel"
+                formControlName="phone"
+                placeholder="Phone Number"
+              />
+            </div>
           </div>
-        </div>
-        <div class="row custom-row">
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="email"
-              formControlName="email"
-              placeholder="Email"
-            />
+          <div class="row custom-row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <select class="form-select input100" formControlName="gender">
+                <option value="" disabled>Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="text"
+                formControlName="college"
+                placeholder="College"
+              />
+            </div>
           </div>
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="tel"
-              formControlName="phone"
-              placeholder="Phone Number"
-            />
+          <div class="row custom-row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <select class="form-select input100" formControlName="degree">
+                <option value="" disabled>Select Department</option>
+                <option [value]="d.value" *ngFor="let d of degree">
+                  {{ d.label }}
+                </option>
+              </select>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <select class="form-select input100" formControlName="branch">
+                <option value="" disabled>Select Branch</option>
+                <option [value]="b.value" *ngFor="let b of branch">
+                  {{ b.label }}
+                </option>
+              </select>
+            </div>
           </div>
-        </div>
-        <div class="row custom-row">
-          <div class="col-md-6 custom-input">
-            <select class="form-select input100" formControlName="gender">
-              <option value="" disabled>Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
+          <div class="row custom-row justify-content-center">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
+              <input
+                class="input100"
+                type="text"
+                formControlName="semester"
+                placeholder="Semester"
+              />
+            </div>
           </div>
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="text"
-              formControlName="college"
-              placeholder="College"
-            />
+          <div class="container-register-form-btn">
+            <button class="register-form-btn" (click)="register()">
+              Register
+            </button>
           </div>
-        </div>
-        <div class="row custom-row">
-          <div class="col-md-6 custom-input">
-            <select class="form-select input100" formControlName="degree">
-              <option value="" disabled>Select Department</option>
-              <option [value]="d.value" *ngFor="let d of degree">
-                {{ d.label }}
-              </option>
-            </select>
-          </div>
-          <div class="col-md-6 custom-input">
-            <select class="form-select input100" formControlName="branch">
-              <option value="" disabled>Select Branch</option>
-              <option [value]="b.value" *ngFor="let b of branch">
-                {{ b.label }}
-              </option>
-            </select>
-          </div>
-        </div>
-        <div class="row custom-row justify-content-center">
-          <div class="col-md-6 custom-input">
-            <input
-              class="input100"
-              type="text"
-              formControlName="semester"
-              placeholder="Semester"
-            />
-          </div>
-        </div>
-        <div class="container-register-form-btn">
-          <button class="register-form-btn" (click)="register()">
-            Register
-          </button>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
   </div>
 </div>

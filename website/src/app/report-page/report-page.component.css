@@ -1,19 +1,19 @@
+*{
+  font-family: Champion Gothic;
+}
 .card-header {
   background: linear-gradient(45deg, #3b8dff, #1a53ff);
 }
 
 .heading{
-  font-family: Champion Gothic;
   font-size: 2rem;
   margin: 0.2rem;
 }
 
 .head{
-  font-family: Champion Gothic;
   font-size: 1.5rem;
 }
 .subhead{
-  font-family: Champion Gothic;
     font-size: 1rem;
     margin: 0;
 }
@@ -26,7 +26,6 @@
 
 .correct-option, .student-answer {
   color: #5e5e5e;
-  font-family: Champion Gothic;
   font-size: 0.9rem;
   margin: 0;
 }
@@ -34,7 +33,6 @@
 .result,
 .result:focus {
   font-size: 16px;
-  font-family: Champion Gothic;
   color: #fff;
   padding: 5px 30px;
   border-radius: 0.7rem;
@@ -57,5 +55,41 @@
 .btn-secondary {
   background-color: #6c757d;
   border-color: #6c757d;
-  font-family: Champion Gothic;
+}
+
+@media(max-width:768px){
+  
+.heading{
+  font-size: 1.5rem;
+}
+
+.head{
+  font-size: 1rem;
+}
+.subhead{
+    font-size: 0.8rem;
+}
+
+.list-group-item {
+  border-bottom: 1px solid #ddd;
+}
+
+
+.correct-option, .student-answer {
+  font-size: 0.9rem;
+}
+
+.result,
+.result:focus {
+  font-size: 10px;
+  padding: 3px 10px;
+  border-radius: 0.4rem;
+  margin: 2px;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+  font-size: 10px;
+}
 }
