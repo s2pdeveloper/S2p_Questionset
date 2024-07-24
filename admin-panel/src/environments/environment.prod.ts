@@ -5,5 +5,4 @@ export const environment = {
 
   // apiEndpoint: './api/v1/admin/',
   //  QrCodeUrl:" http://localhost:2024"
-   
 };
