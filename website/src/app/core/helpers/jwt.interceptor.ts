@@ -11,5 +11,16 @@ export const jwtInterceptor: HttpInterceptorFn = (
   next: HttpHandlerFn
 ): Observable<HttpEvent<any>> => {
   console.log('In Interceptor', req);
-  return next(req);
+  
+  const token = localStorage.getItem('token'); // Retrieve the token from localStorage
+
+
+    const clonedReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return next(clonedReq);
+
+  // return next(req);
 };

@@ -38,6 +38,7 @@ const customerobj = {
       throw new Error(e);
     }
   },
+
   getVisibleQuestionSet: async (req, res) => {
     try {
       const seminarId = req.query.id;
@@ -95,8 +96,13 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
+      const result=await Result.findOne({studentId:req.user._id,questionSetId:data._id})
+      data.isAlreadySubmited=false
+      if(result){
+        data.isAlreadySubmited=true
+      }
+     
 
       console.log('your data', data.option);
       return res.success({ data });

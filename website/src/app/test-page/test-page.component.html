@@ -48,8 +48,8 @@
           </div>
         </div>
         <div class="card-footer text-center">
-          <button class="startTest" (click)="startTest()">
-            Start Test
+          <button class="startTest" (click)="startTest()" [disabled]="data.isAlreadySubmited">
+            {{ data.isAlreadySubmited ? 'Completed' : 'Start Test' }}
           </button>
         </div>
       </div>

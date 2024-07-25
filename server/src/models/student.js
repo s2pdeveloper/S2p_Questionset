@@ -37,7 +37,6 @@ const StudentSchema = mongoose.Schema(
       type: String,
       required: false,
     },
-
     degree: {
       type: String,
       required: true,
@@ -53,8 +52,8 @@ const StudentSchema = mongoose.Schema(
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Seminar',
-      required: true, 
-    }
+      required: true,
+    },
   },
 
   {
@@ -91,5 +90,4 @@ StudentSchema.methods.genToken = function () {
 // });
 
 const Student = mongoose.model('Student', StudentSchema);
-module.exports=Student;
-
+module.exports = Student;
