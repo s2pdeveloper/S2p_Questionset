@@ -12,13 +12,13 @@ import { StudentService } from '../services/student.service';
 export class HeaderComponent {
   constructor(private router: Router, private studentService: StudentService) {}
   attemptTest() {
-    this.router.navigate(['/test']);
+    this.router.navigate(['default/test']);
   }
 
   viewReport() {
-    this.router.navigate(['/report']);
+    this.router.navigate(['default/report']);
   }
   loginPage() {
-    this.router.navigate(['/login/15255']);
+    this.router.navigate(['default/login/15255']);
   }
 }

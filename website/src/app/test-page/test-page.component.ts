@@ -58,7 +58,7 @@ export class TestPageComponent implements OnDestroy {
 
   startTest(): void {
     this.startButton = true;
-    this.timer = this.data?.duration * 60 * 60;
+    this.timer = this.data?.duration*60 ;
     this.startTimer();
   }
 
@@ -86,6 +86,8 @@ export class TestPageComponent implements OnDestroy {
         }:${seconds < 10 ? '0' + seconds : seconds}`;
 
         if (this.timer === 0) {
+          console.log("********************completed Test Auto Submit************")
+          this.submit()
           this.destroy.next('');
           this.destroy.complete();
         }
@@ -122,7 +124,7 @@ export class TestPageComponent implements OnDestroy {
     this.studentService.submitTest(payload).subscribe((success: any) => {
       console.log('Submit success', success);
 
-      this.router.navigate(['/result'], {
+      this.router.navigate(['default/result'], {
         queryParams: {
           questionSetId: this.data?._id,
         },

@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('token', success?.result?.token);
         localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
         this.loginForm.reset();
-        this.router.navigate(['/test']);
+        this.router.navigate(['default/test']);
       },
       (error) => {
         this.spinner.hide();

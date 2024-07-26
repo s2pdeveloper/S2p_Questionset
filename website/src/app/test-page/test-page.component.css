@@ -1,32 +1,31 @@
-.heading{
+*{
     font-family: Champion Gothic;
+}
+.heading{
     font-size: 2rem;
     margin: 0.2rem;
 }
 
 .head{
-    font-family: Champion Gothic;
     font-size: 1rem;
     margin: 0;
 }
 
 .text{
-    font-family: Champion Gothic;
     font-size: 1rem;
     margin: 0;
 }
 .badge{
-    font-family: Champion Gothic;
     font-size: 1rem;
 }
 
 .card-footer{
     padding: 0.5rem;
+    border-bottom: 3px solid #ff3939;
 }
 .startTest,
 .startTest:focus {
   font-size: 20px;
-  font-family: Champion Gothic;
   color: #fff;
   padding: 5px 30px;
   border-radius: 0.7rem;
@@ -44,3 +43,84 @@
   transform: translate(0, 0);
   border-bottom: 2px solid rgb(50, 50, 50);
 }
+
+.cardFooter2{
+    margin-bottom: -19px;
+    width: 1295px;
+    margin-left: -16px;
+    padding: 0.5rem;
+    border-bottom: 3px solid #ff3939;
+}
+
+
+@media (max-width:480px) {
+    .heading{
+        font-size: 1rem;
+        margin: 0.1rem;
+    }
+    
+    .head{
+        font-size: 0.8rem;
+        margin: 0;
+    }
+    
+    .text{
+        font-size: 0.8rem;
+        margin: 0;
+        text-align: justify;
+    }    
+    .card-footer{
+        padding: 0.2rem;
+        border-bottom: 2px solid #ff3939;
+    }
+    .startTest{
+        font-size: 10px;
+        padding: 2px 20px;
+        border-radius: 0.4rem;
+        margin: 5px;
+    }
+
+  }
+  @media (max-width:1400px) {
+    .cardFooter2{
+        margin-bottom: -19px;
+        width: 933px;
+        margin-left: -16px;
+        padding: 0.5rem;
+    }
+  }
+
+  @media (max-width:992px) {
+    .cardFooter2{
+        margin-bottom: -19px;
+        width: 694px;
+        margin-left: -16px;
+        padding: 0.5rem;
+    }
+    .badge{
+        font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width:768px) {
+    .cardFooter2{
+        margin-bottom: -19px;
+        width: 400px;
+        margin-left: -16px;
+        padding: 0.5rem;
+    }
+    .badge{
+        font-size: 0.5rem;
+    }
+  }
+  @media (max-width:425px) {
+    .cardFooter2{
+        margin-bottom: -19px;
+        width: 294px;
+        margin-left: -16px;
+        padding: 0.5rem;
+    }
+    .badge{
+        font-size: 0.5rem;
+    }
+  }

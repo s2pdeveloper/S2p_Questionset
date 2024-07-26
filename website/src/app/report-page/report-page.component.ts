@@ -67,7 +67,7 @@ export class ReportPageComponent implements OnInit {
   }
 
   viewDetails(currentSet: any) {
-    this.router.navigate(['/result'], {
+    this.router.navigate(['default/result'], {
       queryParams: {
         questionSetId: currentSet?.questionSet?._id,
         resultData: JSON.stringify(currentSet?.result),

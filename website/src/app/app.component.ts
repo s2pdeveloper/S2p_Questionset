@@ -4,11 +4,12 @@ import { RegisterComponent } from './register/register.component';
 import { TestPageComponent } from './test-page/test-page.component';
 import { ReportPageComponent } from './report-page/report-page.component';
 import { HeaderComponent } from './header/header.component';
+import { DefaultLayoutComponent } from './default-layout/default-layout.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent, HeaderComponent],
+  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent, HeaderComponent,DefaultLayoutComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
