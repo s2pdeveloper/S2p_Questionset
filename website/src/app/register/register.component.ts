@@ -122,7 +122,7 @@ export class RegisterComponent implements OnInit {
         localStorage.setItem('token', success?.token);
         this.toastService.success(success?.message);
         this.regForm.reset();
-        this.router.navigate(['/test']);
+        this.router.navigate(['default/test']);
       },
       (error) => {
         this.spinner.hide();
