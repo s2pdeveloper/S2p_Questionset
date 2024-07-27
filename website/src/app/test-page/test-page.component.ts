@@ -6,11 +6,13 @@ import { Subject, takeUntil, timer } from 'rxjs';
 import { StudentService } from '../services/student.service';
 import { HeaderComponent } from '../header/header.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-test-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HeaderComponent],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule, HeaderComponent,NgxSpinnerModule],
   templateUrl: './test-page.component.html',
   styleUrl: './test-page.component.css',
 })
@@ -24,7 +26,9 @@ export class TestPageComponent implements OnDestroy {
     private zone: NgZone,
     private router: Router,
     private studentService: StudentService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private spinner: NgxSpinnerService
+
   ) {}
 
   destroy = new Subject();
@@ -48,11 +52,14 @@ export class TestPageComponent implements OnDestroy {
     let params = {
       id: this.seminarId,
     };
+    console.log("***opening Loader********")
+    this.spinner.show()
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       console.log('Set Details', success);
       this.data = success?.result?.data;
       this.questions = success?.result?.data?.questions;
       this.selectedAnswers = new Array(this.questions.length).fill('');
+      this.spinner.hide()
     });
   }
 

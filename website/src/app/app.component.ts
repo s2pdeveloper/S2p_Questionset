@@ -5,11 +5,17 @@ import { TestPageComponent } from './test-page/test-page.component';
 import { ReportPageComponent } from './report-page/report-page.component';
 import { HeaderComponent } from './header/header.component';
 import { DefaultLayoutComponent } from './default-layout/default-layout.component';
+// import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgxSpinnerModule } from 'ngx-spinner';
+
+
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent, HeaderComponent,DefaultLayoutComponent],
+  imports: [RouterOutlet, RouterLink, RegisterComponent, TestPageComponent, ReportPageComponent, HeaderComponent,DefaultLayoutComponent,
+    NgxSpinnerModule,],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

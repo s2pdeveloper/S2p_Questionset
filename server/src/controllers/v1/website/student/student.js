@@ -14,9 +14,14 @@ const customerobj = {
       console.log('Your Data******' , req.body);
       const data = req.body;
       data.seminarId = req.params.id;
-      const existing = await Student.findOne({ email: req.body.email });
+      const existing = await Student.findOne({
+        $or: [
+          { email: req.body.email },
+          { phone: req.body.phone }
+        ]
+      });
       if (existing) {
-        const errors = 'Email Already Exist';
+        const errors = 'Email Or Number Already Exist';
         return res.serverError(errors);
       }
       delete data.id;

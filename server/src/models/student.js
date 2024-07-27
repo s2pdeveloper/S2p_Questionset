@@ -31,6 +31,7 @@ const StudentSchema = mongoose.Schema(
     phone: {
       type: Number,
       required: true,
+      unique:true,
     },
 
     college: {
