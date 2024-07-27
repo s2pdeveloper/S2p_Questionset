@@ -44,6 +44,9 @@ export class ResultPageComponent implements OnInit {
   status: string = '';
 
   topStudents: any[] = [];
+ 
+  name:any;
+  nameLast:any;
 
   // totalQuestions: number = 10;
   // questionsAttempted: number = 9;
@@ -91,6 +94,8 @@ export class ResultPageComponent implements OnInit {
       this.passPercentage = success?.percentageOfPassStudent;
       this.failPercentage = success?.percentageOfFailStudent;
       this.marksObtained = success?.student?.obtainMarks;
+      this.name = success?.student?.studentInfo.firstName;
+     
       this.rank = success?.student?.rank;
       this.status = success?.student?.status;
       this.topStudents = success?.topStudent;
@@ -98,6 +103,8 @@ export class ResultPageComponent implements OnInit {
       this.calculateMarksPercentage();
       // this.calculateQuesAttemptPercentage();
     });
+
+ 
   }
 
   processResultData(result: any) {
@@ -112,6 +119,8 @@ export class ResultPageComponent implements OnInit {
     this.failPercentage = result?.percentageOfFailStudent;
     this.totalMarks = result?.student?.maxScore;
     this.passingMarks = result?.student?.passingMarks;
+    this.name=result?.student?.studentInfo.firstName;
+    this.nameLast=result?.student?.studentInfo.lastName;
     this.marksObtained = result?.student?.obtainMarks;
     this.rank = result?.student?.rank;
     this.status = result?.student?.status;
@@ -138,7 +147,7 @@ export class ResultPageComponent implements OnInit {
   }
 
   nextSet() {
-    this.router.navigate(['/test']);
+    this.router.navigate(['default/test']);
   }
 
   // calculateQuesAttemptPercentage() {

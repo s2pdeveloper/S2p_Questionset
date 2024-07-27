@@ -537,6 +537,13 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     },
   }
 
+  const unwindStage={
+    $unwind:"$studentInfo"
+  }
+  
+
+
+
   const projectStage= {
     $project: {
       seminarId:0, 
@@ -564,7 +571,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
   //     data: [{ $skip: skip }, { $limit: pageSize }],
   //   },
   // };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
+  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,unwindStage,projectStage];
 
   const resp = await Result.aggregate(pipeline);
 
@@ -577,7 +584,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     if (item.studentId.equals(studentId)) {
       student = { ...item, rank: index + 1 };
     }
-    if (index < top) {
+    if (index < top  && item.status=="PASS") {
       topStudent.push(item);
     }
   });

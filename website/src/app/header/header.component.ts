@@ -18,7 +18,9 @@ export class HeaderComponent {
   viewReport() {
     this.router.navigate(['default/report']);
   }
-  loginPage() {
-    this.router.navigate(['default/login/15255']);
+  logOut() {
+    localStorage.clear();
+    this.router.navigate(['/login']);
   }
+  
 }
