@@ -46,7 +46,9 @@ export class ReportPageComponent implements OnInit {
         console.log('*********showing the spinnner**********');
 
         this.currentQuestionSet = null;
+        this.spinner.hide();
       }
+      this.spinner.hide();
     });
   }
 
