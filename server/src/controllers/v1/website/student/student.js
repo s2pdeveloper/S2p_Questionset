@@ -388,7 +388,7 @@ const customerobj = {
         if (item.studentId.equals(studentId)) {
           student = { ...item, rank: index + 1 };
         }
-        if (index < top) {
+        if (index < top && item.status=="PASS") {
           topStudent.push(item);
         }
       });
