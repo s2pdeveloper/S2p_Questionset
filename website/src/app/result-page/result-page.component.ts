@@ -95,7 +95,7 @@ export class ResultPageComponent implements OnInit {
       this.failPercentage = success?.percentageOfFailStudent;
       this.marksObtained = success?.student?.obtainMarks;
       this.name = success?.student?.studentInfo.firstName;
-     
+      this.nameLast=success?.student?.studentInfo.lastName;
       this.rank = success?.student?.rank;
       this.status = success?.student?.status;
       this.topStudents = success?.topStudent;
