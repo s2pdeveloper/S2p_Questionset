@@ -381,7 +381,11 @@ const customerobj = {
         if (item.status == 'PASS') {
           noOfPassStudent++;
         }
-        if (item.studentId == studentId) {
+
+        console.log("checking The Way");
+
+        console.log("***+++++++++++++++++checking Student+++++++++++++++***"+item.studentId == studentId+"studentId",studentId)
+        if (item.studentId.equals(studentId)) {
           student = { ...item, rank: index + 1 };
         }
         if (index < top) {

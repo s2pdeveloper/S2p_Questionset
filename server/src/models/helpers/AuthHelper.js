@@ -35,13 +35,12 @@ const verifyJwt = async (token, roles, force) => {
       };
     }
     if (jwtPayload && jwtPayload.id) {
-      console.log(jwtPayload.id);
+     
       const existingUser = await User.findOne({
         _id: new mongoose.Types.ObjectId(jwtPayload.id),
         status: { $ne: OPTIONS.defaultStatus.DELETED },
       });
 
-      console.log('your found by token', existingUser);
       if (
         existingUser &&
         ![OPTIONS.defaultStatus.ACTIVE].includes(existingUser.status)
@@ -86,13 +85,13 @@ const verifyJwtStudent = async (token, roles, force) => {
       };
     }
     if (jwtPayload && jwtPayload.id) {
-      console.log(jwtPayload.id);
+   
       const existingUser = await Student.findOne({
         _id: new mongoose.Types.ObjectId(jwtPayload.id),
         status: { $ne: OPTIONS.defaultStatus.DELETED },
       });
 
-      console.log('your found by token of Student', existingUser);
+    
       if (
         !existingUser
       ) {
@@ -124,7 +123,7 @@ exports.verifyJwt = verifyJwtStudent;
 
 exports.authenticateJWT = function (roles, force = true) {
   return function (req, res, next) {
-    console.log('authenticator run');
+    // console.log('authenticator run');
     let authHeader = req.headers.authorization;
     //  console.log("authentication function running Header",authHeader);
     if (authHeader) {
@@ -133,7 +132,7 @@ exports.authenticateJWT = function (roles, force = true) {
       // console.log("your token",token)
       console.log('your token', token);
 
-     console.log("your studetn role true or not  ",roles.includes("STUDENT"),'and your role',roles)
+    //  console.log("your studetn role true or not  ",roles.includes("STUDENT"),'and your role',roles)
 
       if(!roles.includes("STUDENT")){
         return verifyJwt(token, roles, force).then((checkAuth) => {
@@ -146,7 +145,7 @@ exports.authenticateJWT = function (roles, force = true) {
           }
         });
       }else{
-         console.log("****checking student****")
+        //  console.log("****checking student****")
         return verifyJwtStudent(token, roles, force).then((checkAuth) => {
           if (checkAuth.status === resCode.HTTP_OK) {
             req.authenticated = true;
