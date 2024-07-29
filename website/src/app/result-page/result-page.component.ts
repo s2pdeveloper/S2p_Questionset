@@ -4,11 +4,13 @@ import { StudentService } from '../services/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { CommonModule } from '@angular/common';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 @Component({
   selector: 'app-result-page',
   standalone: true,
-  imports: [NzProgressModule, HeaderComponent, CommonModule],
+  imports: [NzProgressModule, HeaderComponent, CommonModule,NgxSpinnerModule],
   templateUrl: './result-page.component.html',
   styleUrl: './result-page.component.css',
 })
@@ -16,7 +18,8 @@ export class ResultPageComponent implements OnInit {
   constructor(
     private router: Router,
     private studentService: StudentService,
-    private actRoute: ActivatedRoute
+    private actRoute: ActivatedRoute,
+    private spinner: NgxSpinnerService,
   ) {}
 
   questionSetId: string | null = null;
@@ -52,6 +55,7 @@ export class ResultPageComponent implements OnInit {
   // questionsAttempted: number = 9;
 
   ngOnInit(): void {
+    this.spinner.show();
     this.actRoute.queryParams.subscribe((params: any) => {
       console.log('Report Params *********', params);
       this.questionSetId = params.questionSetId;
@@ -102,9 +106,10 @@ export class ResultPageComponent implements OnInit {
       this.calculatePercentages();
       this.calculateMarksPercentage();
       // this.calculateQuesAttemptPercentage();
+      this.spinner.hide();
     });
 
- 
+  
   }
 
   processResultData(result: any) {
@@ -127,6 +132,8 @@ export class ResultPageComponent implements OnInit {
     this.topStudents = result?.topStudent;
     this.calculatePercentages();
     this.calculateMarksPercentage();
+    this.spinner.hide();
+    
   }
 
   calculatePercentages(): void {
@@ -138,6 +145,7 @@ export class ResultPageComponent implements OnInit {
       this.attemptPercentage = 0;
       this.notAttemptPercentage = 0;
     }
+   
   }
 
   calculateMarksPercentage() {
