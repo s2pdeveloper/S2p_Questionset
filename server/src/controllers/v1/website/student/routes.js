@@ -13,6 +13,7 @@ app.post('/submitTest',AuthHelper.authenticateJWT(["STUDENT"]),Student.submitTes
 app.get('/getResultByQuestionSetId/:id',AuthHelper.authenticateJWT(["STUDENT"]),Student.getResultByQuestionSetId)
 app.post('/rankedResult',AuthHelper.authenticateJWT(["STUDENT"]),Student.rankedResult);
 app.post('/allResultOfStudent',AuthHelper.authenticateJWT(["STUDENT"]), Student.allResultOfStudent);
+app.post('/Otplogin', Student.loginOtp);
 app.post('/:id', Student.registerStudent);
 
 module.exports = app;

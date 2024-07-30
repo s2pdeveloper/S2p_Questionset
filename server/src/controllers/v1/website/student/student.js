@@ -1,4 +1,3 @@
-
 const Student = require('../../../../models/student');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
@@ -6,19 +5,16 @@ const mongoose = require('mongoose');
 const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
-
+const EmailHelper = require('../../../../models/helpers/EmailHelper');
 
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      console.log('Your Data******' , req.body);
+      console.log('Your Data******', req.body);
       const data = req.body;
       data.seminarId = req.params.id;
       const existing = await Student.findOne({
-        $or: [
-          { email: req.body.email },
-          { phone: req.body.phone }
-        ]
+        $or: [{ email: req.body.email }, { phone: req.body.phone }],
       });
       if (existing) {
         const errors = 'Email Or Number Already Exist';
@@ -29,10 +25,9 @@ const customerobj = {
       const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
-      
 
         res.status(201).json({
-          message: "Registration Successful",
+          message: 'Registration Successful',
           studentId: student._id,
           token: token,
         });
@@ -102,12 +97,14 @@ const customerobj = {
       ];
       const resp = await QuestionSet.aggregate(pipeline);
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
-      const result=await Result.findOne({studentId:req.user._id,questionSetId:data._id})
-      data.isAlreadySubmited=false
-      if(result){
-        data.isAlreadySubmited=true
+      const result = await Result.findOne({
+        studentId: req.user._id,
+        questionSetId: data._id,
+      });
+      data.isAlreadySubmited = false;
+      if (result) {
+        data.isAlreadySubmited = true;
       }
-     
 
       console.log('your data', data.option);
       return res.success({ data });
@@ -216,10 +213,10 @@ const customerobj = {
       });
 
       if (existing) {
-      return  res.status(409).json({
-          success:false,
-          message:"Test Already Submited"
-        })
+        return res.status(409).json({
+          success: false,
+          message: 'Test Already Submited',
+        });
       }
 
       // Create result data object
@@ -248,20 +245,50 @@ const customerobj = {
   login: async (req, res) => {
     try {
       console.log('hit the login of student');
-      const { phone } = req.body;
-     
+      const { phone, otp } = req.body;
       const user = await Student.findOne({ phone: phone });
-      console.log("***checking user****",user)
+      console.log('your student', user.otp == otp);
+      
+      if (!(user.otp==otp)) {
+        console.log("*** otp not matched***")
+        const errors = 'Invalid OTP';
+        return res.serverError(errors);
+      }
+      const token = user.genToken();
+      user.otp = null;
+      await user.save();
+      const data = { message: 'Login successful', user: user, token: token };
+      res.success(data);
+    } catch (error) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(error);
+    }
+  },
+
+  loginOtp: async (req, res) => {
+    try {
+      console.log('hit the send OTP of student');
+      const { phone } = req.body;
+
+      const user = await Student.findOne({ phone: phone });
+      console.log('***checking user****', user);
       console.log('your student', user);
       if (!user) {
-        const errors = MESSAGES.apiErrorStrings.USER_NOT_EXISTS;
+        const errors = "Invalid Credentials";
         return res.serverError(errors);
-        throw new Error(errors);
       }
+      let otp = Math.floor(1000 + Math.random() * 9000);
+      await Student.findOneAndUpdate({ phone: phone }, { otp: otp });
 
-      const token = user.genToken();
-      const data = { message:"Login successful", user: user, token: token };
-
+      let data = {
+        userName: `${user.firstName} ${user.lastName}`,
+        email: user.email,
+        temp: 'resetOTP.html',
+        subject: 'LOGIN OTP',
+        otp: otp,
+      };
+      const email = EmailHelper.sendMail(data);
       res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -274,7 +301,7 @@ const customerobj = {
     try {
       const questionSetId = req.params.id;
       const studentId = req.user ? req.user._id : req.body.studentId;
-     
+
       const result = await Result.findOne({
         studentId: studentId,
         questionSetId: questionSetId,
@@ -292,17 +319,12 @@ const customerobj = {
 
   rankedResult: async (req, res) => {
     try {
-      let {
-        page = 1,
-        pageSize = 9999,
-        direction = -1,
-      } = req.query;
+      let { page = 1, pageSize = 9999, direction = -1 } = req.query;
 
       const questionSetId = req.body.questionSetId;
-      const existing=await QuestionSet.findById(questionSetId);
-      if(!existing){
-
-      const errors = "Question set Not Exist";
+      const existing = await QuestionSet.findById(questionSetId);
+      if (!existing) {
+        const errors = 'Question set Not Exist';
         return res.serverError(errors);
       }
       const studentId = req.user ? req.user._id : req.body.studentId;
@@ -342,26 +364,25 @@ const customerobj = {
         },
       };
 
-      const project={  
-          $project: {
-            maxScore: 0,
-            passingMarks:0,
-            answers:0,
-            createdAt:0,
-            updatedAt:0,
-            seminarId:0,
-            questionsetId:0,
-            __v:0,
-            "studentInfo.createdAt":0,
-            "studentInfo.updatedAt":0,
-            "studentInfo.isDelete":0,
-            "studentInfo.degree":0,
-            "studentInfo.seminarId":0,
-            "studentInfo.__v":0,
-            "studentInfo.branch":0,
-          },
-        
-      }
+      const project = {
+        $project: {
+          maxScore: 0,
+          passingMarks: 0,
+          answers: 0,
+          createdAt: 0,
+          updatedAt: 0,
+          seminarId: 0,
+          questionsetId: 0,
+          __v: 0,
+          'studentInfo.createdAt': 0,
+          'studentInfo.updatedAt': 0,
+          'studentInfo.isDelete': 0,
+          'studentInfo.degree': 0,
+          'studentInfo.seminarId': 0,
+          'studentInfo.__v': 0,
+          'studentInfo.branch': 0,
+        },
+      };
 
       const unwindStage = {
         $unwind: '$studentInfo', // Unwind to get each studentInfo object separately
@@ -375,20 +396,25 @@ const customerobj = {
         { $sort: { obtainMarks: -1 } },
       ];
       const resp = await Result.aggregate(pipeline);
-      console.log("your resp",resp)
+      console.log('your resp', resp);
       resp.forEach((item, index) => {
         item.rank = index + 1;
         if (item.status == 'PASS') {
           noOfPassStudent++;
         }
 
-        console.log("checking The Way");
+        console.log('checking The Way');
 
-        console.log("***+++++++++++++++++checking Student+++++++++++++++***"+item.studentId == studentId+"studentId",studentId)
+        console.log(
+          '***+++++++++++++++++checking Student+++++++++++++++***' +
+            item.studentId ==
+            studentId + 'studentId',
+          studentId
+        );
         if (item.studentId.equals(studentId)) {
           student = { ...item, rank: index + 1 };
         }
-        if (index < top && item.status=="PASS") {
+        if (index < top && item.status == 'PASS') {
           topStudent.push(item);
         }
       });
@@ -401,8 +427,12 @@ const customerobj = {
       noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
       noOfFailStudent = totalStudent - noOfPassStudent;
 
-      percentageOfFailStudent =Number(((noOfFailStudent / totalStudent)* 100).toFixed(0));
-      percentageOfPassStudent = Number(((noOfPassStudent / totalStudent)* 100).toFixed(0));
+      percentageOfFailStudent = Number(
+        ((noOfFailStudent / totalStudent) * 100).toFixed(0)
+      );
+      percentageOfPassStudent = Number(
+        ((noOfPassStudent / totalStudent) * 100).toFixed(0)
+      );
 
       res.status(200).json({
         totalStudent,
@@ -426,13 +456,11 @@ const customerobj = {
 
   allResultOfStudent: async (req, res) => {
     try {
-
       const studentId = req.body.studentId;
       const seminarId = req.body.seminarId;
       const Results = [];
       const results = await Result.find({ studentId, seminarId });
-      for (const eachResult of results)
-     {
+      for (const eachResult of results) {
         const questionSetId = eachResult.questionSetId;
         const matchStage = {
           $match: {
@@ -448,47 +476,46 @@ const customerobj = {
           },
         };
 
-        const projectStage={
-          $project:{
-            createdAt:0,
-            updatedAt:0,
-            __v:0,
-            isClose:0,
-            isVisible:0,
-            serialNumber:0,
-            "questions.updatedAt":0,
-            "questions.createdAt":0,
-            "questions.__v":0
-          }
-        }
+        const projectStage = {
+          $project: {
+            createdAt: 0,
+            updatedAt: 0,
+            __v: 0,
+            isClose: 0,
+            isVisible: 0,
+            serialNumber: 0,
+            'questions.updatedAt': 0,
+            'questions.createdAt': 0,
+            'questions.__v': 0,
+          },
+        };
 
-        const pipeline = [matchStage, lookupStage,projectStage];
+        const pipeline = [matchStage, lookupStage, projectStage];
         const resp = await QuestionSet.aggregate(pipeline);
 
-      
         const data = {
           questionSet: resp[0],
         };
 
-        data.result = await resultOverView(  
+        data.result = await resultOverView(
           req,
           eachResult.questionSetId,
           eachResult.studentId,
           eachResult.seminarId
         );
 
-       //appending the student answer to particular question of question_set
-     data.result.student.answers.map((answer)=>{
-             data.questionSet.questions.forEach((question)=>{
-              if(Object.keys(answer)[0]==question._id){
-                question.studentAnswer=answer[Object.keys(answer)[0]];
-              }
-             })
-     })
-        Results.push(data);//appending the data to results array 
+        //appending the student answer to particular question of question_set
+        data.result.student.answers.map((answer) => {
+          data.questionSet.questions.forEach((question) => {
+            if (Object.keys(answer)[0] == question._id) {
+              question.studentAnswer = answer[Object.keys(answer)[0]];
+            }
+          });
+        });
+        Results.push(data); //appending the data to results array
       }
 
-      console.log("result",Result)
+      console.log('result', Result);
 
       res.status(200).json({ Results });
     } catch (error) {
@@ -533,46 +560,41 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
       ...(questionSetId && {
         questionSetId: new mongoose.Types.ObjectId(questionSetId),
       }),
-    }, 
-   
+    },
   };
 
-  const lookupStage={
+  const lookupStage = {
     $lookup: {
       from: 'Student',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
     },
-  }
+  };
 
-  const unwindStage={
-    $unwind:"$studentInfo"
-  }
-  
+  const unwindStage = {
+    $unwind: '$studentInfo',
+  };
 
-
-
-  const projectStage= {
+  const projectStage = {
     $project: {
-      seminarId:0, 
-      createdAt:0,
-      updatedAt:0,
-      __v:0,
-      "studentInfo.email":0,
-      "studentInfo.updatedAt":0,
-      "studentInfo.createdAt":0,
-      "studentInfo.seminarId":0,
-      "studentInfo.degree":0,
-      "studentInfo.phone":0,
-      "studentInfo.isDelete":0,
-      "studentInfo.branch":0,
-      "studentInfo.__v":0,
-      "studentInfo._id":0,
-      "studentInfo.gender":0,
+      seminarId: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      __v: 0,
+      'studentInfo.email': 0,
+      'studentInfo.updatedAt': 0,
+      'studentInfo.createdAt': 0,
+      'studentInfo.seminarId': 0,
+      'studentInfo.degree': 0,
+      'studentInfo.phone': 0,
+      'studentInfo.isDelete': 0,
+      'studentInfo.branch': 0,
+      'studentInfo.__v': 0,
+      'studentInfo._id': 0,
+      'studentInfo.gender': 0,
     },
-  }
-
+  };
 
   // const facetStage = {
   //   $facet: {
@@ -580,11 +602,17 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
   //     data: [{ $skip: skip }, { $limit: pageSize }],
   //   },
   // };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,unwindStage,projectStage];
+  const pipeline = [
+    matchStage,
+    { $sort: { obtainMarks: -1 } },
+    lookupStage,
+    unwindStage,
+    projectStage,
+  ];
 
   const resp = await Result.aggregate(pipeline);
 
-  console.log("your respose must watch",resp)
+  console.log('your respose must watch', resp);
   resp.forEach((item, index) => {
     item.rank = index + 1;
     if (item.status == 'PASS') {
@@ -593,7 +621,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     if (item.studentId.equals(studentId)) {
       student = { ...item, rank: index + 1 };
     }
-    if (index < top  && item.status=="PASS") {
+    if (index < top && item.status == 'PASS') {
       topStudent.push(item);
     }
   });
@@ -606,8 +634,8 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
   noOfFailStudent = totalStudent - noOfPassStudent;
 
-  percentageOfFailStudent =Math.round(( (noOfFailStudent / totalStudent) * 100));
-  percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
+  percentageOfFailStudent = Math.round((noOfFailStudent / totalStudent) * 100);
+  percentageOfPassStudent = Math.round((noOfPassStudent / totalStudent) * 100);
 
   return {
     totalStudent,

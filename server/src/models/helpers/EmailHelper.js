@@ -78,7 +78,6 @@ exports.sendMail = (data) => {
     mailOptions.subject = data.subject;
     mailOptions.to = data.email;
     mailOptions.attachments = null;
-
     triggerMail(mailOptions);
   });
 };

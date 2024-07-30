@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { NzProgressModule, NzProgressStatusType } from 'ng-zorro-antd/progress';
 import { StudentService } from '../services/student.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -20,6 +21,7 @@ export class ResultPageComponent implements OnInit {
     private studentService: StudentService,
     private actRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
+    private location: Location,
   ) {}
 
   questionSetId: string | null = null;
@@ -133,7 +135,7 @@ export class ResultPageComponent implements OnInit {
     this.calculatePercentages();
     this.calculateMarksPercentage();
     this.spinner.hide();
-    
+
   }
 
   calculatePercentages(): void {
@@ -172,6 +174,10 @@ export class ResultPageComponent implements OnInit {
     if (this.marksPercent > 70) return 'success';
     else if (this.marksPercent > 40) return 'normal';
     else return 'exception';
+  }
+
+  goBack() {
+    this.location.back();
   }
 
   // QuestionStatusFormat(): NzProgressStatusType {

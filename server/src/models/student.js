@@ -46,6 +46,9 @@ const StudentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    otp:{
+      type:Number,
+    },
     semester: {
       type: String,
       required: true,
