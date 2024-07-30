@@ -55,8 +55,15 @@
             <i class="fa fa-phone fa-lg" aria-hidden="true"></i>
           </span>
         </div>
+
+        <div *ngIf="otpVisible" class="otp-container">
+          <input type="text" maxlength="1" class="otp-input" (input)="onInput($event)">
+          <input type="text" maxlength="1" class="otp-input" (input)="onInput($event)">
+          <input type="text" maxlength="1" class="otp-input" (input)="onInput($event)">
+          <input type="text" maxlength="1" class="otp-input" (input)="onInput($event)">
+      </div>
         <div class="container-login100-form-btn">
-          <button class="login100-form-btn" (click)="login()" >Login</button>
+          <button class="login100-form-btn" (click)="showOtpFields()">{{buttonText}} </button>
         </div>
         <div class="createAccount">
           <a class="txt2" routerLink="/register/{{seminarId}}">

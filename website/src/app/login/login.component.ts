@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common'; // Import CommonModule
+import { HttpClientModule } from '@angular/common/http'; // Import HttpClientModule
+
 
 import {
   ActivatedRoute,
@@ -19,7 +22,8 @@ import { ToastrService } from 'ngx-toastr';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink, RouterOutlet],
+
+  imports: [ReactiveFormsModule, RouterLink, RouterOutlet, CommonModule, ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
 })
@@ -37,6 +41,30 @@ export class LoginComponent implements OnInit {
   seminarId: string | null = null;
 
   submitted = false;
+  otpVisible = false;
+  buttonText = 'Send OTP';
+  userData = {};
+
+  showOtpFields() {
+    // Call the API using the service
+    this.studentService.otpLogin(this.userData).subscribe({
+      next: (response) => {
+        // On success, make OTP fields visible and change button text
+        this.otpVisible = true;
+        this.buttonText = 'Submit'; // Change button text to 'Submit'
+      },
+      error: (err) => {
+        console.error('Error logging in:', err);
+        // Handle error here, e.g., show an error message to the user
+      }
+    });
+  }
+
+  onInput(event: any) {
+    const input = event.target;
+    input.value = input.value.replace(/[^0-9]/g, '');
+  }
+
   loginForm = this.formBuilder.group({
     phone: new FormControl('', [Validators.required]),
   });
@@ -46,10 +74,10 @@ export class LoginComponent implements OnInit {
       console.log('Login Params****', params);
 
       const id = this.route.snapshot.paramMap.get('id');
-      this.seminarId=id;
-    if (id) {
-      localStorage.setItem('SeminarId', id);
-    }
+      this.seminarId = id;
+      if (id) {
+        localStorage.setItem('SeminarId', id);
+      }
       localStorage.removeItem('StudentId');
     });
   }
