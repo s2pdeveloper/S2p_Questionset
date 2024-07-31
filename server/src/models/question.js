@@ -7,6 +7,10 @@ const QuestionSchema = mongoose.Schema(
             type: String,
             required: false,
         },
+        questionText:{
+               type:Boolean,
+               default:true,
+        },    
         type:{
             type:String,
             enum:['MCQ','TEXT','NUMBER']

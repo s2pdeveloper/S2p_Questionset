@@ -19,7 +19,7 @@ const logo = ` ${
     : `https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png`
 } `;
 const mailOptions = {
-  from: `indradhanuexhibition@gmail.com`,
+  from:process.env.GMAIL_SEND_EMAIL,
   subject: null,
   to: null,
   html: null,

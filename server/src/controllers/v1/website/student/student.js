@@ -289,7 +289,7 @@ const customerobj = {
         otp: otp,
       };
       const email = EmailHelper.sendMail(data);
-      res.success(data);
+      res.success({message:"OTP sent to Email"});
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -316,7 +316,7 @@ const customerobj = {
       throw new Error(error);
     }
   },
-
+  
   rankedResult: async (req, res) => {
     try {
       let { page = 1, pageSize = 9999, direction = -1 } = req.query;
