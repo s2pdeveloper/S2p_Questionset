@@ -4,6 +4,10 @@ const mongoose = require('mongoose');
 const { generateCreateData } = OPTIONS;
 const Question = require('../../../../models/question');
 const User = require('../../../../models/User');
+const {
+  handleBufferUpload,
+  deleteFile,
+} = require('../../../../../utils/cloudinary');
 const questionsetOjbect = {
   getAllQuestionOfQuestionSet: async (req, res) => {
     try {
@@ -45,11 +49,14 @@ const questionsetOjbect = {
       const pipeline = [matchStage, sortStage, facetStage];
       const resp = await Question.aggregate(pipeline);
 
-      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
-const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
       return res.success({
         data,
-        totalCount
+        totalCount,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -60,7 +67,15 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
 
   createForQuestionSet: async (req, res) => {
     try {
+      console.log('req.file', req.file, req.body);
+
       const data = req.body;
+      if (data && data.questionType == 'IMAGE') {
+        const b64 = Buffer.from(req.file.buffer).toString('base64');
+        let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
+        data.queImageUrl = await handleBufferUpload(dataURI);
+      }
+
       data.questionSetId = req.params.id;
       const question = await Question.create(data);
 
@@ -97,10 +112,15 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
         return res.unprocessableEntity(errors);
       }
 
-      await Question.findOneAndUpdate(
-        { _id: req.params.id },
-        req.body
-      );
+      if (req.body && req.body.questionType == 'IMAGE') {
+        if (req.file) {
+          const b64 = Buffer.from(req.file.buffer).toString('base64');
+          let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
+          req.body.queImageUrl = await handleBufferUpload(dataURI);
+        }
+      }
+
+      await Question.findOneAndUpdate({ _id: req.params.id }, req.body);
 
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('Question'),
@@ -119,6 +139,10 @@ const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
       if (!existing) {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Question');
         return res.unprocessableEntity(errors);
+      }
+
+      if (existing.questionType == 'IMAGE') {
+        await deleteFile(existing.queImageUrl);
       }
 
       await Question.findOneAndDelete({ _id: req.params.id });

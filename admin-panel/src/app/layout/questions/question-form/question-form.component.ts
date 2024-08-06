@@ -27,13 +27,17 @@ export class QuestionFormComponent implements OnInit {
   setId: any = null;
   splitArray: [] = [];
   act: string = '';
+  images: any;
+  displayImage:any
   questionForm = this.formBuilder.group({
     _id: new FormControl(null),
-    question: new FormControl('', [Validators.required]),
+    question: new FormControl(''),
     type: new FormControl('', [Validators.required]),
     hint: new FormControl(''),
     options: new FormControl('', [Validators.required]),
     correctOption: new FormControl('', [Validators.required]),
+    questionType: new FormControl('TEXT', [Validators.required]),
+    queImageUrl: new FormControl(''),
   });
 
   ngOnInit(): void {
@@ -61,9 +65,10 @@ export class QuestionFormComponent implements OnInit {
 
   getById(id) {
     this.questionService.getQuestionById(id).subscribe((success) => {
-      console.log("get by id", success);
-      // this.splitArray = success?.result[0]?.options[0]?.split(',');
-      this.splitArray = success?.result[0]?.options;
+      console.log('get by id', success);
+      this.splitArray = success?.result[0]?.options[0]?.split(',');
+      // this.splitArray = success?.result[0]?.options;
+      this.displayImage = success?.result[0]?.queImageUrl
 
       this.questionForm.patchValue(success?.result[0]);
     });
@@ -78,12 +83,22 @@ export class QuestionFormComponent implements OnInit {
     let formData = this.questionForm.value;
     formData.options = this.splitArray;
 
-    console.log(formData);
+    let fd = new FormData();
+    fd.append('question', formData.question);
+    fd.append('type', formData.type);
+    fd.append('hint', formData.hint);
+    fd.append('options', formData.options);
+    fd.append('correctOption', formData.correctOption);
+    fd.append('questionType', formData.questionType);
+    if (this.images) {
+      fd.append('queImageUrl', this.images, this.images.name);
+    }
+
     if (formData._id) {
-      this.update(formData);
+      this.update(fd,formData._id);
     } else {
-      delete formData.id;
-      this.create(formData);
+      delete formData._id;
+      this.create(fd);
     }
   }
 
@@ -105,9 +120,9 @@ export class QuestionFormComponent implements OnInit {
     );
   }
 
-  update(formData) {
+  update(formData,id) {
     this.spinner.show();
-    this.questionService.updateQuestion(formData, formData._id).subscribe(
+    this.questionService.updateQuestion(formData, id).subscribe(
       (success) => {
         this.submitted = false;
         this.spinner.hide();
@@ -125,5 +140,29 @@ export class QuestionFormComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  toggleQueType(e: any) {
+    this.form.question.setValue('');
+    this.form.queImageUrl.setValue('');
+    this.form.questionType.setValue(e.target.value);
+  }
+
+  fileBrowseHandler(event: any) {
+    if (event.target.value) {
+      if (event.target.files[0].size > 2000000) {
+        this.toastService.warning(
+          'Unable to upload image of size more than 2MB'
+        );
+        return;
+      }
+      this.images = <File>event.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(this.images);
+      reader.onload = () => {
+        this.displayImage = reader.result;
+      };
+      reader.onerror = (error) => {};
+    }
   }
 }

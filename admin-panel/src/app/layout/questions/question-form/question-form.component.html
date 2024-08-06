@@ -19,29 +19,35 @@
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
-                Question
+                Type of Question
                 <span class="text-danger">*</span>
               </label>
-              <input
-                formControlName="question"
-                type="text"
-                class="form-control"
-                placeholder="Enter Question Statement"
+              <select
+                formControlName="questionType"
+                class="form-select"
+                placeholder="Select Type of Question"
                 [ngClass]="{
                   'is-invalid':
-                    form.question.invalid &&
+                    form.questionType.invalid &&
                     submitted &&
-                    (form.question.touched || form.question.dirty)
+                    (form.questionType.touched || form.questionType.dirty)
                 }"
-              />
-              <validation-messages [control]="form['question']">
+                (change)="toggleQueType($event)"
+              >
+                <option disabled selected value="">
+                  Select Question Type
+                </option>
+                <option value="TEXT">Text</option>
+                <option value="IMAGE">Image</option>
+              </select>
+              <validation-messages [control]="form['type']">
               </validation-messages>
             </div>
           </div>
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
-                Type of Question
+                Type of Answer
                 <span class="text-danger">*</span>
               </label>
               <select
@@ -64,9 +70,45 @@
               </validation-messages>
             </div>
           </div>
-        </div>
+        
+         
 
-        <div class="row">
+          <div *ngIf="form.questionType.value == 'TEXT'" class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label"> Question </label>
+              <input
+                formControlName="question"
+                type="text"
+                class="form-control"
+                placeholder="Enter Question Statement"
+              />
+              <validation-messages [control]="form['question']">
+              </validation-messages>
+            </div>
+          </div>
+
+          <!-- <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Question
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                formControlName="question"
+                type="text"
+                class="form-control"
+                placeholder="Enter Question Statement"
+                [ngClass]="{
+                  'is-invalid':
+                    form.question.invalid &&
+                    submitted &&
+                    (form.question.touched || form.question.dirty)
+                }"
+              />
+              <validation-messages [control]="form['question']">
+              </validation-messages>
+            </div>
+          </div> -->
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label"> Hint </label>
@@ -78,6 +120,9 @@
               />
             </div>
           </div>
+       
+        <!-- <h3>{{option.value}}</h3> -->
+    
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
@@ -102,9 +147,6 @@
               ></validation-messages>
             </div>
           </div>
-        </div>
-        <!-- <h3>{{option.value}}</h3> -->
-        <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
@@ -121,7 +163,7 @@
                     submitted &&
                     (form.correctOption.touched || form.correctOption.dirty)
                 }"
-              > 
+              >
                 <option disabled value="">Select Option</option>
                 <option *ngFor="let opt of splitArray" [value]="opt">
                   {{ opt }}
@@ -132,11 +174,30 @@
               ></validation-messages>
             </div>
           </div>
+          <div
+          *ngIf="form.questionType.value != 'TEXT'"
+          class="col-md-6 d-flex justify-content-between align-items-center"
+        >
+          <div class="mb-3">
+            <label class="form-label"> Question </label>
+            <input 
+              type="file"
+              class="form-control"
+              (change)="fileBrowseHandler($event)"
+            />
+          </div>
+          <div class="card mb-0 img-shadow">
+
+            <img [src]="displayImage" width="150" height="70" alt="" />
+          </div>
+          <!-- <img [src]="displayImage" width="100" height="60" alt="" /> -->
+
+        </div>
         </div>
       </form>
       <div class="text-center">
         <button
-          [disabled] ="act==='view'"
+          [disabled]="act === 'view'"
           (click)="submit()"
           type="submit"
           class="btn btn-success text-white"
