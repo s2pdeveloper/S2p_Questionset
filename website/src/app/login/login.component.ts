@@ -46,10 +46,10 @@ export class LoginComponent implements OnInit {
       console.log('Login Params****', params);
 
       const id = this.route.snapshot.paramMap.get('id');
-      this.seminarId=id;
-    if (id) {
-      localStorage.setItem('SeminarId', id);
-    }
+      this.seminarId = id;
+      if (id) {
+        localStorage.setItem('SeminarId', id);
+      }
       localStorage.removeItem('StudentId');
     });
   }
@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error('Registration failed');
+        this.toastService.error('Login failed');
       }
     );
   }

@@ -1,116 +1,128 @@
-
-<ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="square-jelly-box">
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+>
   <div class="loading-box"></div>
-  <p style="font-size: 25px; color: orange;">LOADING...</p>
+  <p style="font-size: 25px; color: orange">LOADING...</p>
 </ngx-spinner>
 
-<div class="container mt-5" *ngIf="startButton === false">
-  <div class="row">
-    <div class="col-md-12 mb-4">
-      <div class="card shadow">
-        <div class="card-header text-center bg-primary">
-          <h2 class="text-center heading">Test Info</h2>
-        </div>
-        <div class="card-body">
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="d-flex gap-1">
-                <strong class="head">Name:</strong>
-                <p class="text">{{ data?.name }}</p>
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex gap-1">
-                <strong class="head">Duration:</strong>
-                <p class="text">{{ data?.duration }}</p>
-              </div>
-            </div>
+<div class="container-fluid">
+  <div class="container pt-5" *ngIf="startButton === false">
+    <div class="row justify-content-center">
+      <div class="col-md-10 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-primary">
+            <h2 class="text-center heading">Test Info</h2>
           </div>
-          <div class="row mb-3">
-            <div class="col-md-6">
-              <div class="d-flex gap-1">
-                <strong class="head">Total Questions:</strong>
-                <p class="text">{{ data?.noOfQuestion }}</p>
+          <div class="card-body">
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="d-flex gap-1">
+                  <strong class="head">Name:</strong>
+                  <p class="text">{{ data?.name }}</p>
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="d-flex gap-1">
-                <strong class="head">Passing Marks:</strong>
-                <p class="text">{{ data?.passingMarks }}</p>
-              </div>
-            </div>
-          </div>
-          <div class="row mb-3">
-            <div class="col-md-12">
-              <div class="d-flex gap-1">
-                <strong class="head">Instructions:</strong>
-                <p class="text">
-                  Please ensure you have a stable internet connection. Do not
-                  refresh the page during the test. Once you start the test, you
-                  cannot pause it.
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="card-footer text-center">
-          <button class="startTest" (click)="startTest()" [disabled]="data.isAlreadySubmited">
-            {{ data.isAlreadySubmited ? 'Completed' : 'Start Test' }}
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="container mt-5" *ngIf="startButton === true">
-  <div class="row">
-    <div class="col-md-12 mb-4">
-      <div class="card shadow">
-        <div class="card-header text-center bg-primary">
-          <h2 class="text-center heading">MCQ Test</h2>
-        </div>
-        <div class="card-body">
-          <div class="d-flex justify-content-between mb-3">
-            <div class="d-flex gap-1">
-              <strong class="head">Name:</strong>
-              <p class="text">{{data?.name}} </p>
-            </div>
-            <span class="badge bg-primary p-2"
-              >Time Remaining: {{ timeRemaining }}</span
-            >
-          </div>
-          <form>
-            <div class="head" *ngFor="let que of questions; let i = index">
-              <p class="mb-2">
-                <strong>{{ i + 1 }}. {{ que?.question }}</strong>
-              </p>
-              <div class="div mb-4">
-                <div class="form-check text" *ngFor="let option of que?.options">
-                  <input
-                    (change)="answerChange(option, i)"
-                    class="form-check-input"
-                    type="radio"
-                    [name]="'que' + i"
-                    [value]="option"
-                    [checked]="selectedAnswers[i] === option"
-                  />
-                  <label class="form-check-label text">{{ option }}</label>
+              <div class="col-md-6">
+                <div class="d-flex gap-1">
+                  <strong class="head">Duration:</strong>
+                  <p class="text">{{ data?.duration }}</p>
                 </div>
               </div>
             </div>
-          </form>
-          <div class="card-footer cardFooter2 text-center">
-            <button class="startTest" (click)="submit()">Submit
-            </button>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="d-flex gap-1">
+                  <strong class="head">Total Questions:</strong>
+                  <p class="text">{{ data?.noOfQuestion }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="d-flex gap-1">
+                  <strong class="head">Passing Marks:</strong>
+                  <p class="text">{{ data?.passingMarks }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-md-8">
+                <div class="d-flex gap-1">
+                  <strong class="head">Instructions:</strong>
+                  <p class="text">
+                    Please ensure you have a stable internet connection. Do not
+                    refresh the page during the test. Once you start the test,
+                    you cannot pause it.
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div class="text-center">
+              <button
+                class="btn btn-primary button"
+                (click)="startTest()"
+                [disabled]="data.isAlreadySubmited"
+              >
+                {{ data.isAlreadySubmited ? "Completed" : "Start Test" }}
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-  
-</div>
 
+  <div class="container pt-5" *ngIf="startButton === true">
+    <div class="row">
+      <div class="col-md-12 mb-4">
+        <div class="card shadow">
+          <div class="card-header text-center bg-primary">
+            <h2 class="text-center heading">MCQ Test</h2>
+          </div>
+          <div class="card-body">
+            <div class="d-flex justify-content-between mb-3">
+              <div class="d-flex gap-1 align-self-center">
+                <strong class="head">Name:</strong>
+                <p class="text">{{ data?.name }}</p>
+              </div>
+              <span class="badge bg-primary p-2"
+                >Time Remaining: {{ timeRemaining }}</span
+              >
+            </div>
+            <form>
+              <div class="head" *ngFor="let que of questions; let i = index">
+                <p class="mb-2">
+                  <strong>{{ i + 1 }}. {{ que?.question }}</strong>
+                </p>
+                <div class="div mb-4">
+                  <div
+                    class="form-check text"
+                    *ngFor="let option of que?.options"
+                  >
+                    <input
+                      (change)="answerChange(option, i)"
+                      class="form-check-input"
+                      type="radio"
+                      [name]="'que' + i"
+                      [value]="option"
+                      [checked]="selectedAnswers[i] === option"
+                    />
+                    <label class="form-check-label text">{{ option }}</label>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-primary xl" (click)="submit()">
+                  Submit
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 <!-- <ng-template #alertMsg let-modal>
   <div class="row mt-3 me-3">
     <div class="col-md-10 col-sm-10"></div>

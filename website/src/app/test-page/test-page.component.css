@@ -1,28 +1,39 @@
+
+
 *{
     font-family: Champion Gothic;
 }
+
+.container-fluid{
+ background-color: rgb(224, 224, 224);
+ min-height: 90vh; 
+ width: 100%;
+}
+
 .heading{
     font-size: 2rem;
     margin: 0.2rem;
 }
 
 .head{
-    font-size: 1rem;
-    margin: 0;
+    font-size: 1.1rem;
 }
 
 .text{
-    font-size: 1rem;
-    margin: 0;
-}
-.badge{
-    font-size: 1rem;
+    font-size: 1.1rem;
 }
 
-.card-footer{
-    padding: 0.5rem;
-    border-bottom: 3px solid #ff3939;
+.badge{
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
 }
+
+.button{
+  font-size: 1.2rem;
+}
+/* 
+
 .startTest,
 .startTest:focus {
   font-size: 20px;
@@ -51,7 +62,6 @@
     padding: 0.5rem;
     border-bottom: 3px solid #ff3939;
 }
-
 
 @media (max-width:480px) {
     .heading{
@@ -123,7 +133,7 @@
     .badge{
         font-size: 0.5rem;
     }
-  }
+  } */
 
   .loading-box {
     width: 50px;
