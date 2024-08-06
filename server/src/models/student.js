@@ -40,18 +40,18 @@ const StudentSchema = mongoose.Schema(
     },
     degree: {
       type: String,
-      required: true,
+      required: false,
     },
     branch: {
       type: String,
-      required: true,
+      required: false,
     },
     otp:{
       type:Number,
     },
     semester: {
       type: String,
-      required: true,
+      required: false,
     },
     seminarId: {
       type: mongoose.Schema.Types.ObjectId,

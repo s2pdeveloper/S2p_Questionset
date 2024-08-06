@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
@@ -51,7 +51,7 @@ a:hover {
   color: #57b846;
 }
 
-/*////////////////////////////////// */
+//////////////////////////////////
 .limiter {
   width: 100%;
   margin: 0 auto;
@@ -135,7 +135,7 @@ a:hover {
 
 /*------------------------------------------------------------------
   [ Focus ]*/
-.focus-input100 {
+/* .focus-input100 {
   display: block;
   position: absolute;
   border-radius: 25px;
@@ -146,9 +146,9 @@ a:hover {
   height: 100%;
   box-shadow: 0px 0px 0px 0px;
   color: rgba(87, 184, 70, 0.8);
-}
+} */
 
-.input100:focus + .focus-input100 {
+/* .input100:focus + .focus-input100 {
   -webkit-animation: anim-shadow 0.5s ease-in-out forwards;
   animation: anim-shadow 0.5s ease-in-out forwards;
 }
@@ -191,11 +191,11 @@ a:hover {
 .input100:focus + .focus-input100 + .symbol-input100 {
   color: #57b846;
   padding-left: 28px;
-}
+} */
 
 /*------------------------------------------------------------------
 [ Button ]*/
-.container-login100-form-btn {
+/* .container-login100-form-btn {
   width: 100%;
 
   display: flex;
@@ -230,9 +230,9 @@ a:hover {
 
 .login100-form-btn:hover {
   background: #333333;
-}
+} */
 
-.txt2 {
+/* .txt2 {
   font-family: "Poppins", sans-serif;
   font-weight: 400;
   font-size: 13px;
@@ -244,6 +244,24 @@ a:hover {
   text-align: center;
   padding-top: 100px;
 }
+
+.otp-input {
+  width: 2.5em;
+  height: 2.5em;
+  margin: 0.5em;
+  font-size: 1.2em;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 0.25em;
+} */
+
+/* .otp-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: nowrap;
+  margin-top: 1em;
+} */
 
 /*------------------------------------------------------------------
 [ Responsive ]*/
@@ -282,3 +300,123 @@ a:hover {
     }
   }
    */
+
+/* .container-fluid {
+    /* background-image: url("../../assets/images/bg.jpeg"); */
+/* background-repeat: "no-repeat";
+    background-size: "cover"; */
+/* }
+  .glass_bg {
+    background: rgba( 255, 255, 255, 0.1 );
+  box-shadow: 0 8px 32px 0 rgba( 31, 38, 135, 0.37 );
+  backdrop-filter: blur( 6px );
+  -webkit-backdrop-filter: blur( 6px );
+  border-radius: 10px;
+  border: 1px solid rgba( 255, 255, 255, 0.18 );
+  }
+  .signUpBtn{
+    background-color: #096dd9b8;
+    color: #fff;
+    &:hover{
+      background-color: #096dd9b8;
+      opacity: 0.8;
+    /* }
+  } */
+
+/* .login-container { 
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  
+    .image-side {
+      flex: 1;
+     
+       
+  
+      img {
+        max-width: 100%;
+        height: auto;
+      }
+    }
+  
+    .form-side {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+     
+  
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 80%;
+        max-width: 400px;
+  
+        .input-group {
+          margin-bottom: 20px;
+          width: 100%;
+  
+          label {
+            display: block;
+            margin-bottom: 8px;
+          }
+  
+          input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+          }
+  
+          .otp-inputs {
+            display: flex;
+            justify-content: space-between;
+  
+            input {
+              width: 20%;
+              text-align: center;
+              padding: 10px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+            }
+          }
+        }
+  
+        button{
+          width: 100%;
+          padding: 10px;
+          border: none;
+          border-radius: 4px;
+        }
+      }
+    }
+  } */
+
+.main-container {
+  background-image: url("../../assets//images/pencils-wire-holder-books-near-chalkboard-back-school-min.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .main-card {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: none;
+  }
+  .img-fluid {
+    width: 50rem;
+  }
+  .inner-card{
+    /* display: flex;
+    justify-content: center;
+    align-items: center; */
+  .btn{
+    background-color: #0c7348;
+    color: #fff;
+  }
+  }
+}

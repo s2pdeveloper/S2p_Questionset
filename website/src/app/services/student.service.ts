@@ -42,6 +42,8 @@ export class StudentService {
   }
 
   loginStudent(data: any) {
+    console.log('Login form value----', data);
+
     return this.http.post(this.routes.loginPath, data);
   }
 

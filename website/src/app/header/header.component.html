@@ -20,28 +20,36 @@
   <!-- </div> -->
 
   <div class="row mx-2 d-flex justify-content-between">
-    <div class="col-3 ">
+    <div class="col-3">
       <img src="../../assets/logo.png" class="logo" />
     </div>
-    <div class="col-sm-3 col-1 col-9   " style="font-size: 20px;">
+    <div class="col-sm-3 col-1 col-9" style="font-size: 20px">
       <div class="row">
         <div class="col-4">
-          <span class="me-3" (click)="attemptTest()" style="color: white;cursor: pointer;">
-             Test
+          <span
+            class="me-3"
+            (click)="attemptTest()"
+            style="color: white; cursor: pointer; font-weight: bold"
+          >
+            Test
           </span>
         </div>
         <div class="col-4">
-          <span (click)="viewReport()" class="" style="color: white;cursor: pointer;"
+          <span
+            (click)="viewReport()"
+            class=""
+            style="color: white; cursor: pointer; font-weight: bold"
             >Report
           </span>
         </div>
         <div class="col-4">
-          <button
-            (click)="logOut()"
-            class="btn btn-danger"
-            style="background-color: red; height: 30px; font-size: 12px"
-          >
-            <i class="fa fa-sign-out" aria-hidden="true"></i>
+          <button class="btn btn-warning">
+            <i
+              class="fa fa-sign-out"
+              aria-hidden="true"
+              (click)="logOut()"
+              style="color: white"
+            ></i>
           </button>
         </div>
       </div>

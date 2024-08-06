@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md-12 mb-4">
       <div class="card shadow">
-        <div class="card-header text-center bg-primary text-white">
+        <div class="card-header text-center bg-primary text-light">
           <h2 class="text-center my-3 heading">Registration Form</h2>
         </div>
         <div class="card-body">
@@ -141,12 +141,12 @@
   </div>
 </div> -->
 
-<div class="limiter">
+<!-- <div class="limiter">
   <div class="container-register">
     <span class="register-form-title">Registration</span>
     <div class="row">
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 left">
-            <img src="../../assets/register.png" class="img-fluid" alt="" />
+        <img src="../../assets/register.png" class="img-fluid" alt="" />
       </div>
 
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -225,14 +225,9 @@
           </div>
           <div class="row custom-row justify-content-center">
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 custom-input">
-              <!-- <input
-                class="input100"
-                type="text"
-                formControlName="semester"
-                placeholder="Semester"
-              /> -->
-              <select class="form-select input100"  formControlName="semester">
-                <option value="" disabled> --Select Semester--</option>
+          
+              <select class="form-select input100" formControlName="semester">
+                <option value="" disabled>--Select Semester--</option>
                 <option [value]="b.value" *ngFor="let b of semesters">
                   {{ b.label }}
                 </option>
@@ -245,6 +240,197 @@
             </button>
           </div>
         </form>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<div class="container-fluid">
+  <div class="row min-vh-100 justify-content-center align-items-center">
+    <div class="col-11 col-xs-10 col-sm-10 col-md-10 col-lg-7 col-xl-6">
+      <div class="card glass_bg">
+        <div class="card-body p-4">
+          <h3 class="text-dark">Registeration</h3>
+          <form [formGroup]="regForm" >
+
+          <div class="row justify-content-center">
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  First Name <span>*</span>
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter First Name"
+                  formControlName="firstName"
+                />
+                <span
+                  *ngIf="this.f['firstName'].invalid &&
+                    (this.f['firstName'].dirty ||
+                      this.f['firstName'].touched)
+                    
+                  "
+                  class="text-light"
+                  >This field is required</span
+                >
+              </div>
+            </div>
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  Last Name <span>*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Last Name"
+                  formControlName="lastName"
+                />
+                <span
+                *ngIf="this.f['lastName'].invalid &&
+                  (this.f['lastName'].dirty ||
+                    this.f['lastName'].touched)
+                  
+                "
+                class="text-light"
+                >This field is required</span
+              >
+              </div>
+            </div>
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  Email <span>*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Email"
+                  formControlName="email"
+
+                />
+                <span
+                *ngIf="this.f['email'].invalid &&
+                  (this.f['email'].dirty ||
+                    this.f['email'].touched)
+                  
+                "
+                class="text-light"
+                >This field is required</span
+              >
+              </div>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  Phone Number <span>*</span></label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Phone Number"
+                  formControlName="phone"
+
+                />
+                <span
+                *ngIf="this.f['phone'].invalid &&
+                  (this.f['phone'].dirty ||
+                    this.f['phone'].touched)
+                  
+                "
+                class="text-light"
+                >This field is required</span
+              >
+              </div>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark"
+                  >Semester
+                </label>
+
+                <select class="form-select" formControlName="semester">
+                  <option value="" disabled selected>Select Semester</option>
+                  <option [value]="b.value" *ngFor="let b of semesters" >
+                    {{ b.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  Gender
+                </label>
+
+                <select class="form-select" formControlName="gender">
+                  <option value="" disabled selected>Select Gender</option>
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark"
+                  >Course Name
+                </label>
+
+                <select class="form-select" formControlName="degree">
+                  <option value="" disabled selected>Select Course</option>
+                  <option [value]="d.value" *ngFor="let d of degree">
+                    {{ d.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col-12 col-xs-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark"
+                  >Branch
+                </label>
+
+                <select class="form-select" formControlName="branch">
+                  <option value="" disabled selected>Select Branch</option>
+                  <option [value]="b.value" *ngFor="let b of branch">
+                    {{ b.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div
+              class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+            >
+              <div class="mb-2">
+                <label *ngIf="!isHidden" class="form-label text-dark">
+                  Collage Name
+                </label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Collage Name "
+                  formControlName="college"
+                />
+              </div>
+            </div>
+
+            <div
+              class="col-12 col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3 d-grid mt-2"
+            >
+              <button class="btn signUpBtn" (click)="register()">Register</button>
+            </div>
+          </div>
+        </form>
+
+        </div>
       </div>
     </div>
   </div>
