@@ -103,6 +103,10 @@
 button {
   font-size: 16px;
   margin-left: 15px;
+  background: linear-gradient(90deg,  #309b45, #41984f,  #68ce76 66%);
+  border: none;
+  border-radius: 5px;
+
 }
 
 @media only screen and (max-width: 500px){
@@ -131,6 +135,9 @@ button {
   border: none;
 }
 
+.card-header{
+  background: linear-gradient(to right, #309b45, #41984f,  #68ce76);
+}
 
 
 
