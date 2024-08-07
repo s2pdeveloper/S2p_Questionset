@@ -1,4 +1,4 @@
-* {
+/* * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
@@ -35,7 +35,7 @@ button:hover {
   cursor: pointer;
 }
 
-/* ////////////////////////////////////// */
+ 
 .limiter {
   width: 100%;
   margin: 0 auto;
@@ -73,7 +73,7 @@ button:hover {
 }
 
 .custom-row {
-  /* margin-block: 10px; */
+ 
   padding-bottom: 20px;
 }
 
@@ -143,4 +143,71 @@ button:hover {
     }
   }
 
+} */
+
+/* .container-fluid {
+  background-image: url("../../assets/bg.jpg");
+  
 }
+ 
+.signUpBtn{
+  background-color: #096dd9b8;
+  color: #fff;
+  &:hover{
+    background-color: #096dd9b8;
+    opacity: 0.8;
+  }
+} */
+
+.main-container {
+  background-image: url("../../assets//images/pencils-wire-holder-books-near-chalkboard-back-school-min.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  /* height: 100vh !important; */
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  .form-select option:disabled {
+    color: #cccccc; /* Color of the placeholder text */
+  }
+  .main-row{
+    /* display: flex; */
+  height: 100vh !important;
+
+    justify-content: center;
+    align-items: center;
+  }
+  .main-card {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px,
+      rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+    border: none;
+  }
+  
+  
+  .btn{
+    background-color: #0c7348;
+    color: #fff;
+  }
+  
+  .registerLink{
+    transition: 0.25s;
+    cursor: pointer;
+    &:hover{
+      font-weight: bold;
+      color: #0c7348;
+    }
+  }
+
+  .logo-large-device{
+    position: absolute;
+    top: 3rem;
+    left: 7rem;
+  }
+  .logo-small-device{
+    position: absolute;
+    top: 2.5rem;
+    right: 2.5rem;
+  }
+}
+
+

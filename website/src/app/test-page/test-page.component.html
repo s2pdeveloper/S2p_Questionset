@@ -2,44 +2,52 @@
   bdColor="rgba(51, 51, 51, 0.8)"
   size="medium"
   color="#fff"
-  type="square-jelly-box"
+  type="ball-beat"
 >
-  <div class="loading-box"></div>
-  <p style="font-size: 25px; color: orange">LOADING...</p>
 </ngx-spinner>
 
 <div class="container-fluid">
   <div class="container pt-5" *ngIf="startButton === false">
     <div class="row justify-content-center">
-      <div class="col-12 col-xs-12 col-sm-12 col-md-10 col-lg-10 col-xl-10 mb-4">
+      <div
+        class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 mb-4"
+      >
         <div class="card">
           <div class="card-header text-center bg-primary">
-            <h2 class="text-center heading">Test Info</h2>
+            <h4 class="text-center text-white head-text">Test Info</h4>
           </div>
           <div class="card-body p-4">
             <div class="row">
-              <div class="col-md-6 mb-2">
-                <p class="text">
-                  <strong class="head">Name:</strong> {{ data?.name }}
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Name : </strong> {{ " " + data?.name }}
                 </p>
               </div>
-              <div class="col-md-6 mb-2">
-                <p class="text">
-                  <strong class="head">Duration:</strong> {{ data?.duration }}
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Duration : </strong> {{ " " + data?.duration }}
                 </p>
               </div>
             </div>
             <div class="row">
-              <div class="col-md-6 mb-2">
-                <p class="text">
-                  <strong class="head">Total Questions:</strong
-                  >{{ data?.noOfQuestion }}
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Total Questions :</strong
+                  >{{ " " + data?.noOfQuestion }}
                 </p>
               </div>
-              <div class="col-md-6 mb-2">
-                <p class="text">
-                  <strong class="head">Passing Marks:</strong
-                  >{{ data?.passingMarks }}
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Passing Marks : </strong
+                  >{{ " " + data?.passingMarks }}
                 </p>
               </div>
             </div>
@@ -47,24 +55,21 @@
               <div
                 class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9"
               >
-                <!-- <div class="d-flex gap-1 mb-0"> -->
-                <!-- <strong class="head">Instructions:</strong> -->
-                <p class="text">
-                  <strong class="head">Instructions:</strong>
+                <p class="info-text">
+                  <strong>Instructions : </strong>
                   Please ensure you have a stable internet connection. Do not
                   refresh the page during the test. Once you start the test, you
                   cannot pause it.
                 </p>
-                <!-- </div> -->
               </div>
             </div>
             <div class="text-center">
               <button
-                class="btn btn-primary button"
+                class="btn btn-primary"
                 (click)="startTest()"
-                [disabled]="data.isAlreadySubmited"
+                [disabled]="data?.isAlreadySubmited"
               >
-                {{ data.isAlreadySubmited ? "Completed" : "Start Test" }}
+                {{ data?.isAlreadySubmited ? "Completed" : "Start Test" }}
               </button>
             </div>
           </div>
@@ -124,6 +129,7 @@
     </div>
   </div>
 </div>
+
 <!-- <ng-template #alertMsg let-modal>
   <div class="row mt-3 me-3">
     <div class="col-md-10 col-sm-10"></div>

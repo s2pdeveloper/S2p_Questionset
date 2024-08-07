@@ -12,7 +12,13 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 @Component({
   selector: 'app-test-page',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule, HeaderComponent,NgxSpinnerModule],
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    FormsModule,
+    HeaderComponent,
+    NgxSpinnerModule,
+  ],
   templateUrl: './test-page.component.html',
   styleUrl: './test-page.component.css',
 })
@@ -28,7 +34,6 @@ export class TestPageComponent implements OnDestroy {
     private studentService: StudentService,
     private modalService: NgbModal,
     private spinner: NgxSpinnerService
-
   ) {}
 
   destroy = new Subject();
@@ -51,21 +56,20 @@ export class TestPageComponent implements OnDestroy {
   getSetDetails() {
     let params = {
       id: this.seminarId,
-    };
-    console.log("***opening Loader********")
-    this.spinner.show()
+    }; 
+    this.spinner.show();
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
-      console.log('Set Details', success);
+     
       this.data = success?.result?.data;
       this.questions = success?.result?.data?.questions;
       this.selectedAnswers = new Array(this.questions.length).fill('');
-      this.spinner.hide()
+      this.spinner.hide();
     });
   }
 
   startTest(): void {
     this.startButton = true;
-    this.timer = this.data?.duration*60 ;
+    this.timer = this.data?.duration * 60;
     this.startTimer();
   }
 
@@ -93,8 +97,8 @@ export class TestPageComponent implements OnDestroy {
         }:${seconds < 10 ? '0' + seconds : seconds}`;
 
         if (this.timer === 0) {
-          console.log("********************completed Test Auto Submit************")
-          this.submit()
+          
+          this.submit();
           this.destroy.next('');
           this.destroy.complete();
         }
@@ -117,7 +121,8 @@ export class TestPageComponent implements OnDestroy {
   submit() {
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
-    }); 0
+    });
+    0;
 
     const payload = {
       studentId: this.studentId,
@@ -126,10 +131,10 @@ export class TestPageComponent implements OnDestroy {
       answers: answers,
     };
 
-    // console.log('This is Payload', payload);
+    
 
     this.studentService.submitTest(payload).subscribe((success: any) => {
-      console.log('Submit success', success);
+   
 
       this.router.navigate(['default/result'], {
         queryParams: {

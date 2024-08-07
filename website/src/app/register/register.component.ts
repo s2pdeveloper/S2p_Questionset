@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -21,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './register.component.css',
 })
 export class RegisterComponent implements OnInit {
+  isHidden: boolean = false;
   constructor(
     private router: Router,
     private formBuilder: FormBuilder,
@@ -28,7 +29,26 @@ export class RegisterComponent implements OnInit {
     private toastService: ToastrService,
     private spinner: NgxSpinnerService,
     private route: ActivatedRoute
-  ) {}
+  ) {
+    this.checkWindowSize();
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkWindowSize();
+  }
+
+  checkWindowSize() {
+    const width = window.innerWidth;
+
+    // Adjust the width as per your requirement
+    if (width <= 575) {
+      this.isHidden = true;
+    }
+    if (width >= 575) {
+      this.isHidden = false;
+    }
+  }
 
   users: any[] = [];
   branch = [
@@ -90,12 +110,16 @@ export class RegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required]),
     phone: new FormControl('', [Validators.required]),
-    gender: new FormControl('', [Validators.required]),
-    college: new FormControl('', [Validators.required]),
-    degree: new FormControl('', [Validators.required]),
-    branch: new FormControl('', [Validators.required]),
-    semester: new FormControl('', [Validators.required]),
+    gender: new FormControl(''),
+    college: new FormControl(''),
+    degree: new FormControl(''),
+    branch: new FormControl(''),
+    semester: new FormControl(''),
   });
+
+  get f(){
+    return this.regForm.controls
+  }
 
   ngOnInit(): void {
     // this.seminarId = localStorage.getItem('SeminarId');
@@ -112,6 +136,10 @@ export class RegisterComponent implements OnInit {
 
   register() {
     this.submitted = true;
+    if(this.regForm.invalid){
+      this.toastService.warning('Please fill all required fields');
+      return;
+    }
     // console.log('value', this.regForm.value);
     let formData = this.regForm.value;
     this.spinner.show();

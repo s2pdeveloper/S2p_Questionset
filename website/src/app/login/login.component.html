@@ -35,37 +35,165 @@
     </div>
   </div>
 </div> -->
-<div class="limiter">
-  <div class="container-login100">
-    <div class="wrap-login100">
-      <div class="login100-pic">
-        <img src="../../assets/Checklist.jpg" alt="" />
-      </div>
-      <form [formGroup]="loginForm" class="login100-form">
+
+<!-- <form [formGroup]="loginForm" class="login100-form">
         <span class="login100-form-title"> Student Login </span>
         <div class="wrap-input100">
           <input
             class="input100"
             type="tel"
             formControlName="phone"
+            
             placeholder="Phone Number"
           />
           <span class="focus-input100"></span>
           <span class="symbol-input100">
             <i class="fa fa-phone fa-lg" aria-hidden="true"></i>
           </span>
+
         </div>
-        <div class="container-login100-form-btn">
-          <button class="login100-form-btn" (click)="login()" >Login</button>
+
+        <div *ngIf="otpVisible" class="otp-container" style="text-align: center;">
+          <input type="text" maxlength="1" class="otp-input" formControlName="otp1"   (input)="onInput($event)" (keydown)="onKeydown($event, 'otp1')">
+          <input type="text" maxlength="1" class="otp-input" formControlName="otp2"  (input)="onInput($event)" (keydown)="onKeydown($event, 'otp2')">
+          <input type="text" maxlength="1" class="otp-input" formControlName="otp3" (input)="onInput($event)" (keydown)="onKeydown($event, 'otp3')">
+          <input type="text" maxlength="1" class="otp-input" formControlName="otp4"  (input)="onInput($event)" (keydown)="onKeydown($event, 'otp4')">
+      </div>
+        <div class="container-login100-form-btn"> 
+          <button class="login100-form-btn" *ngIf="!isOtpSent" (click)="showOtpFields()">Send OTP</button>
+        </div><br>
+
+        <div>
+          <button class="login100-form-btn" *ngIf="isOtpSent"  (click)="login()">login </button>
+
+    </div>
+
+ 
+             <div
+              class="col-12 col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3 d-grid mt-2"
+            >
+              <button class="btn signUpBtn" (click)="showOtpFields()">Send OTP</button>
+            </div>
+
+            <div
+            class="col-12 col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3 col-3 d-grid mt-2"
+          >
+            <button class="btn signUpBtn" (click)="login()">Login</button>
+          </div> 
+
+          <strong>
+            <a
+              routerLink="/register"
+              style="color: 0d6efd; text-decoration: none"
+            >
+              Not Registered? Click here to register
+            </a>
+          </strong> -->
+
+<!-- <div class="login-container">
+  <div class="image-side">
+    <img src="assets/your-image.jpg" alt="Login Image" />
+  </div>
+  <div class="form-side">
+    <form>
+      <div class="input-group">
+        <label for="phone">Phone Number</label>
+        <input
+          type="text"
+          id="phone"
+          name="phone"
+          placeholder="Enter your phone number"
+        />
+      </div>
+      <div class="input-group">
+        <label for="otp">OTP</label>
+        <div class="otp-inputs">
+          <input type="text" maxlength="1" />
+          <input type="text" maxlength="1" />
+          <input type="text" maxlength="1" />
+          <input type="text" maxlength="1" />
         </div>
-        <div class="createAccount">
-          <a class="txt2" routerLink="/register/{{seminarId}}">
-            Create your Account
-            <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
-          </a>
+      </div>
+      <button type="button" id="sendOtpButton">Send OTP</button>
+      <button type="submit" id="loginButton">Login</button>
+    </form>
+  </div>
+</div> -->
+
+<div class="container-fluid main-container">
+  <img
+    src="../../assets/s2plogo.png"
+    [width]="50"
+    [height]="50"
+    [ngClass]="showImg ? 'logo-large-device' : 'logo-small-device'"
+    alt=""
+  />
+
+  <div class="row justify-content-center main-row">
+    <div class="col-11 col-xs-9 col-sm-8 col-md-8 col-lg-7 col-xl-6">
+      <div class="card main-card">
+        <div class="card-body">
+          <div class="row justify-content-center">
+            <div class="col-6" *ngIf="showImg">
+              <img
+                src="../../assets/images/4537703.jpg"
+                alt=""
+                class="img-fluid"
+              />
+            </div>
+
+            <div
+              [ngClass]="showImg ? 'col-6' : 'col-12'"
+              class="inner-card p-3"
+            >
+              <div class="card inner-card border-0">
+                <div class="card-body">
+                  <h4 class="mb-0" style="font-weight: bold">Login</h4>
+                  <form [formGroup]="loginForm">
+                    <ng-container *ngIf="!otpVisible">
+                      <div class="my-4">
+                        <label class="form-label">Enter Mobile No.</label>
+                        <input
+                          class="form-control"
+                          formControlName="phone"
+                          type="text"
+                        />
+                      </div>
+
+                      <div class="my-4 text-center d-grid">
+                        <button class="btn" (click)="showOtpFields()">
+                          Request OTP
+                        </button>
+                      </div>
+                    </ng-container>
+                    <ng-container *ngIf="otpVisible">
+                      <div class="my-4">
+                        <label class="form-label">Enter OTP</label>
+                        <input
+                          class="form-control"
+                          formControlName="otp"
+                          type="text"
+                        />
+                      </div>
+
+                      <div class="my-4 text-center d-grid">
+                        <button class="btn" (click)="login()">Login</button>
+                      </div>
+                    </ng-container>
+
+                    <p class="text-center">
+                      New user ?
+                      <span (click)="navigateToRegister()" class="registerLink"
+                        >register here</span
+                      >
+                    </p>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </form>
+      </div>
     </div>
   </div>
 </div>
-<router-outlet></router-outlet>

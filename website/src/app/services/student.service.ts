@@ -15,6 +15,8 @@ export class StudentService {
     rankedResultPath: `${environment.apiEndpoint}student/rankedResult`,
     getAllResultPath: `${environment.apiEndpoint}student/allResultOfStudent`,
     loginPath: `${environment.apiEndpoint}student/login`,
+    otpPath: `${environment.apiEndpoint}student/Otplogin`
+    
   };
 
   constructor(private http: HttpClient) {}
@@ -40,6 +42,12 @@ export class StudentService {
   }
 
   loginStudent(data: any) {
+    console.log('Login form value----', data);
+
     return this.http.post(this.routes.loginPath, data);
+  }
+
+  otpLogin(data:any){
+    return this.http.post(this.routes.otpPath, data);
   }
 }
