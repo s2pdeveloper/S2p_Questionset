@@ -5,6 +5,7 @@
   type="square-jelly-box"
 >
 </ngx-spinner>
+
 <div class="container-fluid">
   <div class="row justify-content-center">
     <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 mb-4">
@@ -14,10 +15,8 @@
         </div>
         <div class="card-body p-4">
           <div *ngIf="currentQuestionSet">
-            <div class="d-flex justify-content-center  ">
-              <!-- <h3 class="mb-1 head-text text-center text-dark">
-                {{ currentQuestionSet?.questionSet?.name }}
-              </h3> -->
+            <div class="d-flex justify-content-center">
+            
             </div>
             <ul class="list-group mb-3">
               <li
@@ -41,12 +40,15 @@
               </li>
             </ul>
             <div class="d-flex justify-content-between info-text text-center">
-              <button  class="result btn btn-primary" (click)="viewDetails(currentQuestionSet)">
+              <button
+                class="result btn btn-primary"
+                (click)="viewDetails(currentQuestionSet)"
+              >
                 View Result
               </button>
               <div>
                 <button
-                  class="btn btn-secondary me-2 "
+                  class="btn btn-secondary me-2"
                   (click)="previousQuestionSet()"
                   *ngIf="!isFirstSet()"
                   [disabled]="isFirstSet()"
@@ -54,7 +56,7 @@
                   Previous Set
                 </button>
                 <button
-                  class="btn btn-secondary "
+                  class="btn btn-secondary"
                   (click)="nextQuestionSet()"
                   [disabled]="isLastSet()"
                   *ngIf="!isLastSet()"

@@ -1,8 +1,8 @@
-<div class="row m-3">
+<!-- <div class="row m-3">
   <div class="col-12">
-    <div class="card shadow p-0">
+    <div class="card p-0">
       <div class="card-header bg-primary text-center">
-        <h4 class="my-3 heading">Top Students</h4>
+        <h4 class="heading mb-0">Top Students</h4>
       </div>
       <div class="card-body d-flex justify-content-evenly flex-wrap">
         <div
@@ -35,106 +35,166 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<div class="row m-3">
-  <div class="col-md-6">
-    <div class="card"> 
-      <div class="card-head">
-        <h4 class="d-flex justify-content-center">
-          Total Students : {{ totalStudents }}
-        </h4>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-evenly">
-          <h5 class="text-success">Attempted : {{ stuAttempted }}</h5>
-          <h5 class="text-danger">Not Attempted : {{ stuNotAttempted }}</h5>
+<div class="container-fluid">
+  <div class="row m-3">
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-head">
+          <h5 class="d-flex justify-content-center">
+            Total Students : {{ totalStudents }}
+          </h5>
         </div>
-
-        <div class="d-flex justify-content-evenly mt-3">
-          <nz-progress
-            [nzPercent]="attemptPercentage.toFixed(0)"
-            nzType="circle"
-            nzStatus="success"
-            [nzFormat]="percentFormat"
-            [nzWidth]="150"
-          ></nz-progress>
-          <nz-progress
-            [nzPercent]="notAttemptPercentage.toFixed(0)"
-            nzType="circle"
-            nzStatus="exception"
-            [nzFormat]="percentFormat"
-            [nzWidth]="150"
-          ></nz-progress>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-6">
-    <div class="card">
-      <div class="card-head">
-        <h4 class="d-flex justify-content-center">Overall Results</h4>
-      </div>
-      <div class="card-body">
-        <div class="d-flex justify-content-evenly">
-          <h5 class="text-success">Passed : {{ totalPassed }}</h5>
-          <h5 class="text-danger">Failed : {{ totalFailed }}</h5>
-        </div>
-        <div class="d-flex justify-content-evenly mt-3">
-          <nz-progress
-            [nzPercent]="passPercentage.toFixed(0)"
-            nzType="circle"
-            nzStatus="success"
-            [nzFormat]="percentFormat"
-            [nzWidth]="150"
-          ></nz-progress>
-          <nz-progress
-            [nzPercent]="failPercentage.toFixed(0)"
-            nzType="circle"
-            nzStatus="exception"
-            [nzFormat]="percentFormat"
-            [nzWidth]="150"
-          ></nz-progress>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="row m-3 justify-content-center">
-  <div class="col-md-6 ">
-    <div class="card">
-      <div class="card-head">
-        <h4 class="d-flex justify-content-center">Your Result</h4>
-      </div>
-      <div class="card-body">
-        <div class="row mb-3">
-          <div class="col-4">
-            <h5>Marks Obtained</h5>
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-evenly">
+            <h5 class="text-success">Attempted : {{ stuAttempted }}</h5>
+            <h5 class="text-danger">Not Attempted : {{ stuNotAttempted }}</h5>
           </div>
-          <div class="col-8">
+
+          <div class="d-flex justify-content-evenly mt-3">
             <nz-progress
-              [nzPercent]="marksPercent.toFixed(0)"
-              [nzFormat]="marksFormat"
-              [nzStatus]="MarkStatusFormat()"
-              nzStrokeLinecap="round"
+              [nzPercent]="attemptPercentage.toFixed(0)"
+              nzType="circle"
+              nzStatus="success"
+              [nzFormat]="percentFormat"
+              [nzWidth]="150"
+            ></nz-progress>
+            <nz-progress
+              [nzPercent]="notAttemptPercentage.toFixed(0)"
+              nzType="circle"
+              nzStatus="exception"
+              [nzFormat]="percentFormat"
+              [nzWidth]="150"
             ></nz-progress>
           </div>
         </div>
-
-        <div class="row  d-flex justify-content-between mb-3">
-          <span>Result Status:</span>
-          <span>PASS</span>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-head">
+          <h5 class="d-flex justify-content-center">Overall Results</h5>
         </div>
-        <div class="row mb-3 justify-content-evenly">
-          <h5>Rank:</h5>
-          <p>5</p>
+        <div class="card-body p-4">
+          <div class="d-flex justify-content-evenly">
+            <h5 class="text-success">Passed : {{ totalPassed }}</h5>
+            <h5 class="text-danger">Failed : {{ totalFailed }}</h5>
+          </div>
+          <div class="d-flex justify-content-evenly mt-3">
+            <nz-progress
+              [nzPercent]="passPercentage.toFixed(0)"
+              nzType="circle"
+              nzStatus="success"
+              [nzFormat]="percentFormat"
+              [nzWidth]="150"
+            ></nz-progress>
+            <nz-progress
+              [nzPercent]="failPercentage.toFixed(0)"
+              nzType="circle"
+              nzStatus="exception"
+              [nzFormat]="percentFormat"
+              [nzWidth]="150"
+            ></nz-progress>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-head">
+          <h5 class="d-flex justify-content-center">Your Result</h5>
+        </div>
+        <div class="card-body p-4">
+          <div class="row mb-2">
+            <div class="col-4">
+              <h6>Marks Obtained</h6>
+            </div>
+            <div class="col-8">
+              <nz-progress
+                [nzPercent]="marksPercent.toFixed(0)"
+                [nzFormat]="marksFormat"
+                [nzStatus]="MarkStatusFormat()"
+                nzStrokeLinecap="round"
+              ></nz-progress>
+            </div>
+          </div>
+
+          <div class="row justify-content-between mb-2">
+            <h6>Result Status : {{ " " + resultData?.student?.status }}</h6>
+          </div>
+          <div class="row mb-2 justify-content-between">
+            <h6>Rank : {{ " " + resultData?.student?.rank }}</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6 mb-3">
+      <div class="card">
+        <div class="card-head">
+          <h5 class="d-flex justify-content-center">Top Students</h5>
+        </div>
+        <!-- <div class="card-body d-flex justify-content-evenly flex-wrap">
+          <div *ngFor="let student of topStudents" class="card m-2 shadow-sm">
+            <div class="card-body text-center">
+              <h5 class="card-title text-primary">
+                {{ student.studentInfo.firstName }}
+                {{ student.studentInfo.lastName }}
+              </h5>
+              <p class="card-text">
+                <strong>Marks Obtained:</strong> {{ student.obtainMarks }}
+              </p>
+              <p class="card-text"><strong>Rank:</strong> {{ student.rank }}</p>
+              <p class="card-text">
+                <strong>Status:</strong>
+                <span
+                  [ngClass]="{
+                    'text-success': student.status === 'PASS',
+                    'text-danger': student.status === 'FAIL'
+                  }"
+                >
+                  {{ student.status }}</span
+                >
+              </p>
+            </div>
+          </div>
+        </div> -->
+        <div class="card-body p-4">
+          <div class="row">
+            <div *ngFor="let student of topStudents" class="col-4">
+              <h6 class="mb-2">
+                {{
+                  student.studentInfo.firstName + student.studentInfo.lastName
+                }}
+              </h6>
+              <p class="mb-2"><strong>Rank:</strong> {{ student.rank }}</p>
+
+              <p class="mb-2">
+                <strong>Marks Obtained:</strong> {{ student.obtainMarks }}
+              </p>
+              <p class="mb-2">
+                <strong>Status:</strong>
+                <span
+                  [ngClass]="{
+                    'text-success': student.status === 'PASS',
+                    'text-danger': student.status === 'FAIL'
+                  }"
+                >
+                  {{ student.status }}</span
+                >
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div class="d-flex justify-content-center pt-3" >
-    <button class="btn btn-primary" (click)="nextSet()">Next Set</button>
+
+  <div class="row m-3 justify-content-center">
+    <div class="d-flex justify-content-center pt-3">
+      <button class="btn btn-primary" (click)="nextSet()">Next Set</button>
+    </div>
   </div>
 </div>
 

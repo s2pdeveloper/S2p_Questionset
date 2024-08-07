@@ -11,7 +11,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 @Component({
   selector: 'app-result-page',
   standalone: true,
-  imports: [NzProgressModule, HeaderComponent, CommonModule,NgxSpinnerModule],
+  imports: [NzProgressModule, HeaderComponent, CommonModule, NgxSpinnerModule],
   templateUrl: './result-page.component.html',
   styleUrl: './result-page.component.css',
 })
@@ -21,7 +21,7 @@ export class ResultPageComponent implements OnInit {
     private studentService: StudentService,
     private actRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
-    private location: Location,
+    private location: Location
   ) {}
 
   questionSetId: string | null = null;
@@ -49,9 +49,9 @@ export class ResultPageComponent implements OnInit {
   status: string = '';
 
   topStudents: any[] = [];
- 
-  name:any;
-  nameLast:any;
+
+  name: any;
+  nameLast: any;
 
   // totalQuestions: number = 10;
   // questionsAttempted: number = 9;
@@ -59,20 +59,16 @@ export class ResultPageComponent implements OnInit {
   ngOnInit(): void {
     this.spinner.show();
     this.actRoute.queryParams.subscribe((params: any) => {
-      console.log('Report Params *********', params);
       this.questionSetId = params.questionSetId;
       this.resultData = params.resultData
         ? JSON.parse(params.resultData)
         : null;
-      console.log('Result in result page result data', this.resultData);
 
       if (this.resultData) {
         console.log('this.resultData', this.resultData);
 
         this.processResultData(this.resultData);
       } else if (this.questionSetId) {
-        console.log('this.questionSetId', this.questionSetId);
-
         this.obtainResults(this.questionSetId);
       }
     });
@@ -86,10 +82,7 @@ export class ResultPageComponent implements OnInit {
       studentId: localStorage.getItem('StudentId'),
     };
 
-    console.log('Obtain result payload', payload);
-
     this.studentService.getRankedResult(payload).subscribe((success: any) => {
-      console.log('Ranked Result Success', success);
       this.totalStudents = success?.totalStudent;
       this.stuAttempted = success?.noOfAttemptedStudent;
       this.stuNotAttempted = success?.noOfUnattemptedStudent;
@@ -101,7 +94,7 @@ export class ResultPageComponent implements OnInit {
       this.failPercentage = success?.percentageOfFailStudent;
       this.marksObtained = success?.student?.obtainMarks;
       this.name = success?.student?.studentInfo.firstName;
-      this.nameLast=success?.student?.studentInfo.lastName;
+      this.nameLast = success?.student?.studentInfo.lastName;
       this.rank = success?.student?.rank;
       this.status = success?.student?.status;
       this.topStudents = success?.topStudent;
@@ -110,12 +103,10 @@ export class ResultPageComponent implements OnInit {
       // this.calculateQuesAttemptPercentage();
       this.spinner.hide();
     });
-
-  
   }
 
   processResultData(result: any) {
-    console.log('In process result', result);
+   
 
     this.totalStudents = result?.totalStudent;
     this.stuAttempted = result.noOfAttemptedStudent;
@@ -126,8 +117,8 @@ export class ResultPageComponent implements OnInit {
     this.failPercentage = result?.percentageOfFailStudent;
     this.totalMarks = result?.student?.maxScore;
     this.passingMarks = result?.student?.passingMarks;
-    this.name=result?.student?.studentInfo.firstName;
-    this.nameLast=result?.student?.studentInfo.lastName;
+    this.name = result?.student?.studentInfo.firstName;
+    this.nameLast = result?.student?.studentInfo.lastName;
     this.marksObtained = result?.student?.obtainMarks;
     this.rank = result?.student?.rank;
     this.status = result?.student?.status;
@@ -135,7 +126,6 @@ export class ResultPageComponent implements OnInit {
     this.calculatePercentages();
     this.calculateMarksPercentage();
     this.spinner.hide();
-
   }
 
   calculatePercentages(): void {
@@ -147,7 +137,6 @@ export class ResultPageComponent implements OnInit {
       this.attemptPercentage = 0;
       this.notAttemptPercentage = 0;
     }
-   
   }
 
   calculateMarksPercentage() {

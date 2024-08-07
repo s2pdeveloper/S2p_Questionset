@@ -95,7 +95,7 @@
   width: 100%;
 }
 
-.head-text{
+.head-text {
   font-size: 20px;
   margin-bottom: 0 !important;
 }
@@ -105,34 +105,24 @@ button {
   margin-left: 15px;
 }
 
-@media only screen and (max-width: 500px){
-  
+@media only screen and (max-width: 500px) {
   .head-text {
     font-size: 16px;
     margin-bottom: 0 !important;
   }
 
-  .info-text{
+  .info-text {
     margin-bottom: 0 !important;
     font-size: 12px;
-
-
   }
   button {
     font-size: 12px;
   }
 }
 
-
 .shadow {
   box-shadow: none !important;
 }
-.list-group-item{
+.list-group-item {
   border: none;
 }
-
-
-
-
-
-
