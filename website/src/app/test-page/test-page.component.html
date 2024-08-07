@@ -9,9 +9,7 @@
 <div class="container-fluid">
   <div class="container pt-5" *ngIf="startButton === false">
     <div class="row justify-content-center">
-      <div
-        class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 mb-4"
-      >
+      <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
         <div class="card">
           <div class="card-header text-center bg-primary">
             <h4 class="text-center text-white head-text">Test Info</h4>
@@ -79,21 +77,29 @@
   </div>
 
   <div class="container pt-5" *ngIf="startButton === true">
-    <div class="row">
-      <div class="col-md-12 mb-4">
-        <div class="card shadow">
-          <div class="card-header text-center bg-primary">
-            <h2 class="text-center heading">MCQ Test</h2>
+    <div class="row justify-content-center">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
+        <div class="card">
+          <div class="d-flex justify-content-between text-center bg-primary">
+            <span >
+              <h2 class="text-center text-white head-text">
+                MCQ of {{ data?.name }}
+              </h2>
+            </span>
+            <span class="text-center text-white head-text">{{
+              timeRemaining
+            }}</span>
           </div>
-          <div class="card-body">
-            <div class="d-flex justify-content-between mb-3">
-              <div class="d-flex gap-1 align-self-center">
+
+          <div class="card-body p-4">
+            <div class="d-flex justify-content-end mb-3">
+              <!-- <div class="d-flex gap-1 align-self-center">
                 <strong class="head">Name:</strong>
                 <p class="text">{{ data?.name }}</p>
-              </div>
-              <span class="badge bg-primary p-2"
+              </div> -->
+              <!-- <span class="badge bg-primary p-2"
                 >Time Remaining: {{ timeRemaining }}</span
-              >
+              > -->
             </div>
             <form>
               <div class="head" *ngFor="let que of questions; let i = index">
@@ -103,17 +109,18 @@
                 <div class="div mb-4">
                   <div
                     class="form-check text"
-                    *ngFor="let option of que?.options"
+                    *ngFor="let option of que?.options; let i = index"
                   >
                     <input
                       (change)="answerChange(option, i)"
                       class="form-check-input"
                       type="radio"
-                      [name]="'que' + i"
                       [value]="option"
                       [checked]="selectedAnswers[i] === option"
                     />
-                    <label class="form-check-label text">{{ option }}</label>
+                    <label class="form-check-label text"
+                      >{{ letters[i] }}. {{ option }}</label
+                    >
                   </div>
                 </div>
               </div>

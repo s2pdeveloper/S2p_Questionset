@@ -38,6 +38,7 @@ export class TestPageComponent implements OnDestroy {
 
   destroy = new Subject();
   questions: any[] = [];
+  letters: string[] = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j'];
 
   selectedAnswers: any[] = [];
 
@@ -50,16 +51,17 @@ export class TestPageComponent implements OnDestroy {
   ngOnInit() {
     this.seminarId = localStorage.getItem('SeminarId');
     this.studentId = localStorage.getItem('StudentId');
+    console.log(this.studentId);
+    
     this.getSetDetails();
   }
 
   getSetDetails() {
     let params = {
       id: this.seminarId,
-    }; 
+    };
     this.spinner.show();
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
-     
       this.data = success?.result?.data;
       this.questions = success?.result?.data?.questions;
       this.selectedAnswers = new Array(this.questions.length).fill('');
@@ -97,7 +99,6 @@ export class TestPageComponent implements OnDestroy {
         }:${seconds < 10 ? '0' + seconds : seconds}`;
 
         if (this.timer === 0) {
-          
           this.submit();
           this.destroy.next('');
           this.destroy.complete();
@@ -131,11 +132,7 @@ export class TestPageComponent implements OnDestroy {
       answers: answers,
     };
 
-    
-
     this.studentService.submitTest(payload).subscribe((success: any) => {
-   
-
       this.router.navigate(['default/result'], {
         queryParams: {
           questionSetId: this.data?._id,

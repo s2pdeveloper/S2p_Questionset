@@ -149,7 +149,7 @@ export class LoginComponent implements OnInit {
         (success: any) => {
           console.log('Login Success', success);
           this.spinner.hide();
-          localStorage.setItem('StudentId', success?.result?.user?.id);
+          localStorage.setItem('StudentId', success?.result?.user?._id);
           localStorage.setItem('token', success?.result?.token);
           localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
           this.loginForm.reset();

@@ -101,9 +101,10 @@ const customerobj = {
         studentId: req.user._id,
         questionSetId: data._id,
       });
-      data.isAlreadySubmited = false;
       if (result) {
         data.isAlreadySubmited = true;
+      } else {
+        data.isAlreadySubmited = false;
       }
 
       console.log('your data', data.option);
@@ -248,9 +249,9 @@ const customerobj = {
       const { phone, otp } = req.body;
       const user = await Student.findOne({ phone: phone });
       console.log('your student', user.otp == otp);
-      
-      if (!(user.otp==otp)) {
-        console.log("*** otp not matched***")
+
+      if (!(user.otp == otp)) {
+        console.log('*** otp not matched***');
         const errors = 'Invalid OTP';
         return res.serverError(errors);
       }
@@ -275,7 +276,7 @@ const customerobj = {
       console.log('***checking user****', user);
       console.log('your student', user);
       if (!user) {
-        const errors = "Invalid Credentials";
+        const errors = 'Invalid Credentials';
         return res.serverError(errors);
       }
       let otp = Math.floor(1000 + Math.random() * 9000);
@@ -289,7 +290,7 @@ const customerobj = {
         otp: otp,
       };
       const email = EmailHelper.sendMail(data);
-      res.success({message:"OTP sent to Email"});
+      res.success({ message: 'OTP sent to Email' });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -316,7 +317,7 @@ const customerobj = {
       throw new Error(error);
     }
   },
-  
+
   rankedResult: async (req, res) => {
     try {
       let { page = 1, pageSize = 9999, direction = -1 } = req.query;
