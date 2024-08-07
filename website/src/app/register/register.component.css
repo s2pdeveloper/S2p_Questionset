@@ -208,6 +208,17 @@ button:hover {
     top: 2.5rem;
     right: 2.5rem;
   }
+
+  .loginLink{
+
+    transition: 0.25s;
+    cursor: pointer;
+    &:hover{
+      font-weight: bold;
+      color: #0c7348;
+    }
+  }
+
 }
 
 

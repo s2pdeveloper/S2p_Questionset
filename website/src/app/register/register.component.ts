@@ -159,4 +159,8 @@ export class RegisterComponent implements OnInit {
       }
     );
   }
+
+  navigateToLogin() {
+    this.router.navigate([`login/${this.seminarId}`]);
+  }
 }

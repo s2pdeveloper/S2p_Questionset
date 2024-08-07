@@ -115,20 +115,21 @@
                 <div class="div mb-4">
                   <div
                     class="form-check text"
-                    *ngFor="let option of que?.options; let i = index"
+                    *ngFor="let option of que?.options"
                   >
                     <input
                       (change)="answerChange(option, i)"
                       class="form-check-input"
                       type="radio"
-                      [value]="option"
                       [checked]="selectedAnswers[i] === option"
                     />
                     <label class="form-check-label text"
-                      >{{ letters[i] }}. {{ option }}</label
+                      > {{ option }}</label
                     >
                   </div>
                 </div>
+
+              
               </div>
               <div class="text-center">
                 <button class="btn btn-primary xl" (click)="submit()">

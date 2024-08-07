@@ -9,8 +9,7 @@ import { Observable } from 'rxjs';
 export const jwtInterceptor: HttpInterceptorFn = (
   req: HttpRequest<any>,
   next: HttpHandlerFn
-): Observable<HttpEvent<any>> => {
-  console.log('In Interceptor', req);
+): Observable<HttpEvent<any>> => { 
   
   const token = localStorage.getItem('token'); // Retrieve the token from localStorage
 

@@ -49,15 +49,9 @@ export class TestPageComponent implements OnDestroy {
   timer: number = 0;
 
   ngOnInit() {
-    let activeTimerValue = localStorage.getItem('activeQueSetTime');
-    if (activeTimerValue) {
-      this.convertToMinutes(activeTimerValue)
-    }
-    console.log('activeTimerValue', activeTimerValue, this.timer);
-
     this.seminarId = localStorage.getItem('SeminarId');
     this.studentId = localStorage.getItem('StudentId');
-    this.timer = this.data?.duration * 60;
+    // this.timer = this.data?.duration * 60;
     this.getSetDetails();
   }
 
@@ -70,24 +64,44 @@ export class TestPageComponent implements OnDestroy {
       this.data = success?.result?.data;
       this.questions = success?.result?.data?.questions;
       this.selectedAnswers = new Array(this.questions.length).fill('');
+      let activeTimerValue = localStorage.getItem('activeQueSetTime');
+      if (activeTimerValue) {
+        this.convertToMinutes(activeTimerValue);
+      } else {
+        this.timer = this.data?.duration * 60;
+      }
+      let activeQueSet = localStorage.getItem('activeQueSet');
+      if (activeQueSet) {
+        this.selectedAnswers = JSON.parse(activeQueSet);
+      }
+      let isTestStarted = localStorage.getItem('isTestStarted');
+
+      if (isTestStarted) {
+        this.startButton = isTestStarted === 'true' ? true : false;
+        this.startTimer();
+      }
+
       this.spinner.hide();
     });
   }
-  convertToMinutes(time) {
-    // Split the time string into hours, minutes, and seconds
-    const [hours, minutes, seconds] = time.split(':').map(Number);
 
-    this.timer = Number(`${minutes}.${seconds}`);
+  convertToMinutes(time) {
+    let [hours, minutes, seconds] = time.split(':').map(Number);
+    minutes = minutes * 60;
+
+    this.timer = minutes + seconds;
   }
 
   startTest(): void {
     this.startButton = true;
-    // this.timer = this.data?.duration * 60;
     this.startTimer();
+    localStorage.setItem('isTestStarted', 'true');
   }
 
   ngOnDestroy(): void {
+    // localStorage.setItem('activeQueSetTime', this.timeRemaining);
     localStorage.setItem('activeQueSetTime', this.timeRemaining);
+
     this.destroy.next('');
     this.destroy.complete();
   }
@@ -110,17 +124,26 @@ export class TestPageComponent implements OnDestroy {
           minutes < 10 ? '0' + minutes : minutes
         }:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        // if (this.timer === 0) {
-        //   this.submit();
-        //   this.destroy.next('');
-        //   this.destroy.complete();
-        // }
+        if (this.timer === 0) {
+          this.submit();
+          localStorage.removeItem('activeQueSetTime');
+          localStorage.removeItem('activeQueSet');
+          localStorage.removeItem('isTestStarted');
+
+          this.destroy.next('');
+          this.destroy.complete();
+        }
       });
     });
   }
 
   answerChange(option: any, index: number) {
     this.selectedAnswers[index] = option;
+    this.setTempData();
+  }
+
+  setTempData() {
+    localStorage.setItem('activeQueSet', JSON.stringify(this.selectedAnswers));
   }
 
   clearSelection(index: number) {
