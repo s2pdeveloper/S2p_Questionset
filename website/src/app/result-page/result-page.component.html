@@ -1,17 +1,17 @@
-<!-- <div class="row m-3">
+<div class="row m-3">
   <div class="col-12">
     <div class="card shadow p-0">
       <div class="card-header bg-primary text-center">
         <h4 class="my-3 heading">Top Students</h4>
       </div>
-      <div class="card-body d-flex justify-content-start flex-wrap">
+      <div class="card-body d-flex justify-content-evenly flex-wrap">
         <div
           *ngFor="let student of topStudents"
           class="card m-2 shadow-sm"
           style="width: 18rem"
         >
           <div class="card-body text-center">
-            <h5 class="card-title font-weight-bold text-primary">
+            <h5 class="card-title text-primary">
               {{ student.studentInfo.firstName }}
               {{ student.studentInfo.lastName }}
             </h5>
@@ -35,45 +35,43 @@
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
-<!-- <div class="row m-3 my-sm-0 my-3 container d-flex flex-column justify-content-center align-items-center border">
-  <div class="col-md-12 border">
-    <div class=" my-sm-0 my-3">
-      <div class="">
+<div class="row m-3">
+  <div class="col-md-6">
+    <div class="card"> 
+      <div class="card-head">
         <h4 class="d-flex justify-content-center">
           Total Students : {{ totalStudents }}
         </h4>
       </div>
-      <div class="my-sm-0 my-3">
-        <div class="d-flex justify-content-between">
+      <div class="card-body">
+        <div class="d-flex justify-content-evenly">
           <h5 class="text-success">Attempted : {{ stuAttempted }}</h5>
           <h5 class="text-danger">Not Attempted : {{ stuNotAttempted }}</h5>
         </div>
 
-        <div class="d-flex justify-content-around mt-3">
+        <div class="d-flex justify-content-evenly mt-3">
           <nz-progress
-          class="me-sm-0 me-3"
             [nzPercent]="attemptPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="success"
             [nzFormat]="percentFormat"
-            [nzWidth]="100"
+            [nzWidth]="150"
           ></nz-progress>
           <nz-progress
-          class=""
             [nzPercent]="notAttemptPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="exception"
             [nzFormat]="percentFormat"
-            [nzWidth]="100"
+            [nzWidth]="150"
           ></nz-progress>
         </div>
       </div>
     </div>
   </div>
-  <div class="col-md-12">
-    <div class="">
+  <div class="col-md-6">
+    <div class="card">
       <div class="card-head">
         <h4 class="d-flex justify-content-center">Overall Results</h4>
       </div>
@@ -82,30 +80,29 @@
           <h5 class="text-success">Passed : {{ totalPassed }}</h5>
           <h5 class="text-danger">Failed : {{ totalFailed }}</h5>
         </div>
-        <div class="d-flex justify-content-around mt-3">
+        <div class="d-flex justify-content-evenly mt-3">
           <nz-progress
-          class="me-sm-0 me-3"
             [nzPercent]="passPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="success"
             [nzFormat]="percentFormat"
-            [nzWidth]="100"
+            [nzWidth]="150"
           ></nz-progress>
           <nz-progress
             [nzPercent]="failPercentage.toFixed(0)"
             nzType="circle"
             nzStatus="exception"
             [nzFormat]="percentFormat"
-            [nzWidth]="100"
+            [nzWidth]="150"
           ></nz-progress>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+</div>
 
-<!-- <div class="row m-3 justify-content-center">
-  <div class="col-md-6">
+<div class="row m-3 justify-content-center">
+  <div class="col-md-6 ">
     <div class="card">
       <div class="card-head">
         <h4 class="d-flex justify-content-center">Your Result</h4>
@@ -125,33 +122,36 @@
           </div>
         </div>
 
-        <div class="row mb-3">
-          <h5>Result Status: {{ status }}</h5>
+        <div class="row  d-flex justify-content-between mb-3">
+          <span>Result Status:</span>
+          <span>PASS</span>
         </div>
-        <div class="row mb-3">
-          <h5>Rank: {{ rank }}</h5>
+        <div class="row mb-3 justify-content-evenly">
+          <h5>Rank:</h5>
+          <p>5</p>
         </div>
       </div>
     </div>
   </div>
-</div> -->
+  <div class="d-flex justify-content-center pt-3" >
+    <button class="btn btn-primary" (click)="nextSet()">Next Set</button>
+  </div>
+</div>
 
-
-
-<div class="container">
-  <!-- <h1>Exam Results</h1>
+<!-- <div class="container">
+  <h1>Exam Results</h1>
   
   <div class="info">
       <p><strong>Number of Students Attempted:</strong> 75</p>
       <p><strong>Number of Students Not Attempted:</strong> 25</p>
   </div> -->
 
-  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="square-jelly-box">
+<!-- <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="square-jelly-box">
     <div class="loading-box"></div>
     <p style="font-size: 25px; color: orange;">LOADING...</p>
-  </ngx-spinner>
+  </ngx-spinner> -->
 
-  <div class="row my-sm-0 container d-flex flex-column justify-content-center align-items-center ">
+<!-- <div class="row my-sm-0 container d-flex flex-column justify-content-center align-items-center ">
     <div class="col-md-12 ">
       <div class="row d-flex justify-content-end">
         <div class="col-sm-1 col-3">
@@ -268,4 +268,4 @@
 </div>
 <div class="col-md-12 d-flex align-items-center justify-content-center">
   <button class="nextTest" (click)="nextSet()">Next Test</button>
-</div>
+</div> -->
