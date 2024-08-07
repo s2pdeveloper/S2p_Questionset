@@ -430,12 +430,18 @@
               </div>
 
               <div
-                class="col-12 d-grid mt-2"
+                class="col-12 d-grid my-2"
               >
                 <button class="btn" (click)="register()">
                   Register
                 </button>
               </div>
+              <p class="text-center">
+                Already have an account ?
+                <span (click)="navigateToLogin()" class="loginLink"
+                  >Login here</span
+                >
+              </p>
             </div>
           </form>
         </div>

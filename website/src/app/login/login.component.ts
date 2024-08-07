@@ -139,31 +139,30 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.submitted = true;
+    console.log('Login form value', this.loginForm);
 
-    // Combine OTP values
-    if (this.loginForm.valid) {
-      console.log('Login form value', this.loginForm.value);
-
-      this.spinner.show();
-      this.studentService.loginStudent(this.loginForm.value).subscribe(
-        (success: any) => {
-          console.log('Login Success', success);
-          this.spinner.hide();
-          localStorage.setItem('StudentId', success?.result?.user?.id);
-          localStorage.setItem('token', success?.result?.token);
-          localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
-          this.loginForm.reset();
-          this.router.navigate(['default/test']);
-        },
-        (error) => {
-          this.spinner.hide();
-          this.toastService.error('Login failed');
-        }
-      );
-    } else {
-      console.error('OTP form is invalid');
+    if (this.loginForm.invalid) { 
       this.toastService.error('OTP is invalid');
+      return
     }
+
+
+    this.spinner.show();
+    this.studentService.loginStudent(this.loginForm.value).subscribe(
+      (success: any) => {
+        console.log('Login Success', success);
+        this.spinner.hide();
+        localStorage.setItem('StudentId', success?.result?.user?.id);
+        localStorage.setItem('token', success?.result?.token);
+        localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
+        this.loginForm.reset();
+        this.router.navigate(['default/test']);
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Login failed');
+      }
+    );
   }
   navigateToRegister() {
     this.router.navigate([`register/${this.seminarId}`]);

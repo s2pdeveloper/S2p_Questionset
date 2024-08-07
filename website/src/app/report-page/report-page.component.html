@@ -1,17 +1,23 @@
-
-<div class="container mt-5">
-  <div class="row">
-    <div class="col-md-12 mb-4">
-      <div class="card shadow">
+<ngx-spinner
+  bdColor="rgba(51, 51, 51, 0.8)"
+  size="medium"
+  color="#fff"
+  type="square-jelly-box"
+>
+</ngx-spinner>
+<div class="container-fluid">
+  <div class="row justify-content-center">
+    <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-10 col-xl-10 mb-4">
+      <div class="card shadow mt-5">
         <div class="card-header text-center bg-primary">
-          <h2 class="text-center heading">Report</h2>
+          <h4 class="text-center text-white head-text">React Test Report</h4>
         </div>
-        <div class="card-body">
+        <div class="card-body p-4">
           <div *ngIf="currentQuestionSet">
-            <div class="d-flex justify-content-center">
-              <h3 class="mb-4 head text-center">
+            <div class="d-flex justify-content-center  ">
+              <!-- <h3 class="mb-1 head-text text-center text-dark">
                 {{ currentQuestionSet?.questionSet?.name }}
-              </h3>
+              </h3> -->
             </div>
             <ul class="list-group mb-3">
               <li
@@ -19,30 +25,28 @@
                   let question of currentQuestionSet?.questionSet?.questions;
                   let i = index
                 "
-                class="list-group-item "
+                class="list-group-item info-text"
               >
-                <div class="mb-2 subhead">
+                <div class="mb-2 subhead info-text">
                   <strong>Q{{ i + 1 }}: {{ question?.question }}</strong>
                 </div>
-                <div class="correct-option mb-1">
+                <div class="correct-option mb-1 info-text">
                   <strong>Correct Option: </strong>
-                  <em>{{ question?.correctOption }}</em>
+                  {{ question?.correctOption }}
                 </div>
-                <div class="student-answer">
+                <div class="student-answer info-text">
                   <strong>Your Answer: </strong>
-                  <em>{{ question?.studentAnswer }}</em>
+                  {{ question?.studentAnswer }}
                 </div>
               </li>
             </ul>
-            <div class="d-flex justify-content-between">
-
-
-              <button class="result" (click)="viewDetails(currentQuestionSet)">
+            <div class="d-flex justify-content-between info-text text-center">
+              <button  class="result btn btn-primary" (click)="viewDetails(currentQuestionSet)">
                 View Result
               </button>
               <div>
                 <button
-                  class="btn btn-secondary me-2"
+                  class="btn btn-secondary me-2 "
                   (click)="previousQuestionSet()"
                   *ngIf="!isFirstSet()"
                   [disabled]="isFirstSet()"
@@ -50,7 +54,7 @@
                   Previous Set
                 </button>
                 <button
-                  class="btn btn-secondary"
+                  class="btn btn-secondary "
                   (click)="nextQuestionSet()"
                   [disabled]="isLastSet()"
                   *ngIf="!isLastSet()"
@@ -67,8 +71,4 @@
       </div>
     </div>
   </div>
-  <ngx-spinner bdColor="rgba(51, 51, 51, 0.8)" size="medium" color="#fff" type="square-jelly-box">
-    <div class="loading-box"></div>
-    <p style="font-size: 25px; color: orange;">LOADING...</p>
-  </ngx-spinner>
 </div>
