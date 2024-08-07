@@ -80,15 +80,21 @@
     <div class="row justify-content-center">
       <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
         <div class="card">
-          <div class="d-flex justify-content-between text-center bg-primary">
-            <span >
+          <div class="d-flex justify-content-between bg-primary p-2 px-3">
+            
               <h2 class="text-center text-white head-text">
                 MCQ of {{ data?.name }}
               </h2>
-            </span>
-            <span class="text-center text-white head-text">{{
-              timeRemaining
-            }}</span>
+            
+            <span class="text-center text-white info-text">
+
+              <strong>
+                {{
+                  timeRemaining
+                }}
+              </strong>
+              
+             </span>
           </div>
 
           <div class="card-body p-4">

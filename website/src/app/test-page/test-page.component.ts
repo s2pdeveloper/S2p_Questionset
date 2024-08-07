@@ -49,10 +49,15 @@ export class TestPageComponent implements OnDestroy {
   timer: number = 0;
 
   ngOnInit() {
+    let activeTimerValue = localStorage.getItem('activeQueSetTime');
+    if (activeTimerValue) {
+      this.convertToMinutes(activeTimerValue)
+    }
+    console.log('activeTimerValue', activeTimerValue, this.timer);
+
     this.seminarId = localStorage.getItem('SeminarId');
     this.studentId = localStorage.getItem('StudentId');
-    console.log(this.studentId);
-    
+    this.timer = this.data?.duration * 60;
     this.getSetDetails();
   }
 
@@ -68,14 +73,21 @@ export class TestPageComponent implements OnDestroy {
       this.spinner.hide();
     });
   }
+  convertToMinutes(time) {
+    // Split the time string into hours, minutes, and seconds
+    const [hours, minutes, seconds] = time.split(':').map(Number);
+
+    this.timer = Number(`${minutes}.${seconds}`);
+  }
 
   startTest(): void {
     this.startButton = true;
-    this.timer = this.data?.duration * 60;
+    // this.timer = this.data?.duration * 60;
     this.startTimer();
   }
 
   ngOnDestroy(): void {
+    localStorage.setItem('activeQueSetTime', this.timeRemaining);
     this.destroy.next('');
     this.destroy.complete();
   }
@@ -98,11 +110,11 @@ export class TestPageComponent implements OnDestroy {
           minutes < 10 ? '0' + minutes : minutes
         }:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        if (this.timer === 0) {
-          this.submit();
-          this.destroy.next('');
-          this.destroy.complete();
-        }
+        // if (this.timer === 0) {
+        //   this.submit();
+        //   this.destroy.next('');
+        //   this.destroy.complete();
+        // }
       });
     });
   }
