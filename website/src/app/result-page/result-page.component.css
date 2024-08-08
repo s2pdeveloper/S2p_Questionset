@@ -43,7 +43,10 @@ font-size: 16px;
     .progress-col{
       margin-bottom: 0.75rem;
     }
-    .progress-container{
-/* width:6rem ; */
-    }
+    
+}
+
+button{
+  background: linear-gradient(90deg, #309b45, #41984f, #68ce76 66%);
+
 }
