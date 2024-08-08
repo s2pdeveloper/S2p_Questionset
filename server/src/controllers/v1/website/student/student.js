@@ -10,14 +10,13 @@ const EmailHelper = require('../../../../models/helpers/EmailHelper');
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      console.log('Your Data******', req.body);
       const data = req.body;
       data.seminarId = req.params.id;
       const existing = await Student.findOne({
         $or: [{ email: req.body.email }, { phone: req.body.phone }],
       });
       if (existing) {
-        const errors = 'Email Or Number Already Exist';
+        const errors = 'User Already Exist';
         return res.serverError(errors);
       }
       delete data.id;
@@ -25,7 +24,6 @@ const customerobj = {
       const student = await Student.create(data);
       if (student) {
         const token = student.genToken();
-
         res.status(201).json({
           message: 'Registration Successful',
           studentId: student._id,
@@ -245,13 +243,15 @@ const customerobj = {
 
   login: async (req, res) => {
     try {
-      console.log('hit the login of student');
       const { phone, otp } = req.body;
       const user = await Student.findOne({ phone: phone });
-      console.log('your student', user.otp == otp);
+
+      if (!user) {
+        const errors = 'User Not exist';
+        return res.serverError(errors);
+      }
 
       if (!(user.otp == otp)) {
-        console.log('*** otp not matched***');
         const errors = 'Invalid OTP';
         return res.serverError(errors);
       }
@@ -269,16 +269,15 @@ const customerobj = {
 
   loginOtp: async (req, res) => {
     try {
-      console.log('hit the send OTP of student');
       const { phone } = req.body;
 
       const user = await Student.findOne({ phone: phone });
-      console.log('***checking user****', user);
-      console.log('your student', user);
+
       if (!user) {
-        const errors = 'Invalid Credentials';
+        const errors = 'User not exist';
         return res.serverError(errors);
       }
+
       let otp = Math.floor(1000 + Math.random() * 9000);
       await Student.findOneAndUpdate({ phone: phone }, { otp: otp });
 
@@ -290,7 +289,7 @@ const customerobj = {
         otp: otp,
       };
       const email = EmailHelper.sendMail(data);
-      res.success({ message: 'OTP sent to Email' });
+      res.success({ message: 'OTP sent to email successfully' });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -592,7 +591,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
       'studentInfo.isDelete': 0,
       'studentInfo.branch': 0,
       'studentInfo.__v': 0,
-      'studentInfo._id': 0, 
+      'studentInfo._id': 0,
     },
   };
 
