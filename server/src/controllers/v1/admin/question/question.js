@@ -67,9 +67,13 @@ const questionsetOjbect = {
 
   createForQuestionSet: async (req, res) => {
     try {
-      console.log('req.file', req.file, req.body);
+      if (req.body.options) {
+        req.body.options = req.body.options.split(',');
+      }
 
-      const data = req.body;
+      console.log('req.file', req.body.options);
+
+      let data = req.body;
       if (data && data.questionType == 'IMAGE') {
         const b64 = Buffer.from(req.file.buffer).toString('base64');
         let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
@@ -111,6 +115,14 @@ const questionsetOjbect = {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Question');
         return res.unprocessableEntity(errors);
       }
+
+      if (req.body.options) {
+        console.log(typeof req.body.options,req.body.options );
+        
+        req.body.options = req.body.options.split(',');
+      }
+
+      console.log('req.file', req.body.options);
 
       if (req.body && req.body.questionType == 'IMAGE') {
         if (req.file) {
