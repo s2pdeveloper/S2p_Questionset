@@ -31,12 +31,12 @@ export class QuestionFormComponent implements OnInit {
   displayImage:any
   questionForm = this.formBuilder.group({
     _id: new FormControl(null),
-    question: new FormControl(''),
+    question: new FormControl('', [Validators.required]),
     type: new FormControl('', [Validators.required]),
     hint: new FormControl(''),
     options: new FormControl('', [Validators.required]),
     correctOption: new FormControl('', [Validators.required]),
-    questionType: new FormControl('TEXT', [Validators.required]),
+    questionType: new FormControl('TEXT'),
     queImageUrl: new FormControl(''),
   });
 
@@ -89,7 +89,7 @@ export class QuestionFormComponent implements OnInit {
     fd.append('hint', formData.hint);
     fd.append('options', formData.options);
     fd.append('correctOption', formData.correctOption);
-    fd.append('questionType', formData.questionType);
+    // fd.append('questionType', formData.questionType);
     if (this.images) {
       fd.append('queImageUrl', this.images, this.images.name);
     }
@@ -142,11 +142,11 @@ export class QuestionFormComponent implements OnInit {
     this.location.back();
   }
 
-  toggleQueType(e: any) {
-    this.form.question.setValue('');
-    this.form.queImageUrl.setValue('');
-    this.form.questionType.setValue(e.target.value);
-  }
+  // toggleQueType(e: any) {
+  //   this.form.question.setValue('');
+  //   this.form.queImageUrl.setValue('');
+  //   this.form.questionType.setValue(e.target.value);
+  // }
 
   fileBrowseHandler(event: any) {
     if (event.target.value) {

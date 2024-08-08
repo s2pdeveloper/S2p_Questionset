@@ -95,11 +95,18 @@
           <div class="card-body p-4">
             <form>
               <div class="head" *ngFor="let que of questions; let i = index">
-                <p class="mb-2">
+                <div class="mb-2">
+                  <img
+                    *ngIf="que?.questionType != 'TEXT'"
+                    [src]="que?.queImageUrl"
+                    alt=""
+                    class="queImg"
+                  />
+                  <p>
+                    <strong>{{ i + 1 }}. {{ que?.question }}</strong>
+                  </p>
+                </div>
 
-                  <strong *ngIf="que?.questionType == 'TEXT'">{{ i + 1 }}. {{ que?.question }}</strong>
-                <strong *ngIf="que?.questionType != 'TEXT'">{{ i + 1 }}. </strong> <img *ngIf="que?.questionType != 'TEXT'" [src]="que?.queImageUrl" [width]="400" [height]="200" alt="">
-                </p>
                 <div class="div m2-4">
                   <div
                     class="form-check text"
@@ -114,13 +121,6 @@
                     <label class="form-check-label text"> {{ option }}</label>
                   </div>
                 </div>
-                <!-- <button
-                  type="button"
-                  class="btn btn-secondary mb-2 ml-2"
-                  (click)="clearSelection(i)"
-                >
-                  Clear
-                </button> -->
               </div>
               <div class="text-center">
                 <button class="btn btn-primary xl" (click)="submit()">
