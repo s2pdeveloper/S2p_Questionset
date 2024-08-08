@@ -15,7 +15,7 @@
     </div>
     <div class="card-body">
       <form [formGroup]="questionForm" class="form-horizontal">
-        <div class="row justify-content-end">
+        <div class="row justify-content-start">
           <!-- <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
@@ -131,7 +131,7 @@
 
           <!-- <h3>{{option.value}}</h3> -->
 
-          <div class="col-md-6">
+          <!-- <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
                 Options
@@ -154,7 +154,7 @@
                 [control]="form['options']"
               ></validation-messages>
             </div>
-          </div>
+          </div> -->
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
@@ -173,8 +173,8 @@
                 }"
               >
                 <option disabled value="">Select Option</option>
-                <option *ngFor="let opt of splitArray" [value]="opt">
-                  {{ opt }}
+                <option *ngFor="let opt of splitArray" [value]="opt.option">
+                  {{ opt.option }}
                 </option>
               </select>
               <validation-messages
@@ -186,17 +186,56 @@
             class="col-md-6 d-flex justify-content-between align-items-center"
           >
             <div class="mb-3">
-              <label class="form-label"> Question </label>
+              <label class="form-label"> Question Image</label>
               <input
                 type="file"
                 class="form-control"
                 (change)="fileBrowseHandler($event)"
+
               />
             </div>
             <div class="card mb-0 img-shadow">
               <img [src]="displayImage" width="150" height="70" alt="" />
             </div>
             <!-- <img [src]="displayImage" width="100" height="60" alt="" /> -->
+          </div>
+
+          <div class="col-12 mb-3">
+            <div class="mb-3">
+              <label class="form-label">
+                Options
+                <span class="text-danger">*</span>
+              </label>
+             <button class="btn btn-success  btn-sm" (click)="addOptionInput()" >
+              <i class="fa fa-plus-square text-light" aria-hidden="true"></i>
+             </button>
+            </div>
+            <div class="row">
+              <div *ngFor="let o of splitArray;let i = index" class="col-3 mb-3">
+                <!-- <input
+                
+                  type="text"
+                  placeholder="Enter Options"
+                  class="form-control"
+                  [(ngModel)]="i.option"
+                   [ngModelOptions]="{standalone: true}"
+                  
+                /> -->
+
+                <div class="input-group mb-3">
+                  <input  type="text"
+                  placeholder="Enter Options"
+                  class="form-control"
+                  [(ngModel)]="o.option"
+                   [ngModelOptions]="{standalone: true}"
+                   >
+                  <div  (click)="removeOptionInput(i)"  class="input-group-append">
+                    <span class="input-group-text"><i class="fa fa-minus-square text-secondary" aria-hidden="true"></i></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
           </div>
         </div>
       </form>

@@ -342,6 +342,7 @@
                     class="form-control" 
                     formControlName="phone"
                     maxlength="10"
+                    minlength="10"
                     (keypress)="validatePhoneNumber($event)"
                     [placeholder]="isHidden ? 'Enter Phone Number' : ''"
                     
@@ -363,21 +364,6 @@
 
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="mb-2">
-                  <label *ngIf="!isHidden" class="form-label text-dark"
-                    >Semester
-                  </label>
-
-                  <select class="form-select" formControlName="semester">
-                    <option [value]="null" disabled [selected]="isHidden">Select Semester</option>
-                    <option [value]="b.value" *ngFor="let b of semesters">
-                      {{ b.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="mb-2">
                   <label *ngIf="!isHidden" class="form-label text-dark">
                     Gender
                   </label>
@@ -387,6 +373,21 @@
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="mb-2">
+                  <label *ngIf="!isHidden" class="form-label text-dark"
+                    >Branch
+                  </label>
+
+                  <select  class="form-select" formControlName="branch">
+                    <option   [value]="null" disabled [selected]="isHidden">Select Branch</option>
+                    <option [value]="b.value" *ngFor="let b of branch">
+                      {{ b.label }}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -406,20 +407,28 @@
                 </div>
               </div>
 
+             
+
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="mb-2">
                   <label *ngIf="!isHidden" class="form-label text-dark"
-                    >Branch
+                    >Semester
                   </label>
 
-                  <select  class="form-select" formControlName="branch">
-                    <option   [value]="null" disabled [selected]="isHidden">Select Branch</option>
-                    <option [value]="b.value" *ngFor="let b of branch">
+                  <select class="form-select" formControlName="semester">
+                    <option [value]="null" disabled [selected]="isHidden">Select Semester</option>
+                    <option [value]="b.value" *ngFor="let b of semesters">
                       {{ b.label }}
                     </option>
                   </select>
                 </div>
               </div>
+
+            
+
+              
+
+           
 
               <div
                 class="col-12 col-xs-11 col-sm-12 col-md-12 col-lg-12 col-xl-12"

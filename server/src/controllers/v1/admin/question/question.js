@@ -68,13 +68,18 @@ const questionsetOjbect = {
   createForQuestionSet: async (req, res) => {
     try {
       if (req.body.options) {
-        req.body.options = req.body.options.split(',');
+        // req.body.options = req.body.options.split(','); 
+        
+        req.body.options = JSON.parse(req.body.options) 
+
+
       }
 
-      console.log('req.file', req.body.options);
+    
+ 
 
       let data = req.body;
-      if (req.file ) {
+      if (req.file) {
         const b64 = Buffer.from(req.file.buffer).toString('base64');
         let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
         data.queImageUrl = await handleBufferUpload(dataURI);
@@ -117,12 +122,12 @@ const questionsetOjbect = {
       }
 
       if (req.body.options) {
-        console.log(typeof req.body.options,req.body.options );
+        // req.body.options = req.body.options.split(','); 
         
-        req.body.options = req.body.options.split(',');
-      }
+        req.body.options = JSON.parse(req.body.options) 
 
-      console.log('req.file', req.body.options);
+
+      }
 
       if (req.file) {
         if (req.file) {

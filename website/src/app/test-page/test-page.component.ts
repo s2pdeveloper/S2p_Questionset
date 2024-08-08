@@ -8,6 +8,7 @@ import { HeaderComponent } from '../header/header.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { TimerService } from '../services/timer.service';
 
 @Component({
   selector: 'app-test-page',
@@ -23,17 +24,21 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   styleUrl: './test-page.component.css',
 })
 export class TestPageComponent implements OnDestroy {
+  timeRemaining: string = '';
+  durationInMinutes: number = 5; // Set your desired duration here
+
   seminarId: string | null = null;
   studentId: string | null = null;
   startButton: boolean = false;
   data: any;
-  isTestSubmitted:boolean=false
+  isTestSubmitted: boolean = false;
   constructor(
     private zone: NgZone,
     private router: Router,
     private studentService: StudentService,
     private modalService: NgbModal,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private timerService: TimerService
   ) {}
 
   destroy = new Subject();
@@ -42,7 +47,7 @@ export class TestPageComponent implements OnDestroy {
 
   selectedAnswers: any[] = [];
 
-  timeRemaining: string = '';
+  // timeRemaining: string = '';
   interval: any = null;
 
   rxjsTimer = timer(1000, 1000);
@@ -51,8 +56,21 @@ export class TestPageComponent implements OnDestroy {
   ngOnInit() {
     this.seminarId = localStorage.getItem('SeminarId');
     this.studentId = localStorage.getItem('StudentId');
+    this.timerService.timer$.subscribe((time) => {
+      this.timeRemaining = this.formatTime(time);
+    });
     // this.timer = this.data?.duration * 60;
     this.getSetDetails();
+  }
+
+  startTimerNew(time: any) {
+    this.timerService.startTimer(time);
+  }
+
+  formatTime(timeInSeconds: number): string {
+    const minutes = Math.floor(timeInSeconds / 60);
+    const seconds = timeInSeconds % 60;
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
   getSetDetails() {
@@ -62,14 +80,16 @@ export class TestPageComponent implements OnDestroy {
     this.spinner.show();
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       this.data = success?.result?.data;
-      this.questions = success?.result?.data?.questions
+      this.questions = success?.result?.data?.questions;
       this.selectedAnswers = new Array(this.questions.length).fill('');
-      let activeTimerValue = localStorage.getItem('activeQueSetTime');
-      if (activeTimerValue) {
-        this.convertToMinutes(activeTimerValue);
-      } else {
-        this.timer = this.data?.duration * 60;
-      }
+      // let activeTimerValue = localStorage.getItem('activeQueSetTime');
+      // if (activeTimerValue) {
+      //   this.convertToMinutes(activeTimerValue);
+      // } else {
+      //   this.timer = this.data?.duration * 60;
+      // }
+      this.startTimerNew(this.data?.duration);
+
       let activeQueSet = localStorage.getItem('activeQueSet');
       if (activeQueSet) {
         this.selectedAnswers = JSON.parse(activeQueSet);
@@ -78,7 +98,7 @@ export class TestPageComponent implements OnDestroy {
 
       if (isTestStarted) {
         this.startButton = isTestStarted === 'true' ? true : false;
-        this.startTimer();
+        // this.startTimerNew();
       }
 
       this.spinner.hide();
@@ -94,48 +114,47 @@ export class TestPageComponent implements OnDestroy {
 
   startTest(): void {
     this.startButton = true;
-    this.startTimer();
+    // this.startTimer();
     localStorage.setItem('isTestStarted', 'true');
   }
 
   ngOnDestroy(): void {
-    if(!this.isTestSubmitted){
+    // if(!this.isTestSubmitted){
 
-      localStorage.setItem('activeQueSetTime', this.timeRemaining);
-    }
+    //   localStorage.setItem('activeQueSetTime', this.timeRemaining);
+    // }
 
     this.destroy.next('');
     this.destroy.complete();
   }
 
-  startTimer() {
-    const hours = Math.floor(this.timer / 3600);
-    const minutes = Math.floor((this.timer % 3600) / 60);
-    const seconds = this.timer % 60;
-    this.timeRemaining = `${hours}:${minutes < 10 ? '0' + minutes : minutes}:${
-      seconds < 10 ? '0' + seconds : seconds
-    }`;
+  // startTimer() {
+  //   const hours = Math.floor(this.timer / 3600);
+  //   const minutes = Math.floor((this.timer % 3600) / 60);
+  //   const seconds = this.timer % 60;
+  //   this.timeRemaining = `${hours}:${minutes < 10 ? '0' + minutes : minutes}:${
+  //     seconds < 10 ? '0' + seconds : seconds
+  //   }`;
 
-    this.rxjsTimer.pipe(takeUntil(this.destroy)).subscribe(() => {
-      this.zone.run(() => {
-        this.timer = this.timer - 1;
-        const hours = Math.floor(this.timer / 3600);
-        const minutes = Math.floor((this.timer % 3600) / 60);
-        const seconds = this.timer % 60;
-        this.timeRemaining = `${hours}:${
-          minutes < 10 ? '0' + minutes : minutes
-        }:${seconds < 10 ? '0' + seconds : seconds}`;
+  //   this.rxjsTimer.pipe(takeUntil(this.destroy)).subscribe(() => {
+  //     this.zone.run(() => {
+  //       this.timer = this.timer - 1;
+  //       const hours = Math.floor(this.timer / 3600);
+  //       const minutes = Math.floor((this.timer % 3600) / 60);
+  //       const seconds = this.timer % 60;
+  //       this.timeRemaining = `${hours}:${
+  //         minutes < 10 ? '0' + minutes : minutes
+  //       }:${seconds < 10 ? '0' + seconds : seconds}`;
 
-        if (this.timer === 0) {
-          this.submit();
-        
+  //       if (this.timer === 0) {
+  //         this.submit();
 
-          this.destroy.next('');
-          this.destroy.complete();
-        }
-      });
-    });
-  }
+  //         this.destroy.next('');
+  //         this.destroy.complete();
+  //       }
+  //     });
+  //   });
+  // }
 
   answerChange(option: any, index: number) {
     let existing = this.selectedAnswers.findIndex((s) => s === option);
@@ -167,7 +186,6 @@ export class TestPageComponent implements OnDestroy {
   submit() {
     this.spinner.show();
 
-    localStorage.removeItem('activeQueSetTime');
     localStorage.removeItem('activeQueSet');
     localStorage.removeItem('isTestStarted');
     const answers = this.questions.map((question, index) => {
@@ -189,8 +207,8 @@ export class TestPageComponent implements OnDestroy {
             questionSetId: this.data?._id,
           },
         });
-        this.isTestSubmitted = true
-        
+        this.isTestSubmitted = true;
+
         this.spinner.hide();
       },
       (error) => {

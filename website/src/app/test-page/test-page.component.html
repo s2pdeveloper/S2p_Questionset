@@ -80,7 +80,9 @@
     <div class="row justify-content-center">
       <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
         <div class="card">
-          <div class="d-flex justify-content-between bg-primary p-2 px-3">
+          <div
+            class="card-header d-flex justify-content-between bg-primary p-2 px-3"
+          >
             <h2 class="text-center text-white head-text">
               MCQ of {{ data?.name }}
             </h2>
@@ -96,25 +98,26 @@
             <form>
               <div class="head" *ngFor="let que of questions; let i = index">
                 <div class="mb-2">
+                  <p>
+                    <strong>{{ i + 1 }}. {{ que?.question }}</strong>
+                  </p>
                   <img
-                    *ngIf="que?.questionType != 'TEXT'"
+                    *ngIf="que?.queImageUrl"
                     [src]="que?.queImageUrl"
                     alt=""
                     class="queImg"
                   />
-                  <p>
-                    <strong>{{ i + 1 }}. {{ que?.question }}</strong>
-                  </p>
+                
                 </div>
 
-                <div class="div m2-4">
+                <div class="div mx-3">
                   <div
                     class="form-check text"
                     *ngFor="let option of que?.options"
                   >
                     <input
                       (click)="answerChange(option, i)"
-                      class="form-check-input"
+                      class="form-check-input "
                       type="radio"
                       [checked]="selectedAnswers[i] === option"
                     />

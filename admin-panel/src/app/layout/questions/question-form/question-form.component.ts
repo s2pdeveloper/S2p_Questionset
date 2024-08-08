@@ -25,7 +25,7 @@ export class QuestionFormComponent implements OnInit {
   submitted = false;
   optionsList: string[] = [];
   setId: any = null;
-  splitArray: [] = [];
+  splitArray: any = [{option:''}];
   act: string = '';
   images: any;
   displayImage:any
@@ -34,7 +34,7 @@ export class QuestionFormComponent implements OnInit {
     question: new FormControl('', [Validators.required]),
     type: new FormControl('', [Validators.required]),
     hint: new FormControl(''),
-    options: new FormControl('', [Validators.required]),
+    options: new FormControl([]),
     correctOption: new FormControl('', [Validators.required]),
     questionType: new FormControl('TEXT'),
     queImageUrl: new FormControl(''),
@@ -63,10 +63,24 @@ export class QuestionFormComponent implements OnInit {
     // console.log(this.splitArray);
   }
 
+  addOptionInput(){
+    this.splitArray.push({option:''}) 
+  }
+
+  removeOptionInput(i:Number){
+    this.splitArray.splice(i,1) 
+  }
+
+
+
   getById(id) {
     this.questionService.getQuestionById(id).subscribe((success) => {
       console.log('get by id', success);
-      this.splitArray = success?.result[0]?.options;
+      // this.splitArray = success?.result[0]?.options;
+
+      this.splitArray =   success?.result[0]?.options.map(option => {
+        return { option: option };
+    })
       // this.splitArray = success?.result[0]?.options;
       this.displayImage = success?.result[0]?.queImageUrl
 
@@ -76,18 +90,24 @@ export class QuestionFormComponent implements OnInit {
 
   submit() {
     this.submitted = true;
+
+    let formData = this.questionForm.value;
+    
+    formData.options = this.splitArray.map((x:any)=> {return  x.option})
+    console.log(this.questionForm , formData.options);
+    
+
     if (this.questionForm.invalid) {
       this.toastService.warning('Please fill all required fields!');
       return;
     }
-    let formData = this.questionForm.value;
-    // formData.options = this.splitArray;
+   
 
     let fd = new FormData();
     fd.append('question', formData.question);
     fd.append('type', formData.type);
     fd.append('hint', formData.hint);
-    fd.append('options', formData.options);
+    fd.append('options', JSON.stringify(formData.options));
     fd.append('correctOption', formData.correctOption);
     // fd.append('questionType', formData.questionType);
     if (this.images) {
