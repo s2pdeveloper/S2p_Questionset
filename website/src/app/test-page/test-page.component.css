@@ -26,6 +26,8 @@
 }
 button {
   font-size: 16px;
+  background: linear-gradient(90deg, #309b45, #41984f, #68ce76 66%);
+
 
 }
 
@@ -44,6 +46,10 @@ button {
   button {
     font-size: 12px;
   }
+}
+
+.card-header {
+  background: linear-gradient(to right, #309b45, #41984f, #68ce76);
 }
 
 

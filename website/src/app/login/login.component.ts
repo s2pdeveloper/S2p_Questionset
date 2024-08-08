@@ -77,28 +77,31 @@ export class LoginComponent implements OnInit {
   userData = {};
 
   showOtpFields() {
-    if (this.phoneNumber) {
-      this.toastService.warning('Please enter phone Number');
-
-      return this.phoneNumber.invalid;
+    if (
+      !this.loginForm.controls['phone'].value ||
+      this.loginForm.controls['phone'].invalid
+    ) {
+      this.toastService.warning('Please enter valid or correct phone number');
+      return;
     }
     this.spinner.show();
     // Call the API using the service
-    this.studentService.otpLogin(this.loginForm.value).subscribe({
-      next: (response: any) => {
+    this.studentService.otpLogin(this.loginForm.value).subscribe(
+      (response: any) => {
         this.toastService.success(response?.result?.message);
         // On success, make OTP fields visible and change button text
         this.otpVisible = true;
         this.isOtpSent = true;
         this.spinner.hide();
       },
-      error: (err) => {
+      (error) => {
         this.spinner.hide();
+        console.log(error.error.error);
 
-        console.error('Error logging in:', err);
+        this.toastService.error(error.error.error);
         // Handle error here, e.g., show an error message to the user
-      },
-    });
+      }
+    );
   }
 
   // onInput(event: Event) {
@@ -120,24 +123,26 @@ export class LoginComponent implements OnInit {
   // }
 
   loginForm = new FormGroup({
-    phone: new FormControl('', [Validators.required,  Validators.pattern(/^\d{0,10}$/)]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{0,10}$/),
+    ]),
     otp: new FormControl('', [Validators.required]),
   });
 
-    ngOnInit(): void {
-      this.actRoute.queryParams.subscribe((params: any) => {
-        console.log('Login Params****', params);
+  ngOnInit(): void {
+    this.actRoute.queryParams.subscribe((params: any) => {
+      console.log('Login Params****', params);
 
-        const id = this.route.snapshot.paramMap.get('id');
-        this.seminarId = id;
-        if (id) {
-          localStorage.setItem('SeminarId', id);
-        }
-        localStorage.removeItem('StudentId');
-      });
-      console.log(this.seminarId);
-      
-    }
+      const id = this.route.snapshot.paramMap.get('id');
+      this.seminarId = id;
+      if (id) {
+        localStorage.setItem('SeminarId', id);
+      }
+      localStorage.removeItem('StudentId');
+    });
+    console.log(this.seminarId);
+  }
 
   login() {
     this.submitted = true;
@@ -161,12 +166,11 @@ export class LoginComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error('Login failed');
+        this.toastService.error(error.message);
       }
     );
   }
   navigateToRegister() {
-
     this.router.navigate([`register/${this.seminarId}`]);
   }
 
@@ -176,5 +180,4 @@ export class LoginComponent implements OnInit {
       event.preventDefault();
     }
   }
-
 }
