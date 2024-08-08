@@ -66,7 +66,7 @@ export class QuestionFormComponent implements OnInit {
   getById(id) {
     this.questionService.getQuestionById(id).subscribe((success) => {
       console.log('get by id', success);
-      this.splitArray = success?.result[0]?.options[0]?.split(',');
+      this.splitArray = success?.result[0]?.options;
       // this.splitArray = success?.result[0]?.options;
       this.displayImage = success?.result[0]?.queImageUrl
 
@@ -81,7 +81,7 @@ export class QuestionFormComponent implements OnInit {
       return;
     }
     let formData = this.questionForm.value;
-    formData.options = this.splitArray;
+    // formData.options = this.splitArray;
 
     let fd = new FormData();
     fd.append('question', formData.question);

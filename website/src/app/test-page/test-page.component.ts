@@ -27,7 +27,7 @@ export class TestPageComponent implements OnDestroy {
   studentId: string | null = null;
   startButton: boolean = false;
   data: any;
-
+  isTestSubmitted:boolean=false
   constructor(
     private zone: NgZone,
     private router: Router,
@@ -62,7 +62,7 @@ export class TestPageComponent implements OnDestroy {
     this.spinner.show();
     this.studentService.getVisibleSet(params).subscribe((success: any) => {
       this.data = success?.result?.data;
-      this.questions = success?.result?.data?.questions;
+      this.questions = success?.result?.data?.questions
       this.selectedAnswers = new Array(this.questions.length).fill('');
       let activeTimerValue = localStorage.getItem('activeQueSetTime');
       if (activeTimerValue) {
@@ -99,8 +99,10 @@ export class TestPageComponent implements OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // localStorage.setItem('activeQueSetTime', this.timeRemaining);
-    localStorage.setItem('activeQueSetTime', this.timeRemaining);
+    if(!this.isTestSubmitted){
+
+      localStorage.setItem('activeQueSetTime', this.timeRemaining);
+    }
 
     this.destroy.next('');
     this.destroy.complete();
@@ -126,9 +128,7 @@ export class TestPageComponent implements OnDestroy {
 
         if (this.timer === 0) {
           this.submit();
-          localStorage.removeItem('activeQueSetTime');
-          localStorage.removeItem('activeQueSet');
-          localStorage.removeItem('isTestStarted');
+        
 
           this.destroy.next('');
           this.destroy.complete();
@@ -138,8 +138,18 @@ export class TestPageComponent implements OnDestroy {
   }
 
   answerChange(option: any, index: number) {
+    let existing = this.selectedAnswers.findIndex((s) => s === option);
+    console.log('existing', existing);
+
+    if (existing !== -1) {
+      this.clearSelection(index);
+
+      return;
+    }
+
     this.selectedAnswers[index] = option;
     this.setTempData();
+    console.log(this.selectedAnswers);
   }
 
   setTempData() {
@@ -155,6 +165,11 @@ export class TestPageComponent implements OnDestroy {
   }
 
   submit() {
+    this.spinner.show();
+
+    localStorage.removeItem('activeQueSetTime');
+    localStorage.removeItem('activeQueSet');
+    localStorage.removeItem('isTestStarted');
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
     });
@@ -167,12 +182,20 @@ export class TestPageComponent implements OnDestroy {
       answers: answers,
     };
 
-    this.studentService.submitTest(payload).subscribe((success: any) => {
-      this.router.navigate(['default/result'], {
-        queryParams: {
-          questionSetId: this.data?._id,
-        },
-      });
-    });
+    this.studentService.submitTest(payload).subscribe(
+      (success: any) => {
+        this.router.navigate(['default/result'], {
+          queryParams: {
+            questionSetId: this.data?._id,
+          },
+        });
+        this.isTestSubmitted = true
+        
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide();
+      }
+    );
   }
 }

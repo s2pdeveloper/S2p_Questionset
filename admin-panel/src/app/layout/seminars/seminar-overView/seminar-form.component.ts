@@ -6,7 +6,6 @@ import { SeminarService } from '@services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
-
 @Component({
   selector: 'app-seminar-overView',
   templateUrl: './seminar-form.component.html',
@@ -14,12 +13,12 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class SeminarOverViewComponent implements OnInit {
   submitted = false;
-  overViewData:any;
+  overViewData: any;
   action: string = '';
-  attempted:any;
-  notAttempted:any;
-  chartOptions:any;
-  chartOptions2:any;
+  attempted: any;
+  notAttempted: any;
+  chartOptions: any;
+  chartOptions2: any;
   setChart: any[] = [];
   seminarForm = this.formBuilder.group({
     _id: new FormControl(null),
@@ -41,19 +40,13 @@ export class SeminarOverViewComponent implements OnInit {
     private spinner: NgxSpinnerService
   ) {}
 
-  
-  
-
-  
-
- 
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
       this.action = params.action;
-      if(params.id){
+      if (params.id) {
         this.getById(params.id);
       }
-    })
+    });
   }
 
   get form() {
@@ -61,48 +54,60 @@ export class SeminarOverViewComponent implements OnInit {
   }
 
   getById(id) {
+    this.spinner.show();
     this.seminarService.getSeminarOverView(id).subscribe((success) => {
-    
+      this.spinner.hide();
       // this.seminarForm.patchValue(success.result);
-      this.overViewData=success.result
-      console.log("your form data in seminar over",this.overViewData)
-    this.attempted= (this.overViewData.avgNoOfAttemptedStudent/ this.overViewData.NoOfStudent)*100;
-    this.notAttempted= (this.overViewData.avgNoOfUnattemptedStudent/ this.overViewData.NoOfStudent)*100;
+      this.overViewData = success.result;
+      console.log('your form data in seminar over', this.overViewData);
+      this.attempted =
+        (this.overViewData.avgNoOfAttemptedStudent /
+          this.overViewData.NoOfStudent) *
+        100;
+      this.notAttempted =
+        (this.overViewData.avgNoOfUnattemptedStudent /
+          this.overViewData.NoOfStudent) *
+        100;
 
       this.chartOptions2 = {
-        series:[this.attempted,this.notAttempted],
+        series: [this.attempted, this.notAttempted],
         chart: {
-          height:200,
-          type: 'pie'
+          height: 200,
+          type: 'pie',
         },
         title: {
-          text: 'Participation '
+          text: 'Participation ',
         },
-        labels:["Attempted" ,"Not Attempted"]        
+        labels: ['Attempted', 'Not Attempted'],
       };
 
       this.chartOptions = {
-        series:[Number(this.overViewData.avgPercentageOfFailStudent),Number(this.overViewData.avgPercentageOfPassStudent)],
+        series: [
+          Number(this.overViewData.avgPercentageOfFailStudent),
+          Number(this.overViewData.avgPercentageOfPassStudent),
+        ],
         chart: {
-          height:200,
-          type: 'pie'
+          height: 200,
+          type: 'pie',
         },
         title: {
-          text: 'RESULT'
+          text: 'RESULT',
         },
-        labels:["FAIL" ,"PASS"]  
+        labels: ['FAIL', 'PASS'],
       };
 
-   this.overViewData.setsData=this.overViewData.setsData.map((data)=>{
-  var percentOfAttemptedStudent=Number(data.noOfAttemptedStudent/data.totalStudent)*100
-  var percentOfUnattemptedStudent=Number(data.noOfUnattemptedStudent/data.totalStudent)*100
-   var newData={
-    ...data,
-    percentOfAttemptedStudent,percentOfUnattemptedStudent
-  }
-  return newData
-  })
-
+      this.overViewData.setsData = this.overViewData.setsData.map((data) => {
+        var percentOfAttemptedStudent =
+          Number(data.noOfAttemptedStudent / data.totalStudent) * 100;
+        var percentOfUnattemptedStudent =
+          Number(data.noOfUnattemptedStudent / data.totalStudent) * 100;
+        var newData = {
+          ...data,
+          percentOfAttemptedStudent,
+          percentOfUnattemptedStudent,
+        };
+        return newData;
+      });
 
       // this.overViewData.setsData.forEach(element => {
       //   console.log("@@@@@@@@@pushing the Data",element)
@@ -116,17 +121,15 @@ export class SeminarOverViewComponent implements OnInit {
       //       title: {
       //         text: 'RESULT'
       //       },
-      //       labels:["FAIL" ,"PASS"]  
+      //       labels:["FAIL" ,"PASS"]
       //     }
       //   )
 
       //   console.log("your chRT",this.setChart)
-        
+
       // });
 
-      console.log("***********your Set data of chart*******",this.setChart)
-     
-    
+      console.log('***********your Set data of chart*******', this.setChart);
     });
   }
 
@@ -165,6 +168,4 @@ export class SeminarOverViewComponent implements OnInit {
         this.router.navigate(['seminars/seminars']);
       });
   }
-
- 
 }

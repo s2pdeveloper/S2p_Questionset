@@ -50,7 +50,7 @@
     </div>
  
     <ngb-accordion #acc="ngbAccordion" activeIds="ngb-panel-0"   >
-      <ngb-panel *ngFor="let d of overViewData.setsData;let i=index" [title]="d.name" >
+      <ngb-panel *ngFor="let d of overViewData?.setsData;let i=index" [title]="d.name" >
         <ng-template ngbPanelContent>
         <div class="row">
           <div class="col-6 border">
