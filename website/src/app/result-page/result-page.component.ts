@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { NzProgressModule, NzProgressStatusType } from 'ng-zorro-antd/progress';
 import { StudentService } from '../services/student.service';
@@ -16,6 +16,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
   styleUrl: './result-page.component.css',
 })
 export class ResultPageComponent implements OnInit {
+  isSmallDevice:any
   constructor(
     private router: Router,
     private studentService: StudentService,
@@ -23,6 +24,23 @@ export class ResultPageComponent implements OnInit {
     private spinner: NgxSpinnerService,
     private location: Location
   ) {}
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.checkWindowSize();
+  }
+
+  checkWindowSize() {
+    const width = window.innerWidth;
+
+    // Adjust the width as per your requirement
+    if (width <= 650) {
+      this.isSmallDevice = true;
+    }
+    if (width >= 650) {
+      this.isSmallDevice = false;
+    }
+  }
 
   questionSetId: string | null = null;
   seminarId: string | null = localStorage.getItem('SeminarId');

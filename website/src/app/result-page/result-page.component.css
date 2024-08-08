@@ -5,16 +5,45 @@
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
 
-h5 {
+/* h5 {
   font-weight: bold;
-}
+} */
 
-h6 {
-  font-weight: bold;
+ 
+
+.head-text{
+font-size: 20px;
+/* font-weight: bold; */
+}
+.sub-text{
+font-size: 16px;
+  
 }
 
 .container {
   max-width: 800px;
   margin: 0 auto;
   font-size: 20px;
+}
+.avatar{
+  width: 8rem;
+  height: 8rem;
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 650px) {
+  .head-text{
+    font-size: 16px;
+    /* font-weight: bold; */
+    }
+    .sub-text{
+    font-size: 12px;
+      
+    }
+    .progress-col{
+      margin-bottom: 0.75rem;
+    }
+    .progress-container{
+/* width:6rem ; */
+    }
 }

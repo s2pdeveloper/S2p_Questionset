@@ -592,8 +592,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
       'studentInfo.isDelete': 0,
       'studentInfo.branch': 0,
       'studentInfo.__v': 0,
-      'studentInfo._id': 0,
-      'studentInfo.gender': 0,
+      'studentInfo._id': 0, 
     },
   };
 
