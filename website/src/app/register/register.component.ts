@@ -104,12 +104,13 @@ export class RegisterComponent implements OnInit {
 
   seminarId: string | null = null;
   submitted = false;
+
   regForm = this.formBuilder.group({
-    id: new FormControl(null),
+    id: new FormControl(),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
-    email: new FormControl('', [Validators.required]),
-    phone: new FormControl('', [Validators.required]),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    phone: new FormControl('', [Validators.required,  Validators.pattern(/^\d{0,10}$/)]),
     gender: new FormControl(''),
     college: new FormControl(''),
     degree: new FormControl(''),
@@ -121,6 +122,19 @@ export class RegisterComponent implements OnInit {
     return this.regForm.controls
   }
 
+  get phoneNumber(): number | null {
+    const phoneString = this.regForm.get('phone')?.value;
+    return phoneString ? Number(phoneString) : null;
+  }
+
+  get email() {
+    return this.regForm.get('email');
+  }
+
+  // get phone(){
+  //   return this.phone.get('phone');
+  // }
+
   ngOnInit(): void {
     // this.seminarId = localStorage.getItem('SeminarId');
     // console.log('Seminar ID in Register' , this.seminarId);
@@ -128,9 +142,10 @@ export class RegisterComponent implements OnInit {
     // localStorage.removeItem('StudentId');
 
     const id = this.route.snapshot.paramMap.get('id');
-    this.seminarId = id;
     if (id) {
       localStorage.setItem('SeminarId', id);
+      this.regForm.patchValue({ id: id });
+      this.seminarId = id
     }
   }
 
@@ -139,9 +154,17 @@ export class RegisterComponent implements OnInit {
     if(this.regForm.invalid){
       this.toastService.warning('Please fill all required fields');
       return;
+
     }
+
+    const phoneNumber = this.phoneNumber;
+    if (phoneNumber === null) {
+      this.toastService.error('Phone number must be a valid number');
+      return;
+    }
+    const formData = { ...this.regForm.value, phone: phoneNumber };
+
     // console.log('value', this.regForm.value);
-    let formData = this.regForm.value;
     this.spinner.show();
     this.studentService.registerStudent(formData, this.seminarId).subscribe(
       (success: any) => {
@@ -163,4 +186,13 @@ export class RegisterComponent implements OnInit {
   navigateToLogin() {
     this.router.navigate([`login/${this.seminarId}`]);
   }
+
+  validatePhoneNumber(event: KeyboardEvent) {
+    const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (!allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
+  
 }

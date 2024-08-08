@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  seminarId: string | null = null;
+  seminarId: string;
 
   submitted = false;
   otpVisible = false;
@@ -120,22 +120,24 @@ export class LoginComponent implements OnInit {
   // }
 
   loginForm = new FormGroup({
-    phone: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    phone: new FormControl('', [Validators.required,  Validators.pattern(/^\d{0,10}$/)]),
     otp: new FormControl('', [Validators.required]),
   });
 
-  ngOnInit(): void {
-    this.actRoute.queryParams.subscribe((params: any) => {
-      console.log('Login Params****', params);
+    ngOnInit(): void {
+      this.actRoute.queryParams.subscribe((params: any) => {
+        console.log('Login Params****', params);
 
-      const id = this.route.snapshot.paramMap.get('id');
-      this.seminarId = id;
-      if (id) {
-        localStorage.setItem('SeminarId', id);
-      }
-      localStorage.removeItem('StudentId');
-    });
-  }
+        const id = this.route.snapshot.paramMap.get('id');
+        this.seminarId = id;
+        if (id) {
+          localStorage.setItem('SeminarId', id);
+        }
+        localStorage.removeItem('StudentId');
+      });
+      console.log(this.seminarId);
+      
+    }
 
   login() {
     this.submitted = true;
@@ -164,6 +166,15 @@ export class LoginComponent implements OnInit {
     );
   }
   navigateToRegister() {
+
     this.router.navigate([`register/${this.seminarId}`]);
   }
+
+  validatePhoneNumber(event: KeyboardEvent) {
+    const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (!allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
+  }
+
 }

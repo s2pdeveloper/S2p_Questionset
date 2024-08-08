@@ -312,7 +312,7 @@
                     Email <span class="text-danger">*</span></label
                   >
                   <input
-                    type="text"
+                    type="email"
                     class="form-control" 
                     formControlName="email"
                     [placeholder]="isHidden ? 'Enter Email Address' : ''"
@@ -324,8 +324,11 @@
                       (this.f['email'].dirty || this.f['email'].touched)
                     "
                     class="text-danger"
-                    >This field is required</span
-                  >
+                    >
+                    Please enter valid email address
+                  </span>
+                
+
                 </div>
               </div>
 
@@ -338,8 +341,10 @@
                     type="text"
                     class="form-control" 
                     formControlName="phone"
+                    maxlength="10"
+                    (keypress)="validatePhoneNumber($event)"
                     [placeholder]="isHidden ? 'Enter Phone Number' : ''"
-
+                    
                   />
                   <span
                     *ngIf="
@@ -349,6 +354,10 @@
                     class="text-danger"
                     >This field is required</span
                   >
+
+                
+
+                
                 </div>
               </div>
 
