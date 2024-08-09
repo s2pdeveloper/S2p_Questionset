@@ -7,6 +7,25 @@ const OPTIONS = require('../config/Options');
 const { defaultStatus, generateCloudFrontUrl,usersRoles } = require('../config/Options');
 const UserSchema = mongoose.Schema(
   {
+    college: {
+      type: String,
+      required: false,
+    },
+    degree: {
+      type: String,
+      required: false,
+    },
+    branch: {
+      type: String,
+      required: false,
+    },
+    otp:{
+      type:Number,
+    },
+    semester: {
+      type: String,
+      required: false,
+    },
     isDelete: {
       type: Boolean,
       required: false,
