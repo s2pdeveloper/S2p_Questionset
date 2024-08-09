@@ -57,7 +57,11 @@
   </div>
 </header> -->
 
-<header class="custom-header">
+<header
+  class="custom-header"
+  [ngClass]="isNavbarFixed ? 'fixed' : 'notfixed'"
+  (scroll)="onScroll()"
+>
   <div class="row mx-2 d-flex justify-content-between">
     <div class="col-3 col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">
       <img src="../../assets/s2plogo.png" class="logo" />
@@ -66,14 +70,15 @@
       class="col-6 col-xs-7 col-sm-6 col-md-5 col-lg-4 col-xl-3 d-flex justify-content-center align-items-center nav-bar"
     >
       <div class="col-4 text-center">
-        <span class="nav-item me-3" (click)="attemptTest()"> Test </span>
+        <span class="nav-item me-3" routerLink="/default/test"  routerLinkActive="active" > Test </span>
       </div>
-      <div class="col-4  text-center">
-        <span class="nav-item" (click)="viewReport()"> Report </span>
+     
+      <div class="col-4 text-center">
+        <span class="nav-item" routerLink='/default/report' routerLinkActive="active"  > Report </span>
       </div>
       <div class="col-4 text-center">
         <button (click)="logOut()" class="btn">
-          <i  class="fa fa-power-off fa-lg" aria-hidden="true"></i>
+          <i class="fa fa-power-off fa-lg" aria-hidden="true"></i>
         </button>
       </div>
     </div>

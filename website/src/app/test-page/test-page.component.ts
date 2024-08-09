@@ -110,7 +110,7 @@ export class TestPageComponent implements OnDestroy {
       },
       (error: any) => {
         this.spinner.hide();
-        this.toast.warning(error.error);
+        this.toast.warning(error?.error?.error);
       }
     );
   }

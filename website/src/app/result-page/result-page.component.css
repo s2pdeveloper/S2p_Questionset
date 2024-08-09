@@ -46,6 +46,24 @@ font-size: 16px;
     
 }
 
+@media (max-width: 576px) {
+  .large-device {
+    display: none !important;
+  }
+  .small-device {
+    display: block !important;
+  }
+}
+
+@media (min-width: 576px) {
+  .large-device {
+    display: block !important;
+  }
+  .small-device {
+    display: none !important;
+  }
+}
+
 button{
   background: linear-gradient(90deg, #309b45, #41984f, #68ce76 66%);
 
