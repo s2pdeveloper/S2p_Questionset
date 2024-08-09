@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  seminarId: string | null = null;
+  seminarId: string;
 
   submitted = false;
   otpVisible = false;
@@ -77,28 +77,31 @@ export class LoginComponent implements OnInit {
   userData = {};
 
   showOtpFields() {
-    if (this.phoneNumber) {
-      this.toastService.warning('Please enter phone Number');
-
-      return this.phoneNumber.invalid;
+    if (
+      !this.loginForm.controls['phone'].value ||
+      this.loginForm.controls['phone'].invalid
+    ) {
+      this.toastService.warning('Please enter valid or correct phone number');
+      return;
     }
     this.spinner.show();
     // Call the API using the service
-    this.studentService.otpLogin(this.loginForm.value).subscribe({
-      next: (response: any) => {
+    this.studentService.otpLogin(this.loginForm.value).subscribe(
+      (response: any) => {
         this.toastService.success(response?.result?.message);
         // On success, make OTP fields visible and change button text
         this.otpVisible = true;
         this.isOtpSent = true;
         this.spinner.hide();
       },
-      error: (err) => {
+      (error) => {
         this.spinner.hide();
+        console.log(error.error.error);
 
-        console.error('Error logging in:', err);
+        this.toastService.error(error.error.error);
         // Handle error here, e.g., show an error message to the user
-      },
-    });
+      }
+    );
   }
 
   // onInput(event: Event) {
@@ -120,14 +123,17 @@ export class LoginComponent implements OnInit {
   // }
 
   loginForm = new FormGroup({
-    phone: new FormControl('', [Validators.required, Validators.maxLength(10)]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{0,10}$/),
+    ]),
     otp: new FormControl('', [Validators.required]),
+
+    seminarId: new FormControl(null),
   });
 
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params: any) => {
-      console.log('Login Params****', params);
-
       const id = this.route.snapshot.paramMap.get('id');
       this.seminarId = id;
       if (id) {
@@ -139,31 +145,39 @@ export class LoginComponent implements OnInit {
 
   login() {
     this.submitted = true;
-    console.log('Login form value', this.loginForm);
 
     if (this.loginForm.invalid) {
       this.toastService.error('OTP is invalid');
       return;
     }
+    let formData = this.loginForm.value;
+    formData.seminarId = this.seminarId;
 
     this.spinner.show();
-    this.studentService.loginStudent(this.loginForm.value).subscribe(
+    this.studentService.loginStudent(formData).subscribe(
       (success: any) => {
         console.log('Login Success', success);
         this.spinner.hide();
         localStorage.setItem('StudentId', success?.result?.user?.id);
         localStorage.setItem('token', success?.result?.token);
-        localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
+        // localStorage.setItem('SeminarId', success?.result?.user?.seminarId);
         this.loginForm.reset();
         this.router.navigate(['default/test']);
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error('Login failed');
+        this.toastService.error(error.message);
       }
     );
   }
   navigateToRegister() {
     this.router.navigate([`register/${this.seminarId}`]);
+  }
+
+  validatePhoneNumber(event: KeyboardEvent) {
+    const allowedKeys = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (!allowedKeys.includes(event.key)) {
+      event.preventDefault();
+    }
   }
 }

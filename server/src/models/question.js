@@ -4,7 +4,7 @@ const QuestionSchema = mongoose.Schema(
   {
     question: {
       type: String,
-      required: false,
+      required: true,
     },
     questionText: {
       type: Boolean,
@@ -27,11 +27,11 @@ const QuestionSchema = mongoose.Schema(
     correctOption: {
       type: String,
     },
-    questionType: {
-      type: String,
-      enum: ['TEXT', 'IMAGE'],
-      default: 'TEXT',
-    },
+    // questionType: {
+    //   type: String,
+    //   enum: ['TEXT', 'IMAGE'],
+    //   default: 'TEXT',
+    // },
     queImageUrl: {
       type: String,
       required: false,

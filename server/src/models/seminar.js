@@ -26,6 +26,13 @@ const seminarySchema = mongoose.Schema(
       type: Number,
       require: false,
     },
+    studentIds: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
+        required: true,
+      },
+    ],
   },
   {
     timestamps: true,

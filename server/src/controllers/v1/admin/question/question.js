@@ -68,13 +68,13 @@ const questionsetOjbect = {
   createForQuestionSet: async (req, res) => {
     try {
       if (req.body.options) {
-        req.body.options = req.body.options.split(',');
+        // req.body.options = req.body.options.split(',');
+
+        req.body.options = JSON.parse(req.body.options);
       }
 
-      console.log('req.file', req.body.options);
-
       let data = req.body;
-      if (data && data.questionType == 'IMAGE') {
+      if (req.file) {
         const b64 = Buffer.from(req.file.buffer).toString('base64');
         let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
         data.queImageUrl = await handleBufferUpload(dataURI);
@@ -117,14 +117,12 @@ const questionsetOjbect = {
       }
 
       if (req.body.options) {
-        console.log(typeof req.body.options,req.body.options );
-        
-        req.body.options = req.body.options.split(',');
+        // req.body.options = req.body.options.split(',');
+
+        req.body.options = JSON.parse(req.body.options);
       }
 
-      console.log('req.file', req.body.options);
-
-      if (req.body && req.body.questionType == 'IMAGE') {
+      if (req.file) {
         if (req.file) {
           const b64 = Buffer.from(req.file.buffer).toString('base64');
           let dataURI = 'data:' + req.file.mimetype + ';base64,' + b64;
@@ -153,7 +151,7 @@ const questionsetOjbect = {
         return res.unprocessableEntity(errors);
       }
 
-      if (existing.questionType == 'IMAGE') {
+      if (existing.queImageUrl) {
         await deleteFile(existing.queImageUrl);
       }
 
