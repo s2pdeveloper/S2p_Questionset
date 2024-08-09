@@ -9,6 +9,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { TimerService } from '../services/timer.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-test-page',
@@ -38,7 +39,8 @@ export class TestPageComponent implements OnDestroy {
     private studentService: StudentService,
     private modalService: NgbModal,
     private spinner: NgxSpinnerService,
-    private timerService: TimerService
+    private timerService: TimerService,
+    private toast: ToastrService
   ) {}
 
   destroy = new Subject();
@@ -58,6 +60,9 @@ export class TestPageComponent implements OnDestroy {
     this.studentId = localStorage.getItem('StudentId');
     this.timerService.timer$.subscribe((time) => {
       this.timeRemaining = this.formatTime(time);
+      if (time == 0) {
+        this.submit();
+      }
     });
     // this.timer = this.data?.duration * 60;
     this.getSetDetails();
@@ -78,31 +83,36 @@ export class TestPageComponent implements OnDestroy {
       id: this.seminarId,
     };
     this.spinner.show();
-    this.studentService.getVisibleSet(params).subscribe((success: any) => {
-      this.data = success?.result?.data;
-      this.questions = success?.result?.data?.questions;
-      this.selectedAnswers = new Array(this.questions.length).fill('');
-      // let activeTimerValue = localStorage.getItem('activeQueSetTime');
-      // if (activeTimerValue) {
-      //   this.convertToMinutes(activeTimerValue);
-      // } else {
-      //   this.timer = this.data?.duration * 60;
-      // }
-      this.startTimerNew(this.data?.duration);
+    this.studentService.getVisibleSet(params).subscribe(
+      (success: any) => {
+        this.data = success?.result?.data;
+        this.questions = success?.result?.data?.questions;
+        this.selectedAnswers = new Array(this.questions.length).fill('');
+        // let activeTimerValue = localStorage.getItem('activeQueSetTime');
+        // if (activeTimerValue) {
+        //   this.convertToMinutes(activeTimerValue);
+        // } else {
+        //   this.timer = this.data?.duration * 60;
+        // }
+        this.startTimerNew(this.data?.duration);
 
-      let activeQueSet = localStorage.getItem('activeQueSet');
-      if (activeQueSet) {
-        this.selectedAnswers = JSON.parse(activeQueSet);
+        let activeQueSet = localStorage.getItem('activeQueSet');
+        if (activeQueSet) {
+          this.selectedAnswers = JSON.parse(activeQueSet);
+        }
+        let isTestStarted = localStorage.getItem('isTestStarted');
+
+        if (isTestStarted) {
+          this.startButton = isTestStarted === 'true' ? true : false;
+        }
+
+        this.spinner.hide();
+      },
+      (error: any) => {
+        this.spinner.hide();
+        this.toast.warning(error.error);
       }
-      let isTestStarted = localStorage.getItem('isTestStarted');
-
-      if (isTestStarted) {
-        this.startButton = isTestStarted === 'true' ? true : false;
-        // this.startTimerNew();
-      }
-
-      this.spinner.hide();
-    });
+    );
   }
 
   convertToMinutes(time) {
@@ -156,20 +166,49 @@ export class TestPageComponent implements OnDestroy {
   //   });
   // }
 
-  answerChange(option: any, index: number) {
+  answerChange(option: any, index: number, ev: any) {
+    // console.log(ev.target.checked);
+
+    // return
+
     let existing = this.selectedAnswers.findIndex((s) => s === option);
-    console.log('existing', existing);
 
-    if (existing !== -1) {
-      this.clearSelection(index);
-
-      return;
+    if (!ev.target.checked) {
+      this.selectedAnswers.splice(index, 1,'');
+      this.setTempData();
+      return
     }
+
+    // if (existing != -1) {
+    //   this.clearSelection(index);
+    //   console.log('existing', existing, this.selectedAnswers);
+
+    //   return;
+    // }
 
     this.selectedAnswers[index] = option;
     this.setTempData();
-    console.log(this.selectedAnswers);
+    console.log('this.selectedAnswers--22', this.selectedAnswers);
   }
+
+  // answerChange(option: any, index: number) {
+  //   let existing = this.selectedAnswers.indexOf((s:any) => s === option);
+
+  //   console.log('existing',existing );
+  //   console.log('index',index );
+  //   console.log('option',option);
+
+  //   // if (existing != -1) {
+  //   //   this.clearSelection(index);
+  //   // console.log('existing', existing, this.selectedAnswers);
+
+  //   //   return;
+  //   // }
+
+  //   // this.selectedAnswers[index] = option;
+  //   // this.setTempData();
+  //   // console.log('this.selectedAnswers--22', this.selectedAnswers);
+  // }
 
   setTempData() {
     localStorage.setItem('activeQueSet', JSON.stringify(this.selectedAnswers));
@@ -186,8 +225,10 @@ export class TestPageComponent implements OnDestroy {
   submit() {
     this.spinner.show();
 
-    localStorage.removeItem('activeQueSet');
-    localStorage.removeItem('isTestStarted');
+    if (this.questions.length === 0) {
+      return;
+    }
+
     const answers = this.questions.map((question, index) => {
       return { [question._id]: this.selectedAnswers[index] || '' };
     });
@@ -202,6 +243,8 @@ export class TestPageComponent implements OnDestroy {
 
     this.studentService.submitTest(payload).subscribe(
       (success: any) => {
+        localStorage.removeItem('activeQueSet');
+        localStorage.removeItem('isTestStarted');
         this.router.navigate(['default/result'], {
           queryParams: {
             questionSetId: this.data?._id,

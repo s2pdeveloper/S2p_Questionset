@@ -147,6 +147,8 @@ export class RegisterComponent implements OnInit {
       // this.regForm.patchValue({ id: id });
       this.seminarId = id
     }
+
+    
   }
 
   register() {

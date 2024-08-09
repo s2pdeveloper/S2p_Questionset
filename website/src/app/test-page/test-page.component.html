@@ -27,7 +27,7 @@
                 class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
               >
                 <p class="info-text">
-                  <strong>Duration : </strong> {{ " " + data?.duration }}
+                  <strong>Duration : </strong> {{ " " + data?.duration }} Minutes
                 </p>
               </div>
             </div>
@@ -116,9 +116,9 @@
                     *ngFor="let option of que?.options"
                   >
                     <input
-                      (click)="answerChange(option, i)"
+                      (click)="answerChange(option, i,$event)"
                       class="form-check-input "
-                      type="radio"
+                      type="checkbox"
                       [checked]="selectedAnswers[i] === option"
                     />
                     <label class="form-check-label text"> {{ option }}</label>

@@ -131,8 +131,11 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
+      if(resp.length > 0 && resp[0].data.length == 0){
+        res.serverError("Please Wait, No Question Present");
+      }
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
-      console.log('req.user---',req.user);
+      console.log('req.user---',req.user,data,resp);
       
       const result = await Result.findOne({
         studentId: req.user._id,
@@ -472,7 +475,7 @@ const customerobj = {
 
         console.log('checking The Way');
 
-        if (item.studentId.equals(studentId) && item.status == 'PASS') {
+        if (item.studentId.equals(studentId)) {
           student = { ...item, rank: index + 1 };
         }
         if (index < top && item.status == 'PASS') {
@@ -675,7 +678,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     if (item.status == 'PASS') {
       noOfPassStudent++;
     }
-    if (item.studentId.equals(studentId) && item.status == 'PASS') {
+    if (item.studentId.equals(studentId)) {
       student = { ...item, rank: index + 1 };
     }
     if (index < top && item.status == 'PASS') {
