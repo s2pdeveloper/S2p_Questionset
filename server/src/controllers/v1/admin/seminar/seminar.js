@@ -188,7 +188,7 @@ res.send(Buffer.from(QrImageData,"base64"));
      const questionSet=await QuestionSet.findOne({_id:req.params.id});
     //  const student=await Student.find({seminarId:questionSet.seminaryObject});
     //  const result=await Result.find({questionSetId:req.params.id}); 
-  const overView=await questionSetOverview(req,questionSet.seminarId,req.params.id)
+    const overView=await questionSetOverview(req,questionSet.seminarId,req.params.id)
      
       return res.success({
         data:overView
@@ -200,7 +200,59 @@ res.send(Buffer.from(QrImageData,"base64"));
     }
   },
 
-  
+  seminarStudent: async (req, res) => {
+    try {
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+      
+      const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
+      
+      const pipeline = [
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(req.params.id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'students', // Assuming the student collection is named 'students'
+            localField: 'studentIds',
+            foreignField: '_id',
+            as: 'students',
+          },
+        },
+        { $unwind: '$students' }, // Flatten the students array
+        { $sort: { [`students.${column}`]: direction } },
+        {
+          $facet: {
+            metadata: [{ $count: 'total' }],
+            data: [
+              { $skip: skip },
+              { $limit: parseInt(pageSize, 10) },
+            ],
+          },
+        },
+      ];
+      
+      const resp = await Seminar.aggregate(pipeline);
+      const totalCount = resp.length > 0 && resp[0].metadata.length > 0 ? resp[0].metadata[0].total : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+      
+      return res.success({
+        data,
+        totalCount,
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
 
   getList: async (req, res) => {
     try {
@@ -350,7 +402,6 @@ async function  questionSetAllData(req,seminarId,questionSetId){
      
       "studentInfo.updatedAt":0,
       "studentInfo.createdAt":0,
-      "studentInfo.seminarId":0,
       "studentInfo.degree":0,
      
       "studentInfo.isDelete":0,
@@ -380,14 +431,13 @@ async function  questionSetAllData(req,seminarId,questionSetId){
     if (item.status == 'PASS') {
       noOfPassStudent++;
     }
-    if (index < top) {
+    if (index < top && item.status == 'PASS') {
       topStudent.push(item);
     }
   });
 
-  totalStudent = await Student.countDocuments({
-    seminarId: seminarId,
-  });
+  var seminar = await Seminar.findById(seminarId);
+  totalStudent = seminar.studentIds.length;
 
   noOfAttemptedStudent = resp.length;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
