@@ -130,32 +130,42 @@ exports.authenticateJWT = function (roles, force = true) {
       const token = authHeader.split(' ')[1]; // only for testing need to change in production
       // const token =authHeader;
       // console.log("your token",token)
-      console.log('your token', token);
+      // console.log('your token', token);
 
     //  console.log("your studetn role true or not  ",roles.includes("STUDENT"),'and your role',roles)
 
-      if(!roles.includes("STUDENT")){
-        return verifyJwt(token, roles, force).then((checkAuth) => {
-          if (checkAuth.status === resCode.HTTP_OK) {
-            req.authenticated = true;
-            req.user = checkAuth.user;
-            next();
-          } else {
-            return res.sendStatus(checkAuth.status);
-          }
-        });
-      }else{
-        //  console.log("****checking student****")
-        return verifyJwtStudent(token, roles, force).then((checkAuth) => {
-          if (checkAuth.status === resCode.HTTP_OK) {
-            req.authenticated = true;
-            req.user = checkAuth.user;
-            next();
-          } else {
-            return res.sendStatus(checkAuth.status);
-          }
-        });
-      }
+      // if(!roles.includes("STUDENT")){
+      //   return verifyJwt(token, roles, force).then((checkAuth) => {
+      //     if (checkAuth.status === resCode.HTTP_OK) {
+      //       req.authenticated = true;
+      //       req.user = checkAuth.user;
+      //       next();
+      //     } else {
+      //       return res.sendStatus(checkAuth.status);
+      //     }
+      //   });
+      // }else{
+      //   //  console.log("****checking student****")
+      //   return verifyJwtStudent(token, roles, force).then((checkAuth) => {
+      //     if (checkAuth.status === resCode.HTTP_OK) {
+      //       req.authenticated = true;
+      //       req.user = checkAuth.user;
+      //       next();
+      //     } else {
+      //       return res.sendStatus(checkAuth.status);
+      //     }
+      //   });
+      // }
+
+      return verifyJwt(token, roles, force).then((checkAuth) => {
+        if (checkAuth.status === resCode.HTTP_OK) {
+          req.authenticated = true;
+          req.user = checkAuth.user;
+          next();
+        } else {
+          return res.sendStatus(checkAuth.status);
+        }
+      });
     } else {
       return res.sendStatus(401);
     }

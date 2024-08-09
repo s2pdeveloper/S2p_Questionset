@@ -106,7 +106,7 @@ export class RegisterComponent implements OnInit {
   submitted = false;
 
   regForm = this.formBuilder.group({
-    id: new FormControl(),
+    // _id: new FormControl(null),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
@@ -144,7 +144,7 @@ export class RegisterComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       localStorage.setItem('SeminarId', id);
-      this.regForm.patchValue({ id: id });
+      // this.regForm.patchValue({ id: id });
       this.seminarId = id
     }
   }
@@ -178,7 +178,7 @@ export class RegisterComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error('Registration failed');
+        this.toastService.error(error?.error?.error);
       }
     );
   }
