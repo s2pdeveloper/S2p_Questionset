@@ -128,12 +128,12 @@ export class LoginComponent implements OnInit {
       Validators.pattern(/^\d{0,10}$/),
     ]),
     otp: new FormControl('', [Validators.required]),
+
+    seminarId: new FormControl(null),
   });
 
   ngOnInit(): void {
     this.actRoute.queryParams.subscribe((params: any) => {
-      console.log('Login Params****', params);
-
       const id = this.route.snapshot.paramMap.get('id');
       this.seminarId = id;
       if (id) {
@@ -141,20 +141,20 @@ export class LoginComponent implements OnInit {
       }
       localStorage.removeItem('StudentId');
     });
-    console.log(this.seminarId);
   }
 
   login() {
     this.submitted = true;
-    console.log('Login form value', this.loginForm);
 
     if (this.loginForm.invalid) {
       this.toastService.error('OTP is invalid');
       return;
     }
+    let formData = this.loginForm.value;
+    formData.seminarId = this.seminarId;
 
     this.spinner.show();
-    this.studentService.loginStudent(this.loginForm.value).subscribe(
+    this.studentService.loginStudent(formData).subscribe(
       (success: any) => {
         console.log('Login Success', success);
         this.spinner.hide();

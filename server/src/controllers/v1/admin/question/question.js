@@ -68,15 +68,10 @@ const questionsetOjbect = {
   createForQuestionSet: async (req, res) => {
     try {
       if (req.body.options) {
-        // req.body.options = req.body.options.split(','); 
-        
-        req.body.options = JSON.parse(req.body.options) 
+        // req.body.options = req.body.options.split(',');
 
-
+        req.body.options = JSON.parse(req.body.options);
       }
-
-    
- 
 
       let data = req.body;
       if (req.file) {
@@ -122,11 +117,9 @@ const questionsetOjbect = {
       }
 
       if (req.body.options) {
-        // req.body.options = req.body.options.split(','); 
-        
-        req.body.options = JSON.parse(req.body.options) 
+        // req.body.options = req.body.options.split(',');
 
-
+        req.body.options = JSON.parse(req.body.options);
       }
 
       if (req.file) {

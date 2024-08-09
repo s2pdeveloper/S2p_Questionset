@@ -35,7 +35,9 @@ const OPTIONS = {
     ADMIN: 'ADMIN',
     SHOP: 'SHOP',
     CUSTOMER: 'CUSTOMER',
-   USER:'USER',
+    USER: 'USER',
+    STUDENT: 'STUDENT',
+
     getAllRolesAsArray: function () {
       return [
         OPTIONS.usersRoles.SUPER_ADMIN,
@@ -43,6 +45,8 @@ const OPTIONS = {
         OPTIONS.usersRoles.SHOP,
         OPTIONS.usersRoles.CUSTOMER,
         OPTIONS.usersRoles.USER,
+        OPTIONS.usersRoles.STUDENT,
+
       ];
     },
     getAdmin: () => [OPTIONS.usersRoles.SUPER_ADMIN, OPTIONS.usersRoles.ADMIN],
@@ -60,7 +64,7 @@ const OPTIONS = {
     ACCOUNT_VERIFY: 'account_verify',
   },
   defaultStatus: {
-    ACTIVE: 'active', 
+    ACTIVE: 'active',
     INACTIVE: 'inactive',
     UNAPPROVED: 'unapproved',
     APPROVED: 'approved',
@@ -76,13 +80,12 @@ const OPTIONS = {
         OPTIONS.defaultStatus.UNAPPROVED,
         OPTIONS.defaultStatus.REJECTED,
         OPTIONS.defaultStatus.CANCEL,
-       
       ];
     },
   },
   orderStatus: {
     ACTIVE: 'active',
-    ACCEPTED:'accepted',
+    ACCEPTED: 'accepted',
     DISPATCH: 'dispatched',
     DELIVER: 'delivered',
     CANCEL: 'cancelled',

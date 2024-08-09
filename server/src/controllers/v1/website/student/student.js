@@ -1,4 +1,6 @@
 const Student = require('../../../../models/student');
+const User = require('../../../../models/User');
+const Seminar = require('../../../../models/seminar');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const mongoose = require('mongoose');
@@ -6,30 +8,59 @@ const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
 const EmailHelper = require('../../../../models/helpers/EmailHelper');
+const { usersRoles } = require('../../../../config/Options');
 
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      const data = req.body;
-      data.seminarId = req.params.id;
-      const existing = await Student.findOne({
+      let existing = User.findOne({
         $or: [{ email: req.body.email }, { phone: req.body.phone }],
       });
+
       if (existing) {
         const errors = 'User Already Exist';
         return res.serverError(errors);
       }
-      delete data.id;
-      delete data._id;
-      const student = await Student.create(data);
-      if (student) {
-        const token = student.genToken();
+
+      let createdObj = { ...req.body };
+      createdObj.role = usersRoles.STUDENT;
+
+      let user = await User.create(createdObj);
+
+      if (user) {
+        await Seminar.findOneAndUpdate(
+          { _id: req.params.id, studentIds: { $ne: user._id } },
+          { $push: { studentIds: user._id } }
+        );
+        const token = user.genToken();
         res.status(201).json({
           message: 'Registration Successful',
-          studentId: student._id,
+          studentId: user._id,
           token: token,
         });
       }
+
+      // const data = req.body;
+      // data.seminarId = req.params.id;
+      // const existing = await Student.findOne({
+      //   $or: [{ email: req.body.email }, { phone: req.body.phone }],
+      // });
+      // if (existing) {
+      //   const errors = 'User Already Exist';
+      //   return res.serverError(errors);
+      // }
+      // delete data.id;
+      // delete data._id;
+      // const student = await Student.create(data);
+
+      // if (student) {
+      //   const token = student.genToken();
+      //   res.status(201).json({
+      //     message: 'Registration Successful',
+      //     studentId: student._id,
+      //     token: token,
+      //   });
+      // }
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -243,23 +274,49 @@ const customerobj = {
 
   login: async (req, res) => {
     try {
-      const { phone, otp } = req.body;
-      const user = await Student.findOne({ phone: phone });
+      const { phone, otp, seminarId } = req.body;
+
+      let user = User.findOne({
+        phone: phone,
+      });
 
       if (!user) {
-        const errors = 'User Not exist';
+        const errors = 'User Not Exist';
         return res.serverError(errors);
       }
 
-      if (!(user.otp == otp)) {
+      await Seminar.findOneAndUpdate(
+        { _id: seminarId, studentIds: { $ne: user._id } },
+        { $push: { studentIds: user._id } }
+      );
+
+      if (user.otp != otp) {
         const errors = 'Invalid OTP';
         return res.serverError(errors);
       }
+
       const token = user.genToken();
       user.otp = null;
       await user.save();
-      const data = { message: 'Login successful', user: user, token: token };
-      res.success(data);
+      res.success({ message: 'Login successful', user: user, token: token });
+
+      // const { phone, otp } = req.body;
+      // const user = await Student.findOne({ phone: phone });
+
+      // if (!user) {
+      //   const errors = 'User Not exist';
+      //   return res.serverError(errors);
+      // }
+
+      // if (!(user.otp == otp)) {
+      //   const errors = 'Invalid OTP';
+      //   return res.serverError(errors);
+      // }
+      // const token = user.genToken();
+      // user.otp = null;
+      // await user.save();
+      // const data = { message: 'Login successful', user: user, token: token };
+      // res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -288,7 +345,7 @@ const customerobj = {
         subject: 'LOGIN OTP',
         otp: otp,
       };
-      const email = EmailHelper.sendMail(data);
+      EmailHelper.sendMail(data);
       res.success({ message: 'OTP sent to email successfully' });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

@@ -75,6 +75,7 @@ module.exports.uploadFromBuffer = (buffer) => {
 module.exports.handleBufferUpload = async (file) => {
   try {
     const res = await cloud.uploader.upload(file, {
+      folder: "s2p_seminar" ,
       resource_type: 'auto',
     }); 
     
