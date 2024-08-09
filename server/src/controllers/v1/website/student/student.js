@@ -1,4 +1,4 @@
-const Student = require('../../../../models/student');
+const Seminar = require('../../../../models/seminar');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const mongoose = require('mongoose');
@@ -214,7 +214,7 @@ const customerobj = {
       if (existing) {
         return res.status(409).json({
           success: false,
-          message: 'Test Already Submited',
+          message: 'Test Already Submitted',
         });
       }
 
@@ -232,7 +232,7 @@ const customerobj = {
       await Result.create(resultData);
 
       res.success({
-        message: 'Test Submited',
+        message: 'Test Submitted',
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -328,8 +328,8 @@ const customerobj = {
         return res.serverError(errors);
       }
       const studentId = req.user ? req.user._id : req.body.studentId;
-      const seminarId = req.user ? req.user.seminarId : req.body.seminarId;
-      let top = req.query.top || 3;
+      const seminarId = req.body.seminarId;
+      let top = 3;
       let noOfPassStudent = 0;
       let noOfFailStudent = 0;
       let percentageOfFailStudent = null;
@@ -357,7 +357,7 @@ const customerobj = {
 
       const lookupStage = {
         $lookup: {
-          from: 'Student',
+          from: 'User',
           localField: 'studentId',
           foreignField: '_id',
           as: 'studentInfo',
@@ -378,7 +378,6 @@ const customerobj = {
           'studentInfo.updatedAt': 0,
           'studentInfo.isDelete': 0,
           'studentInfo.degree': 0,
-          'studentInfo.seminarId': 0,
           'studentInfo.__v': 0,
           'studentInfo.branch': 0,
         },
@@ -411,7 +410,7 @@ const customerobj = {
             studentId + 'studentId',
           studentId
         );
-        if (item.studentId.equals(studentId)) {
+        if (item.studentId.equals(studentId) && item.status == 'PASS') {
           student = { ...item, rank: index + 1 };
         }
         if (index < top && item.status == 'PASS') {
@@ -419,10 +418,8 @@ const customerobj = {
         }
       });
 
-      totalStudent = await Student.countDocuments({
-        seminarId: seminarId,
-      });
-
+      var seminar = await Seminar.findById(seminarId);
+      totalStudent = seminar.studentIds.length;
       noOfAttemptedStudent = resp.length;
       noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
       noOfFailStudent = totalStudent - noOfPassStudent;
@@ -537,7 +534,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     direction = -1,
   } = req.query;
 
-  let top = req.query.top || 3;
+  let top = 3;
   let noOfPassStudent = 0;
   let noOfFailStudent = 0;
   let percentageOfFailStudent = null;
@@ -565,7 +562,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
 
   const lookupStage = {
     $lookup: {
-      from: 'Student',
+      from: 'User',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
@@ -585,7 +582,6 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
       'studentInfo.email': 0,
       'studentInfo.updatedAt': 0,
       'studentInfo.createdAt': 0,
-      'studentInfo.seminarId': 0,
       'studentInfo.degree': 0,
       'studentInfo.phone': 0,
       'studentInfo.isDelete': 0,
@@ -617,7 +613,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     if (item.status == 'PASS') {
       noOfPassStudent++;
     }
-    if (item.studentId.equals(studentId)) {
+    if (item.studentId.equals(studentId) && item.status == 'PASS') {
       student = { ...item, rank: index + 1 };
     }
     if (index < top && item.status == 'PASS') {
@@ -625,9 +621,8 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     }
   });
 
-  totalStudent = await Student.countDocuments({
-    seminarId: seminarId,
-  });
+  var seminar = await Seminar.findById(seminarId);
+  totalStudent = seminar.studentIds.length;
 
   noOfAttemptedStudent = resp.length;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
