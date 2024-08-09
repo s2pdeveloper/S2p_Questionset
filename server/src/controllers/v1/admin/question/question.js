@@ -16,7 +16,7 @@ const questionsetOjbect = {
         pageSize = 10,
         search = null,
         column = 'createdAt',
-        direction = -1,
+        direction = 1,
       } = req.query;
 
       let questionSetId = req.params.id;
