@@ -133,39 +133,7 @@ export class SeminarOverViewComponent implements OnInit {
     });
   }
 
-  submit() {
-    this.submitted = true;
-    if (this.seminarForm.invalid) {
-      this.toastService.warning('Please fill all required field!');
-      return;
-    }
-    let formData = this.seminarForm.value;
-    if (formData._id) {
-      this.update(formData);
-    } else {
-      delete formData.id;
-      this.create(formData);
-    }
-  }
-
-  create(formData) {
-    this.spinner.show();
-    this.seminarService.addNewSeminar(formData).subscribe((success) => {
-      this.spinner.hide();
-      this.toastService.success(success.message);
-      this.router.navigate(['seminars/seminars']);
-    });
-  }
-
-  update(formData) {
-    this.spinner.show();
-    this.seminarService
-      .updateSeminar(formData._id, formData)
-      .subscribe((success) => {
-        this.submitted = false;
-        this.spinner.hide();
-        this.toastService.success(success.message);
-        this.router.navigate(['seminars/seminars']);
-      });
+  goBack() {
+    this.location.back();
   }
 }
