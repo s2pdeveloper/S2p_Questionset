@@ -7,7 +7,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterOutlet, CommonModule, FormsModule,RouterModule],
+  imports: [
+    ReactiveFormsModule,
+    RouterOutlet,
+    CommonModule,
+    FormsModule,
+    RouterModule,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
 })
@@ -31,7 +37,9 @@ export class HeaderComponent {
     this.router.navigate(['default/report']);
   }
   logOut() {
-    localStorage.clear();
-    this.router.navigate(['/login']);
+    let activeSeminarId = localStorage.getItem('SeminarId');
+    localStorage.removeItem('StudentId');
+    localStorage.removeItem('token');
+    this.router.navigate([`/login/${activeSeminarId}`]);
   }
 }
