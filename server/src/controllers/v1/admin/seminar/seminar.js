@@ -383,7 +383,7 @@ async function  questionSetAllData(req,seminarId,questionSetId){
 
   const lookupStage={
     $lookup: {
-      from: 'Student',
+      from: 'User',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
