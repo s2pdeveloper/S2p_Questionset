@@ -377,20 +377,7 @@
                 </div>
               </div>
 
-              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="mb-2">
-                  <label *ngIf="!isHidden" class="form-label text-dark"
-                    >Branch
-                  </label>
-
-                  <select  class="form-select" formControlName="branch">
-                    <option   [value]="null" disabled [selected]="isHidden">Select Branch</option>
-                    <option [value]="b.value" *ngFor="let b of branch">
-                      {{ b.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
+              
 
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="mb-2">
@@ -402,6 +389,21 @@
                     <option [value]="null" disabled [selected]="isHidden">Select Course</option>
                     <option [value]="d.value" *ngFor="let d of degree">
                       {{ d.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="mb-2">
+                  <label *ngIf="!isHidden" class="form-label text-dark"
+                    >Branch
+                  </label>
+
+                  <select  class="form-select" formControlName="branch">
+                    <option   [value]="null" disabled [selected]="isHidden">Select Branch</option>
+                    <option [value]="b.value" *ngFor="let b of branch">
+                      {{ b.label }}
                     </option>
                   </select>
                 </div>
@@ -455,7 +457,7 @@
                 </button>
               </div>
               <p class="text-center">
-                Already have an account ?
+                Already have an account?
                 <span (click)="navigateToLogin()" class="loginLink"
                   >Login here</span
                 >
