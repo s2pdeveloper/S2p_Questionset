@@ -170,9 +170,9 @@ button:hover {
   .form-select option:disabled {
     color: #cccccc; /* Color of the placeholder text */
   }
-  .main-row{
+  .main-row {
     /* display: flex; */
-  height: 100vh !important;
+    height: 100vh !important;
 
     justify-content: center;
     align-items: center;
@@ -182,43 +182,56 @@ button:hover {
       rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
     border: none;
   }
-  
-  
-  .btn{
+
+  .btn {
     background-color: #0c7348;
     color: #fff;
   }
-  
-  .registerLink{
+
+  .registerLink {
     transition: 0.25s;
     cursor: pointer;
-    &:hover{
+    &:hover {
       font-weight: bold;
       color: #0c7348;
     }
   }
 
-  .logo-large-device{
+  .logo-large-device {
     position: absolute;
     top: 3rem;
     left: 7rem;
   }
-  .logo-small-device{
+  .logo-small-device {
     position: absolute;
     top: 2.5rem;
     right: 2.5rem;
   }
 
-  .loginLink{
-
+  .loginLink {
     transition: 0.25s;
     cursor: pointer;
-    &:hover{
+    &:hover {
       font-weight: bold;
       color: #0c7348;
     }
   }
-
 }
 
+@media (max-width: 576px) {
+  .large-device {
+    display: none !important;
+  }
+  .small-device {
+    display: block !important;
+  }
+}
 
+@media (min-width: 576px) {
+  .large-device {
+    display: block !important;
+  }
+  .small-device {
+    display: none !important;
+  }
+}

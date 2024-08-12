@@ -68,7 +68,7 @@
               <td>{{ s.noOfQuestion }}</td>
               <td>{{ s.duration }}</td>
               <td>{{ s.passingMarks }}</td>
-              <td>{{ visibility[s._id] ? "Visible" : "Not Visible" }}</td>
+              <td>{{ s.isVisible ? "Visible" : "Not Visible" }}</td>
               <td>
                 <button
                   (click)="navigateTo('/questionSet/questionSet-form', s._id)"

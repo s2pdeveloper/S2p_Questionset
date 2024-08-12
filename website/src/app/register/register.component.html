@@ -247,19 +247,19 @@
 
 <div class="container-fluid main-container">
   <img
-  src="../../assets/s2plogo.png"
-  [width]="50"
-  [height]="50"
-  [ngClass]="!isHidden ? 'logo-large-device' : 'logo-small-device'"
-  alt=""
-/>
+    src="../../assets/s2plogo.png"
+    [width]="50"
+    [height]="50"
+    [ngClass]="!isHidden ? 'logo-large-device' : 'logo-small-device'"
+    
+    alt=""
+  />
   <div class="row min-vh-100 justify-content-center align-items-center">
     <div class="col-11 col-xs-11 col-sm-10 col-md-9 col-lg-7 col-xl-6">
-      <div class="card ">
-        
+      <div class="card">
         <div class="card-body p-4">
           <form [formGroup]="regForm">
-          <h4 class="text-dark">Registration Form</h4>
+            <h4 class="text-dark">Registration Form</h4>
 
             <div class="row justify-content-center">
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -269,10 +269,9 @@
                   </label>
                   <input
                     type="text"
-                    class="form-control" 
+                    class="form-control"
                     formControlName="firstName"
-                    [placeholder]="isHidden ? 'Enter First Name' : ''"
-                    
+                    [placeholder]="isHidden ? 'Enter First Name *' : ''"
                   />
                   <span
                     *ngIf="
@@ -291,10 +290,9 @@
                   >
                   <input
                     type="text"
-                    class="form-control" 
+                    class="form-control"
                     formControlName="lastName"
-                    [placeholder]="isHidden ? 'Enter Last Name' : ''"
-
+                    [placeholder]="isHidden ? 'Enter Last Name *' : ''"
                   />
                   <span
                     *ngIf="
@@ -313,10 +311,9 @@
                   >
                   <input
                     type="email"
-                    class="form-control" 
+                    class="form-control"
                     formControlName="email"
-                    [placeholder]="isHidden ? 'Enter Email Address' : ''"
-
+                    [placeholder]="isHidden ? 'Enter Email Address *' : ''"
                   />
                   <span
                     *ngIf="
@@ -324,11 +321,9 @@
                       (this.f['email'].dirty || this.f['email'].touched)
                     "
                     class="text-danger"
-                    >
+                  >
                     Please enter valid email address
                   </span>
-                
-
                 </div>
               </div>
 
@@ -339,13 +334,12 @@
                   >
                   <input
                     type="text"
-                    class="form-control" 
+                    class="form-control"
                     formControlName="phone"
                     maxlength="10"
                     minlength="10"
                     (keypress)="validatePhoneNumber($event)"
-                    [placeholder]="isHidden ? 'Enter Phone Number' : ''"
-                    
+                    [placeholder]="isHidden ? 'Enter Phone Number *' : ''"
                   />
                   <span
                     *ngIf="
@@ -355,10 +349,6 @@
                     class="text-danger"
                     >This field is required</span
                   >
-
-                
-
-                
                 </div>
               </div>
 
@@ -368,8 +358,27 @@
                     Gender
                   </label>
 
-                  <select class="form-select" formControlName="gender">
-                    <option [value]="null" disabled [selected]="isHidden">Select Gender</option>
+                  <select
+                    class="form-select large-device"
+                    formControlName="gender"
+                  >
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    <option value="Other">Other</option>
+                  </select>
+
+                  <select
+                    class="form-select small-device"
+                    formControlName="gender"
+                  >
+                    <option
+                      [value]="null"
+                      disabled
+                      [selected]="true"
+                      class="small-device"
+                    >
+                      Select Gender
+                    </option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
                     <option value="Other">Other</option>
@@ -383,9 +392,28 @@
                     >Branch
                   </label>
 
-                  <select  class="form-select" formControlName="branch">
-                    <option   [value]="null" disabled [selected]="isHidden">Select Branch</option>
-                    <option [value]="b.value" *ngFor="let b of branch">
+                  <select
+                    class="form-select large-device"
+                    formControlName="branch"
+                  >
+                    <option value="{{ b.value }}" *ngFor="let b of branch">
+                      {{ b.label }}
+                    </option>
+                  </select>
+
+                  <select
+                    class="form-select small-device"
+                    formControlName="branch"
+                  >
+                    <option
+                      [value]="null"
+                      disabled
+                      [selected]="true"
+                      class="small-device"
+                    >
+                      Select Branch
+                    </option>
+                    <option value="{{ b.value }}" *ngFor="let b of branch">
                       {{ b.label }}
                     </option>
                   </select>
@@ -398,8 +426,22 @@
                     >Course Name
                   </label>
 
-                  <select class="form-select" formControlName="degree">
-                    <option [value]="null" disabled [selected]="isHidden">Select Course</option>
+                  <select
+                    class="form-select large-device"
+                    formControlName="degree"
+                  >
+                    <option [value]="d.value" *ngFor="let d of degree">
+                      {{ d.label }}
+                    </option>
+                  </select>
+
+                  <select
+                    class="form-select small-device"
+                    formControlName="degree"
+                  >
+                    <option [value]="null" disabled selected>
+                      Select Course
+                    </option>
                     <option [value]="d.value" *ngFor="let d of degree">
                       {{ d.label }}
                     </option>
@@ -407,28 +449,39 @@
                 </div>
               </div>
 
-             
-
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="mb-2">
                   <label *ngIf="!isHidden" class="form-label text-dark"
                     >Semester
                   </label>
 
-                  <select class="form-select" formControlName="semester">
-                    <option [value]="null" disabled [selected]="isHidden">Select Semester</option>
+                  <select
+                    class="form-select large-device"
+                    formControlName="semester"
+                  >
+                    <option [value]="b.value" *ngFor="let b of semesters">
+                      {{ b.label }}
+                    </option>
+                  </select>
+
+                  <select
+                    class="form-select small-device"
+                    formControlName="semester"
+                  >
+                    <option
+                      [value]="null"
+                      disabled
+                      [selected]="true"
+                      class="small-device"
+                    >
+                      Select Semester
+                    </option>
                     <option [value]="b.value" *ngFor="let b of semesters">
                       {{ b.label }}
                     </option>
                   </select>
                 </div>
               </div>
-
-            
-
-              
-
-           
 
               <div
                 class="col-12 col-xs-11 col-sm-12 col-md-12 col-lg-12 col-xl-12"
@@ -439,20 +492,15 @@
                   </label>
                   <input
                     type="text"
-                    class="form-control" 
+                    class="form-control"
                     formControlName="college"
                     [placeholder]="isHidden ? 'Enter Collage Name' : ''"
-
                   />
                 </div>
               </div>
 
-              <div
-                class="col-12 d-grid my-2"
-              >
-                <button class="btn" (click)="register()">
-                  Register
-                </button>
+              <div class="col-12 d-grid my-2">
+                <button class="btn" (click)="register()">Register</button>
               </div>
               <p class="text-center">
                 Already have an account ?
