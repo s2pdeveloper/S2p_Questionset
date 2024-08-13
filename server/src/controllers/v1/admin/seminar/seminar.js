@@ -220,7 +220,7 @@ res.send(Buffer.from(QrImageData,"base64"));
         },
         {
           $lookup: {
-            from: 'students', // Assuming the student collection is named 'students'
+            from: 'User', // Assuming the student collection is named 'students'
             localField: 'studentIds',
             foreignField: '_id',
             as: 'students',
