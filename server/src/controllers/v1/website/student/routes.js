@@ -16,4 +16,5 @@ app.post('/allResultOfStudent',AuthHelper.authenticateJWT(["STUDENT"]), Student.
 app.post('/Otplogin', Student.loginOtp);
 app.post('/:id', Student.registerStudent);
 
+
 module.exports = app;

@@ -3,7 +3,7 @@
   size="medium"
   color="#fff"
   type="ball-beat"
->
+> 
 </ngx-spinner>
 
 <div class="container-fluid">
@@ -97,7 +97,10 @@
 
           <div class="card-body p-4">
             <form>
-              <div class="head mb-2" *ngFor="let que of questions; let i = index">
+              <div
+                class="head mb-2"
+                *ngFor="let que of questions; let i = index"
+              >
                 <div class="mb-2">
                   <p>
                     <strong>{{ i + 1 }}. {{ que?.question }}</strong>
@@ -115,13 +118,19 @@
                     class="form-check text"
                     *ngFor="let option of que?.options"
                   >
-                    <input
-                      (click)="answerChange(option, i, $event)"
-                      class="form-check-input"
-                      type="checkbox"
-                      [checked]="selectedAnswers[i] === option"
-                    />
-                    <label class="form-check-label text"> {{ option }}</label>
+                    <label>
+                      <input
+                        id="checkbox-{{ i }}"
+                        (click)="answerChange(option, i, $event)"
+                        class="form-check-input"
+                        type="checkbox"
+                        [checked]="selectedAnswers[i] === option"
+                      />
+
+                      {{ option }}
+                    </label>
+
+                    <!-- <label  class="form-check-label text"  >{{ option }}</label> -->
                   </div>
                 </div>
               </div>
@@ -131,6 +140,11 @@
                 </button>
               </div>
             </form>
+            <div class="circle">
+              {{ timeRemaining }}
+
+            </div>
+
           </div>
         </div>
       </div>

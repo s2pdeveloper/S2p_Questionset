@@ -251,7 +251,6 @@
     [width]="50"
     [height]="50"
     [ngClass]="!isHidden ? 'logo-large-device' : 'logo-small-device'"
-    
     alt=""
   />
   <div class="row min-vh-100 justify-content-center align-items-center">
@@ -389,6 +388,35 @@
               <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <div class="mb-2">
                   <label *ngIf="!isHidden" class="form-label text-dark"
+                    >Course Name
+                  </label>
+
+                  <select
+                    class="form-select large-device"
+                    formControlName="degree"
+                  >
+                    <option [value]="d.value" *ngFor="let d of degree">
+                      {{ d.label }}
+                    </option>
+                  </select>
+
+                  <select
+                    class="form-select small-device"
+                    formControlName="degree"
+                  >
+                    <option [value]="null" disabled selected>
+                      Select Course
+                    </option>
+                    <option [value]="d.value" *ngFor="let d of degree">
+                      {{ d.label }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <div class="mb-2">
+                  <label *ngIf="!isHidden" class="form-label text-dark"
                     >Branch
                   </label>
 
@@ -415,35 +443,6 @@
                     </option>
                     <option value="{{ b.value }}" *ngFor="let b of branch">
                       {{ b.label }}
-                    </option>
-                  </select>
-                </div>
-              </div>
-
-              <div class="col-12 col-xs-11 col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <div class="mb-2">
-                  <label *ngIf="!isHidden" class="form-label text-dark"
-                    >Course Name
-                  </label>
-
-                  <select
-                    class="form-select large-device"
-                    formControlName="degree"
-                  >
-                    <option [value]="d.value" *ngFor="let d of degree">
-                      {{ d.label }}
-                    </option>
-                  </select>
-
-                  <select
-                    class="form-select small-device"
-                    formControlName="degree"
-                  >
-                    <option [value]="null" disabled selected>
-                      Select Course
-                    </option>
-                    <option [value]="d.value" *ngFor="let d of degree">
-                      {{ d.label }}
                     </option>
                   </select>
                 </div>
@@ -503,7 +502,7 @@
                 <button class="btn" (click)="register()">Register</button>
               </div>
               <p class="text-center">
-                Already have an account ?
+                Already have an account?
                 <span (click)="navigateToLogin()" class="loginLink"
                   >Login here</span
                 >

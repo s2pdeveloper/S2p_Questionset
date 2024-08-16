@@ -14,6 +14,8 @@ export class SeminarService {
     getSeminars: (params) =>
       `seminar?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
     getSeminarList: `seminar/list`,
+    getStudentListById: (params) => `seminar/getStudentBySeminar?id=${params.id}&page=${params.page}&pageSize=${params.pageSize}`,
+    downloadExcelPath: (id) => `seminar/seminarStudentExcel/${id}`
   };
   constructor(private http: ApiService) {}
   getAllSeminars(params) {
@@ -43,5 +45,13 @@ export class SeminarService {
 
   allSeminarList(){
     return this.http.get(this.routes.getSeminarList);
+  }
+
+  getAllSeminarStudents(params){
+    return this.http.get(this.routes.getStudentListById(params));
+  }
+
+  downloadExcel(id){
+    return this.http.get(this.routes.downloadExcelPath(id));
   }
 }
