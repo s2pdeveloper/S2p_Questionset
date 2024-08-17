@@ -3,7 +3,7 @@
   size="medium"
   color="#fff"
   type="square-jelly-box"
->
+> 
 </ngx-spinner>
 
 <div class="container-fluid">
@@ -39,10 +39,14 @@
                 </div>
 
                 <div class="correct-option mb-1 info-text mx-2">
-                  <strong>Correct Option: </strong>
+                  <strong>Correct Option:</strong>
                   {{ question?.correctOption }}
                 </div>
-                <div class="student-answer info-text mx-2">
+                <div class="student-answer info-text mx-2"
+                  [ngClass]="{'correct-answer': question?.studentAnswer===question?.correctOption, 
+                  'incorrect-answer': question?.studentAnswer !== question?.correctOption
+                
+                  }">
                   <strong>Your Answer: </strong>
                   {{ question?.studentAnswer }}
                 </div>

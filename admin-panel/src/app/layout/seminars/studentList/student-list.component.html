@@ -1,0 +1,94 @@
+<div class="container-fluid animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <h3 class="mb-0">Students</h3>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-danger" (click)="goBack()">
+            <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card-body">
+      <div class="row mb-2 justify-content-between">
+        <div class="col-md-5">
+          <form class="d-flex">
+            <input
+              class="form-control"
+              type="search"
+              placeholder="Search"
+              aria-label="Search"
+              [(ngModel)]="search"
+              [ngModelOptions]="{ standalone: true }"
+              (keyup)="refreshList('search')"
+            />
+            <button
+              class="btn btn-outline-danger"
+              type="submit"
+              (click)="refreshList('clear')"
+              ngbTooltip="Clear Filter"
+            >
+              <i class="fa fa-remove"></i>
+            </button>
+          </form>
+        </div>
+        <div class="col-sm-1 d-flex justify-content-end align-items-center">
+          <img
+            src="../../../../assets/img/exl.jpeg"
+            alt="Excel Image"
+            height="30px"
+            width="30px"
+            (click)="excelDownload()"
+            ngbTooltip="Download Excel"
+            style="cursor: pointer;"
+          />
+        </div>
+      </div>
+      <div class="table-responsive text-nowrap">
+        <table
+          class="table table-striped table-hover table-bordered table-sticky"
+        >
+          <thead class="table-primary">
+            <tr>
+              <th>Sr.No</th>
+              <th>First Name</th>
+              <th>Last Name</th>
+              <th>Email</th>
+              <th>Phone No.</th>
+              <th>Gender</th>
+              <th>Course</th>
+              <th>Branch</th>
+              <th>College</th>
+              <th>Semester</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let s of students; let i = index">
+              <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
+              <td>{{ s?.firstName }}</td>
+              <td>{{ s?.lastName }}</td>
+              <td>{{ s?.email }}</td>
+              <td>{{ s?.phone }}</td>
+              <td>{{ s?.gender }}</td>
+              <td>{{ s?.degree }}</td>
+              <td>{{ s?.branch }}</td>
+              <td>{{ s?.college }}</td>
+              <td>{{ s?.semester }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <app-custom-pagination
+        [(page)]="page"
+        [(pageSize)]="pageSize"
+        [(collection)]="totalStudents"
+        (myOutput)="onChangePage(page)"
+      ></app-custom-pagination>
+    </div>
+  </div>
+</div>

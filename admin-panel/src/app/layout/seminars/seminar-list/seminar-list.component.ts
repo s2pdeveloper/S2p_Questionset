@@ -49,7 +49,6 @@ export class SeminarListComponent implements OnInit {
         // console.log(this.seminars);
         this.totalSeminars = success.result.totalCount;
         this.spinner.hide();
-
       },
       (error) => {
         this.spinner.hide();
