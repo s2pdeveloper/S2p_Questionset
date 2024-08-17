@@ -43,7 +43,7 @@ export class SeminarOverViewComponent implements OnInit {
     this.seminarService.getSeminarOverView(id).subscribe((success) => {
       // this.seminarForm.patchValue(success.result);
       this.overViewData = success.result;
-      console.log('your form data in seminar over', this.overViewData);
+      // console.log('your form data in seminar over', this.overViewData);
       this.attempted =
         (this.overViewData.avgNoOfAttemptedStudent /
           this.overViewData.NoOfStudent) *
@@ -113,7 +113,7 @@ export class SeminarOverViewComponent implements OnInit {
 
       // });
       this.spinner.hide();
-      console.log('***********your Set data of chart*******', this.setChart);
+      // console.log('***********your Set data of chart*******', this.setChart);
     });
   }
 
