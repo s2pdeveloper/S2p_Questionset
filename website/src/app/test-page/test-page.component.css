@@ -90,6 +90,10 @@ button {
   }
 }
 
+.img-fluid {
+  width: 50rem;
+}
+
 /* 
 
 .startTest,

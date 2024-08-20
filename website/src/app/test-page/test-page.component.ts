@@ -61,7 +61,7 @@ export class TestPageComponent implements OnDestroy {
     this.timerService.timer$.subscribe((time) => {
       this.timeRemaining = this.formatTime(time);
       if (time == 0) {
-        this.submit();
+        // this.submit();
       }
     });
     // this.timer = this.data?.duration * 60;
@@ -222,41 +222,47 @@ export class TestPageComponent implements OnDestroy {
     this.modalService.open(content, { centered: true });
   }
 
-  submit() {
-    this.spinner.show();
+  // submit() {
+  //   this.spinner.show();
 
-    if (this.questions.length === 0) {
-      return;
-    }
+  //   if (this.questions.length === 0) {
+  //     return;
+  //   }
 
-    const answers = this.questions.map((question, index) => {
-      return { [question._id]: this.selectedAnswers[index] || '' };
-    });
-    0;
+  //   const answers = this.questions.map((question, index) => {
+  //     return { [question._id]: this.selectedAnswers[index] || '' };
+  //   });
+  //   0;
 
-    const payload = {
-      studentId: this.studentId,
-      seminarId: this.seminarId,
-      questionSetId: this.data?._id,
-      answers: answers,
-    };
+  //   const payload = {
+  //     studentId: this.studentId,
+  //     seminarId: this.seminarId,
+  //     questionSetId: this.data?._id,
+  //     answers: answers,
+  //   };
 
-    this.studentService.submitTest(payload).subscribe(
-      (success: any) => {
-        localStorage.removeItem('activeQueSet');
-        localStorage.removeItem('isTestStarted');
-        this.router.navigate(['default/result'], {
-          queryParams: {
-            questionSetId: this.data?._id,
-          },
-        });
-        this.isTestSubmitted = true;
+  //   this.studentService.submitTest(payload).subscribe(
+  //     (success: any) => {
+  //       localStorage.removeItem('activeQueSet');
+  //       localStorage.removeItem('isTestStarted');
+  //       this.router.navigate(['default/result'], {
+  //         queryParams: {
+  //           questionSetId: this.data?._id,
+  //         },
+  //       });
+  //       this.isTestSubmitted = true;
 
-        this.spinner.hide();
-      },
-      (error) => {
-        this.spinner.hide();
-      }
-    );
+  //       this.spinner.hide();
+  //     },
+  //     (error) => {
+  //       this.spinner.hide();
+  //     }
+  //   );
+  // }
+
+  submit(){
+    this.startButton = true
+    // this.toast.success('Feedback submitted!!')
+    // this.router.navigate(['default/result'])
   }
 }
