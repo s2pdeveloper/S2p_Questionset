@@ -13,6 +13,7 @@ const Student = require('../../../../models/student');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
 const excelService = require('../../../../../utils/excelService');
+const { deleteRelatedRecords } = require('../questionSet/questionSet');
 
 const seminaryObject = {
   generateQrCode: async (req, res) => {
@@ -329,6 +330,8 @@ const seminaryObject = {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
         return res.unprocessableEntity(errors);
       }
+
+      await deleteRelatedRecords(existing._id);
 
       await Seminar.findOneAndDelete({ _id: req.params.id });
 
