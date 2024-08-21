@@ -16,7 +16,7 @@ const questionsetOjbect = {
         pageSize = 10,
         search = null,
         column = 'createdAt',
-        direction = -1,
+        direction = 1,
       } = req.query;
 
       let questionSetId = req.params.id;
@@ -68,15 +68,10 @@ const questionsetOjbect = {
   createForQuestionSet: async (req, res) => {
     try {
       if (req.body.options) {
-        // req.body.options = req.body.options.split(','); 
-        
-        req.body.options = JSON.parse(req.body.options) 
+        // req.body.options = req.body.options.split(',');
 
-
+        req.body.options = JSON.parse(req.body.options);
       }
-
-    
- 
 
       let data = req.body;
       if (req.file) {
@@ -122,11 +117,9 @@ const questionsetOjbect = {
       }
 
       if (req.body.options) {
-        // req.body.options = req.body.options.split(','); 
-        
-        req.body.options = JSON.parse(req.body.options) 
+        // req.body.options = req.body.options.split(',');
 
-
+        req.body.options = JSON.parse(req.body.options);
       }
 
       if (req.file) {

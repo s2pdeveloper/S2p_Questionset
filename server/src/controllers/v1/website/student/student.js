@@ -1,4 +1,6 @@
 const Student = require('../../../../models/student');
+const User = require('../../../../models/User');
+const Seminar = require('../../../../models/seminar');
 const QuestionSet = require('../../../../models/questionSet');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const mongoose = require('mongoose');
@@ -6,30 +8,65 @@ const Question = require('../../../../models/question');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
 const EmailHelper = require('../../../../models/helpers/EmailHelper');
+const { usersRoles } = require('../../../../config/Options');
 
 const customerobj = {
   registerStudent: async (req, res) => {
     try {
-      const data = req.body;
-      data.seminarId = req.params.id;
-      const existing = await Student.findOne({
-        $or: [{ email: req.body.email }, { phone: req.body.phone }],
-      });
+      let existing = await User.findOne({ phone: req.body.phone });
+      console.log('req.body.phone---', req.body.phone);
+
+
       if (existing) {
         const errors = 'User Already Exist';
         return res.serverError(errors);
       }
-      delete data.id;
-      delete data._id;
-      const student = await Student.create(data);
-      if (student) {
-        const token = student.genToken();
+
+      console.log('existing---', existing);
+
+      let createdObj = { ...req.body };
+      createdObj.role = usersRoles.STUDENT;
+      console.log('createdObj---', createdObj);
+
+      let user = await User.create(createdObj);
+
+      console.log('user---', user);
+
+
+      if (user) {
+        await Seminar.findOneAndUpdate(
+          { _id: req.params.id, studentIds: { $ne: user._id } },
+          { $push: { studentIds: user._id } }
+        );
+        const token = user.genToken();
         res.status(201).json({
           message: 'Registration Successful',
-          studentId: student._id,
+          studentId: user._id,
           token: token,
         });
       }
+
+      // const data = req.body;
+      // data.seminarId = req.params.id;
+      // const existing = await Student.findOne({
+      //   $or: [{ email: req.body.email }, { phone: req.body.phone }],
+      // });
+      // if (existing) {
+      //   const errors = 'User Already Exist';
+      //   return res.serverError(errors);
+      // }
+      // delete data.id;
+      // delete data._id;
+      // const student = await Student.create(data);
+
+      // if (student) {
+      //   const token = student.genToken();
+      //   res.status(201).json({
+      //     message: 'Registration Successful',
+      //     studentId: student._id,
+      //     token: token,
+      //   });
+      // }
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -94,7 +131,12 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
+      if(resp.length > 0 && resp[0].data.length == 0){
+        res.serverError("Please Wait, No Question Present");
+      }
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
+      console.log('req.user---',req.user,data,resp);
+      
       const result = await Result.findOne({
         studentId: req.user._id,
         questionSetId: data._id,
@@ -214,7 +256,7 @@ const customerobj = {
       if (existing) {
         return res.status(409).json({
           success: false,
-          message: 'Test Already Submited',
+          message: 'Test Already Submitted',
         });
       }
 
@@ -232,7 +274,7 @@ const customerobj = {
       await Result.create(resultData);
 
       res.success({
-        message: 'Test Submited',
+        message: 'Test Submitted',
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -243,23 +285,52 @@ const customerobj = {
 
   login: async (req, res) => {
     try {
-      const { phone, otp } = req.body;
-      const user = await Student.findOne({ phone: phone });
+      const { phone, otp, seminarId } = req.body;
+
+      let user = await  User.findOne({
+        phone: phone,
+      });
 
       if (!user) {
-        const errors = 'User Not exist';
+        const errors = 'User Not Exist';
         return res.serverError(errors);
       }
+
+      await Seminar.findOneAndUpdate(
+        { _id: seminarId, studentIds: { $ne: user._id } },
+        { $push: { studentIds: user._id } }
+      );
+
+      console.log(user,user.otp,otp,user.otp == otp);
+      
 
       if (!(user.otp == otp)) {
         const errors = 'Invalid OTP';
         return res.serverError(errors);
       }
+
       const token = user.genToken();
       user.otp = null;
       await user.save();
-      const data = { message: 'Login successful', user: user, token: token };
-      res.success(data);
+      res.success({ message: 'Login successful', user: user, token: token });
+
+      // const { phone, otp } = req.body;
+      // const user = await Student.findOne({ phone: phone });
+
+      // if (!user) {
+      //   const errors = 'User Not exist';
+      //   return res.serverError(errors);
+      // }
+
+      // if (!(user.otp == otp)) {
+      //   const errors = 'Invalid OTP';
+      //   return res.serverError(errors);
+      // }
+      // const token = user.genToken();
+      // user.otp = null;
+      // await user.save();
+      // const data = { message: 'Login successful', user: user, token: token };
+      // res.success(data);
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -271,7 +342,7 @@ const customerobj = {
     try {
       const { phone } = req.body;
 
-      const user = await Student.findOne({ phone: phone });
+      const user = await User.findOne({ phone: phone });
 
       if (!user) {
         const errors = 'User not exist';
@@ -279,7 +350,7 @@ const customerobj = {
       }
 
       let otp = Math.floor(1000 + Math.random() * 9000);
-      await Student.findOneAndUpdate({ phone: phone }, { otp: otp });
+      await User.findOneAndUpdate({ phone: phone }, { otp: otp });
 
       let data = {
         userName: `${user.firstName} ${user.lastName}`,
@@ -288,7 +359,7 @@ const customerobj = {
         subject: 'LOGIN OTP',
         otp: otp,
       };
-      const email = EmailHelper.sendMail(data);
+      EmailHelper.sendMail(data);
       res.success({ message: 'OTP sent to email successfully' });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -328,8 +399,8 @@ const customerobj = {
         return res.serverError(errors);
       }
       const studentId = req.user ? req.user._id : req.body.studentId;
-      const seminarId = req.user ? req.user.seminarId : req.body.seminarId;
-      let top = req.query.top || 3;
+      const seminarId = req.body.seminarId;
+      let top = 3;
       let noOfPassStudent = 0;
       let noOfFailStudent = 0;
       let percentageOfFailStudent = null;
@@ -357,7 +428,7 @@ const customerobj = {
 
       const lookupStage = {
         $lookup: {
-          from: 'Student',
+          from: 'User',
           localField: 'studentId',
           foreignField: '_id',
           as: 'studentInfo',
@@ -378,7 +449,6 @@ const customerobj = {
           'studentInfo.updatedAt': 0,
           'studentInfo.isDelete': 0,
           'studentInfo.degree': 0,
-          'studentInfo.seminarId': 0,
           'studentInfo.__v': 0,
           'studentInfo.branch': 0,
         },
@@ -405,12 +475,6 @@ const customerobj = {
 
         console.log('checking The Way');
 
-        console.log(
-          '***+++++++++++++++++checking Student+++++++++++++++***' +
-            item.studentId ==
-            studentId + 'studentId',
-          studentId
-        );
         if (item.studentId.equals(studentId)) {
           student = { ...item, rank: index + 1 };
         }
@@ -419,10 +483,8 @@ const customerobj = {
         }
       });
 
-      totalStudent = await Student.countDocuments({
-        seminarId: seminarId,
-      });
-
+      var seminar = await Seminar.findById(seminarId);
+      totalStudent = seminar.studentIds.length;
       noOfAttemptedStudent = resp.length;
       noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
       noOfFailStudent = totalStudent - noOfPassStudent;
@@ -537,7 +599,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     direction = -1,
   } = req.query;
 
-  let top = req.query.top || 3;
+  let top = 3;
   let noOfPassStudent = 0;
   let noOfFailStudent = 0;
   let percentageOfFailStudent = null;
@@ -565,7 +627,7 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
 
   const lookupStage = {
     $lookup: {
-      from: 'Student',
+      from: 'User',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
@@ -585,7 +647,6 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
       'studentInfo.email': 0,
       'studentInfo.updatedAt': 0,
       'studentInfo.createdAt': 0,
-      'studentInfo.seminarId': 0,
       'studentInfo.degree': 0,
       'studentInfo.phone': 0,
       'studentInfo.isDelete': 0,
@@ -625,9 +686,8 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     }
   });
 
-  totalStudent = await Student.countDocuments({
-    seminarId: seminarId,
-  });
+  var seminar = await Seminar.findById(seminarId);
+  totalStudent = seminar.studentIds.length;
 
   noOfAttemptedStudent = resp.length;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;

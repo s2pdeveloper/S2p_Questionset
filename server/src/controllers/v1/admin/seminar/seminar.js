@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const QRCode=require("qrcode")
+const QRCode = require('qrcode');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');
@@ -8,27 +8,23 @@ const ObjectId = mongoose.Types.ObjectId;
 const { generateCreateData } = OPTIONS;
 
 const Seminar = require('../../../../models/seminar');
-const QuestionSet=require('../../../../models/questionSet')
-const Student=require('../../../../models/student');
+const QuestionSet = require('../../../../models/questionSet');
+const Student = require('../../../../models/student');
 const Questionset = require('../../../../models/questionSet');
 const Result = require('../../../../models/result');
-
-
-
-
+const excelService = require('../../../../../utils/excelService');
 
 const seminaryObject = {
-
-  
-
   generateQrCode: async (req, res) => {
     try {
-const frontEndBaseUrl=process.env.FRONTEND_BASE_URL?process.env.FRONTEND_BASE_URL:"http://localhost:2024"      
-const Url=`${frontEndBaseUrl}/login?seminarId=${req.params.id}`
-const QrImage=await QRCode.toDataURL(Url);
-const QrImageData=QrImage.replace(/^data:image\/png;base64,/,"")
-res.setHeader("content-Type","image/png")
-res.send(Buffer.from(QrImageData,"base64"));
+      const frontEndBaseUrl = process.env.FRONTEND_BASE_URL
+        ? process.env.FRONTEND_BASE_URL
+        : 'http://localhost:2024';
+      const Url = `${frontEndBaseUrl}/login?seminarId=${req.params.id}`;
+      const QrImage = await QRCode.toDataURL(Url);
+      const QrImageData = QrImage.replace(/^data:image\/png;base64,/, '');
+      res.setHeader('content-Type', 'image/png');
+      res.send(Buffer.from(QrImageData, 'base64'));
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -63,12 +59,15 @@ res.send(Buffer.from(QrImageData,"base64"));
         },
       ];
       const resp = await Seminar.aggregate(pipeline);
-      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
-      const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
-    
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+
       return res.success({
         data,
-        totalCount
+        totalCount,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -77,65 +76,66 @@ res.send(Buffer.from(QrImageData,"base64"));
     }
   },
 
-
   seminarOverView: async (req, res) => {
     try {
-
-      const seminar=await Seminar.findOne({_id:req.params.id})
-      console.log("*********find the seminar******* ",seminar)
-      const questionset=await Questionset.find({seminarId:req.params.id})
-      console.log("*****your questionSet*******",questionset);
-      
+      const seminar = await Seminar.findOne({ _id: req.params.id });
+      console.log('*********find the seminar******* ', seminar);
+      const questionset = await Questionset.find({ seminarId: req.params.id });
+      console.log('*****your questionSet*******', questionset);
 
       const questionSetOverView = await Promise.all(
         questionset.map(async (eachSet) => {
-          const data = await questionSetAllData(req, req.params.id, eachSet._id);
+          const data = await questionSetAllData(
+            req,
+            req.params.id,
+            eachSet._id
+          );
           return data;
         })
       );
 
-      var noOfAttemptedStudent=0;
-      var noOfUnattemptedStudent=0;
-      var percentageOfPassStudent=0;
-      var percentageOfFailStudent=0;
-      var noOfPassStudent=0;
-      var noOfFailStudent=0;
+      var noOfAttemptedStudent = 0;
+      var noOfUnattemptedStudent = 0;
+      var percentageOfPassStudent = 0;
+      var percentageOfFailStudent = 0;
+      var noOfPassStudent = 0;
+      var noOfFailStudent = 0;
 
-      var numberOfSet=questionSetOverView.length;
-      console.log("length of set",numberOfSet)
+      var numberOfSet = questionSetOverView.length;
+      console.log('length of set', numberOfSet);
 
-      questionSetOverView.map((eachSet)=>{
-        noOfAttemptedStudent+=eachSet.noOfAttemptedStudent;
-        noOfUnattemptedStudent+=eachSet.noOfUnattemptedStudent;
-        percentageOfPassStudent+=eachSet.percentageOfPassStudent;
-        percentageOfFailStudent+=eachSet.percentageOfFailStudent;
-        noOfPassStudent+=eachSet.noOfPassStudent;
-        noOfFailStudent+=eachSet.noOfFailStudent;
-      })
-     
-      console.log("nofofAttempted student",noOfAttemptedStudent)
+      questionSetOverView.map((eachSet) => {
+        noOfAttemptedStudent += eachSet.noOfAttemptedStudent;
+        noOfUnattemptedStudent += eachSet.noOfUnattemptedStudent;
+        percentageOfPassStudent += eachSet.percentageOfPassStudent;
+        percentageOfFailStudent += eachSet.percentageOfFailStudent;
+        noOfPassStudent += eachSet.noOfPassStudent;
+        noOfFailStudent += eachSet.noOfFailStudent;
+      });
 
-      data={
-      name:seminar.name,
-      NoOfStudent:questionSetOverView[0]?questionSetOverView[0].totalStudent:0,
-        avgNoOfAttemptedStudent:noOfAttemptedStudent/numberOfSet,
-        avgNoOfUnattemptedStudent:noOfUnattemptedStudent/numberOfSet,
-        avgPercentageOfPassStudent:percentageOfPassStudent/numberOfSet,
-        avgPercentageOfFailStudent:percentageOfFailStudent/numberOfSet,
-        avgNoOfPassStudent:noOfPassStudent/numberOfSet,
-        avgNoOfFailStudent:noOfFailStudent/numberOfSet,
-        setsData:questionSetOverView
-      }
+      console.log('nofofAttempted student', noOfAttemptedStudent);
 
-      res.success(data)
+      data = {
+        name: seminar.name,
+        NoOfStudent: questionSetOverView[0]
+          ? questionSetOverView[0].totalStudent
+          : 0,
+        avgNoOfAttemptedStudent: noOfAttemptedStudent / numberOfSet,
+        avgNoOfUnattemptedStudent: noOfUnattemptedStudent / numberOfSet,
+        avgPercentageOfPassStudent: percentageOfPassStudent / numberOfSet,
+        avgPercentageOfFailStudent: percentageOfFailStudent / numberOfSet,
+        avgNoOfPassStudent: noOfPassStudent / numberOfSet,
+        avgNoOfFailStudent: noOfFailStudent / numberOfSet,
+        setsData: questionSetOverView,
+      };
+
+      res.success(data);
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
       throw new Error(e);
     }
   },
-
-
 
   getAllQuestionSet: async (req, res) => {
     try {
@@ -145,17 +145,16 @@ res.send(Buffer.from(QrImageData,"base64"));
         search = null,
         column = 'createdAt',
         direction = -1,
-        seminarId
+        seminarId,
       } = req.query;
       const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
 
       const pipeline = [
         {
           $match: {
-             ...(seminarId && {
+            ...(seminarId && {
               seminarId: new mongoose.Types.ObjectId(seminarId),
             }),
-           
           },
         },
         { $sort: { [column]: direction } },
@@ -167,12 +166,15 @@ res.send(Buffer.from(QrImageData,"base64"));
         },
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
-      const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
-    
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+
       return res.success({
         data,
-        totalCount
+        totalCount,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -180,18 +182,20 @@ res.send(Buffer.from(QrImageData,"base64"));
       throw new Error(e);
     }
   },
-
 
   questionSetOverview: async (req, res) => {
     try {
+      const questionSet = await QuestionSet.findOne({ _id: req.params.id });
+      //  const student=await Student.find({seminarId:questionSet.seminaryObject});
+      //  const result=await Result.find({questionSetId:req.params.id});
+      const overView = await questionSetOverview(
+        req,
+        questionSet.seminarId,
+        req.params.id
+      );
 
-     const questionSet=await QuestionSet.findOne({_id:req.params.id});
-    //  const student=await Student.find({seminarId:questionSet.seminaryObject});
-    //  const result=await Result.find({questionSetId:req.params.id}); 
-  const overView=await questionSetOverview(req,questionSet.seminarId,req.params.id)
-     
       return res.success({
-        data:overView
+        data: overView,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -200,16 +204,68 @@ res.send(Buffer.from(QrImageData,"base64"));
     }
   },
 
-  
+  seminarStudent: async (req, res) => {
+    try {
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+      const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
+
+      const pipeline = [
+        {
+          $match: {
+            _id: new mongoose.Types.ObjectId(req.params.id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'students', // Assuming the student collection is named 'students'
+            localField: 'studentIds',
+            foreignField: '_id',
+            as: 'students',
+          },
+        },
+        { $unwind: '$students' }, // Flatten the students array
+        { $sort: { [`students.${column}`]: direction } },
+        {
+          $facet: {
+            metadata: [{ $count: 'total' }],
+            data: [{ $skip: skip }, { $limit: parseInt(pageSize, 10) }],
+          },
+        },
+      ];
+
+      const resp = await Seminar.aggregate(pipeline);
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
+
+      return res.success({
+        data,
+        totalCount,
+      });
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
 
   getList: async (req, res) => {
     try {
-      
-      const data = await Seminar.find().select('_id name')
-      .sort({'createdAt': 'desc' }) ;
+      const data = await Seminar.find()
+        .select('_id name')
+        .sort({ createdAt: 'desc' });
 
       return res.success({
-        data
+        data,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -285,16 +341,152 @@ res.send(Buffer.from(QrImageData,"base64"));
       throw new Error(e);
     }
   },
+
+  getStudentBySeminar: async (req, res) => {
+    try {
+      let {
+        id = null,
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+      console.log('id-----', id);
+
+      let seminar = await Seminar.findById(id);
+
+      if (!seminar) {
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
+        return res.unprocessableEntity(errors);
+      }
+
+      const skip = Math.max(0, parseInt(page, 10) - 1) * parseInt(pageSize, 10);
+
+      let studentList = await Seminar.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'User',
+            let: { pid: '$studentIds' },
+            pipeline: [{ $match: { $expr: { $in: ['$_id', '$$pid'] } } }],
+            as: 'students',
+          },
+        },
+        {
+          $addFields: {
+            totalStudents: { $size: '$students' }, // Count the total number of students
+          },
+        },
+        {
+          $addFields: {
+            students: { $slice: ['$students', skip, parseInt(pageSize, 10)] }, // Apply pagination
+          },
+        },
+        {
+          $project: {
+            _id: 1,
+            students: 1,
+            totalStudents: 1, // Include totalStudents in the output
+          },
+        },
+      ]);
+
+      const count = studentList.length > 0 ? studentList[0].totalStudents : 0;
+
+      const rows = studentList.length > 0 ? studentList[0].students : [];
+
+      return res.success({
+        rows,
+        count,
+      });
+
+      // return res.success(studentList);
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+  seminarStudentExcel: async (req, res) => {
+    try {
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+      let seminar = await Seminar.findById(req.params.id);
+
+      if (!seminar) {
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
+        return res.unprocessableEntity(errors);
+      }
+
+      let studentList = await Seminar.aggregate([
+        {
+          $match: {
+            _id: new ObjectId(req.params.id),
+          },
+        },
+        {
+          $lookup: {
+            from: 'User',
+            let: { pid: '$studentIds' },
+            pipeline: [{ $match: { $expr: { $in: ['$_id', '$$pid'] } } }],
+            as: 'students',
+          },
+        },
+
+        {
+          $project: {
+            _id: 1,
+            students: 1,
+            college: 1,
+          },
+        },
+      ]);
+
+      let excelData = studentList.length > 0 ? studentList[0].students : [];
+      let collageName = studentList[0]?.college;
+
+      excelData = excelData.map((x) => {
+        return {
+          ['First Name']: x.firstName,
+          ['Last Name']: x.lastName,
+          ['Email']: x.email,
+          ['Phone Number']: x.phone,
+          ['Gender']: x.gender,
+          ['Course']: x.degree,
+          ['Branch']: x.branch,
+          ['College']: x.college,
+          ['Semester']: x.semester,
+        };
+      });
+
+      let result = await excelService.exportTableToExcel(excelData);
+
+      return res.success({ excelData: result, collageName: collageName });
+
+      // return res.success(studentList);
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
 };
 
 module.exports = seminaryObject;
 
-
-
-
-
-async function  questionSetAllData(req,seminarId,questionSetId){
-
+async function questionSetAllData(req, seminarId, questionSetId) {
   let {
     page = 1,
     pageSize = 9999,
@@ -325,42 +517,37 @@ async function  questionSetAllData(req,seminarId,questionSetId){
       ...(questionSetId && {
         questionSetId: new mongoose.Types.ObjectId(questionSetId),
       }),
-    }, 
-   
+    },
   };
 
-  const lookupStage={
+  const lookupStage = {
     $lookup: {
       from: 'Student',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
     },
-  }
+  };
 
-  
-
-  const projectStage= {
+  const projectStage = {
     $project: {
-      seminarId:0, 
-      createdAt:0,
-      updatedAt:0,
-      answers:0,
-      __v:0,
-     
-      "studentInfo.updatedAt":0,
-      "studentInfo.createdAt":0,
-      "studentInfo.seminarId":0,
-      "studentInfo.degree":0,
-     
-      "studentInfo.isDelete":0,
-      "studentInfo.branch":0,
-      "studentInfo.__v":0,
-      "studentInfo._id":0,
-      "studentInfo.gender":0,
-    },
-  }
+      seminarId: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      answers: 0,
+      __v: 0,
 
+      'studentInfo.updatedAt': 0,
+      'studentInfo.createdAt': 0,
+      'studentInfo.degree': 0,
+
+      'studentInfo.isDelete': 0,
+      'studentInfo.branch': 0,
+      'studentInfo.__v': 0,
+      'studentInfo._id': 0,
+      'studentInfo.gender': 0,
+    },
+  };
 
   // const facetStage = {
   //   $facet: {
@@ -368,36 +555,40 @@ async function  questionSetAllData(req,seminarId,questionSetId){
   //     data: [{ $skip: skip }, { $limit: pageSize }],
   //   },
   // };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
+  const pipeline = [
+    matchStage,
+    { $sort: { obtainMarks: -1 } },
+    lookupStage,
+    projectStage,
+  ];
 
-  const questionSet=await Questionset.findById(questionSetId)
+  const questionSet = await Questionset.findById(questionSetId);
 
   const resp = await Result.aggregate(pipeline);
 
-  console.log("your respose must watch",resp)
+  console.log('your respose must watch', resp);
   resp.forEach((item, index) => {
     item.rank = index + 1;
     if (item.status == 'PASS') {
       noOfPassStudent++;
     }
-    if (index < top) {
+    if (index < top && item.status == 'PASS') {
       topStudent.push(item);
     }
   });
 
-  totalStudent = await Student.countDocuments({
-    seminarId: seminarId,
-  });
+  var seminar = await Seminar.findById(seminarId);
+  totalStudent = seminar.studentIds.length;
 
   noOfAttemptedStudent = resp.length;
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
   noOfFailStudent = totalStudent - noOfPassStudent;
 
-  percentageOfFailStudent =Math.round(( (noOfFailStudent / totalStudent) * 100));
-  percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
+  percentageOfFailStudent = Math.round((noOfFailStudent / totalStudent) * 100);
+  percentageOfPassStudent = Math.round((noOfPassStudent / totalStudent) * 100);
 
   return {
-    name:questionSet.name,
+    name: questionSet.name,
     totalStudent,
     noOfAttemptedStudent,
     noOfUnattemptedStudent,
@@ -407,6 +598,4 @@ async function  questionSetAllData(req,seminarId,questionSetId){
     noOfFailStudent,
     topStudent,
   };
-
 }
-

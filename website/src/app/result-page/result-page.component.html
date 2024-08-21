@@ -60,7 +60,17 @@
                   nzType="circle"
                   nzStatus="success"
                   [nzFormat]="percentFormat"
-                  [nzWidth]="isSmallDevice ? 75 : 135"
+                  [nzWidth]="135"
+                  class="large-device"
+                ></nz-progress>
+
+                <nz-progress
+                  [nzPercent]="attemptPercentage.toFixed(0)"
+                  nzType="circle"
+                  nzStatus="success"
+                  [nzFormat]="percentFormat"
+                  [nzWidth]="75"
+                  class="small-device"
                 ></nz-progress>
               </div>
             </div>
@@ -76,7 +86,17 @@
                   nzType="circle"
                   nzStatus="exception"
                   [nzFormat]="percentFormat"
-                  [nzWidth]="isSmallDevice ? 75 : 135"
+                  [nzWidth]="135"
+                  class="large-device"
+                ></nz-progress>
+
+                <nz-progress
+                  [nzPercent]="notAttemptPercentage.toFixed(0)"
+                  nzType="circle"
+                  nzStatus="exception"
+                  [nzFormat]="percentFormat"
+                  [nzWidth]="75"
+                  class="small-device"
                 ></nz-progress>
               </div>
             </div>
@@ -102,7 +122,16 @@
                 nzType="circle"
                 nzStatus="success"
                 [nzFormat]="percentFormat"
-                [nzWidth]="isSmallDevice ? 75 : 135"
+                [nzWidth]="135"
+                class="large-device"
+              ></nz-progress>
+              <nz-progress
+                [nzPercent]="passPercentage.toFixed(0)"
+                nzType="circle"
+                nzStatus="success"
+                [nzFormat]="percentFormat"
+                [nzWidth]="75"
+                class="small-device"
               ></nz-progress>
             </div>
 
@@ -115,7 +144,17 @@
                 nzType="circle"
                 nzStatus="exception"
                 [nzFormat]="percentFormat"
-                [nzWidth]="isSmallDevice ? 75 : 135"
+                [nzWidth]="135"
+                class="large-device"
+              ></nz-progress>
+
+              <nz-progress
+                [nzPercent]="failPercentage.toFixed(0)"
+                nzType="circle"
+                nzStatus="exception"
+                [nzFormat]="percentFormat"
+                [nzWidth]="75"
+                class="small-device"
               ></nz-progress>
             </div>
           </div>
@@ -143,14 +182,10 @@
           </div>
 
           <div class="row justify-content-between mb-2">
-            <h6 class="sub-text">
-              Result Status : {{ status }}
-            </h6>
+            <h6 class="sub-text">Result Status : {{ status }}</h6>
           </div>
           <div class="row mb-2 justify-content-between">
-            <h6 class="sub-text">
-              Rank : {{ rank }}
-            </h6>
+            <h6 class="sub-text">Rank : {{ rank }}</h6>
           </div>
         </div>
       </div>

@@ -44,9 +44,9 @@ export class QuestionSetListComponent implements OnInit {
         this.sets = success?.result?.data;
         this.totalSets = success?.result?.totalCount;
         this.spinner.hide();
-        this.sets.forEach((set) => {
-          this.visibility[set._id] = set.isVisible;
-        });
+        // this.sets.forEach((set) => {
+        //   this.visibility[set._id] = set.isVisible;
+        // });
       },
       (error) => {
         this.spinner.hide();
@@ -82,9 +82,11 @@ export class QuestionSetListComponent implements OnInit {
         this.spinner.hide();
         this.toastService.success(success.result.message);
 
-        this.sets.forEach((set) => {
-          this.visibility[set._id] = set._id === row._id;
-        });
+        // this.sets.forEach((set) => {
+
+        // });
+        // row.isVisible = !row.isVisible;
+        this.getAllSets();
       },
       (error) => {
         this.spinner.hide();

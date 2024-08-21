@@ -1,12 +1,11 @@
 import { NgModule } from '@angular/core';
 import { SeminarListComponent } from './seminar-list/seminar-list.component';
 import { SeminarFormComponent } from './seminar-form/seminar-form.component';
+import { StudentListComponent } from './studentList/student-list.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { SeminarOverViewComponent } from './seminar-overView/seminar-form.component';
-import {StudentListComponent} from './studentList/seminar-list.component'
-
-
+// import {StudentListComponent} from './studentList/seminar-list.component'
 
 const seminarRoutes: Routes = [
   {
@@ -41,7 +40,7 @@ const seminarRoutes: Routes = [
         },
       },
       {
-        path: 'studentList',
+        path: 'student-list',
         component: StudentListComponent,
         data: {
           title: 'Student List',
@@ -55,5 +54,4 @@ const seminarRoutes: Routes = [
   imports: [RouterModule.forChild(seminarRoutes)],
   exports: [RouterModule],
 })
-
 export class SeminarsRoutingModule {}

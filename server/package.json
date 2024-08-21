@@ -38,7 +38,8 @@
     "qrcode": "^1.5.3",
     "streamifier": "^0.1.1",
     "swagger-autogen": "^2.23.7",
-    "swagger-ui-express": "^5.0.1"
+    "swagger-ui-express": "^5.0.1",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "chai": "^4.2.0",

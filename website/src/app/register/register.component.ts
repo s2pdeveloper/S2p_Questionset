@@ -106,20 +106,23 @@ export class RegisterComponent implements OnInit {
   submitted = false;
 
   regForm = this.formBuilder.group({
-    id: new FormControl(),
+    // _id: new FormControl(null),
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl('', [Validators.required,  Validators.pattern(/^\d{0,10}$/)]),
+    phone: new FormControl('', [
+      Validators.required,
+      Validators.pattern(/^\d{0,10}$/),
+    ]),
     gender: new FormControl(''),
     college: new FormControl(''),
-    degree: new FormControl(''),
-    branch: new FormControl(''),
-    semester: new FormControl(''),
+    degree: new FormControl(null),
+    branch: new FormControl(null),
+    semester: new FormControl(null),
   });
 
-  get f(){
-    return this.regForm.controls
+  get f() {
+    return this.regForm.controls;
   }
 
   get phoneNumber(): number | null {
@@ -144,17 +147,16 @@ export class RegisterComponent implements OnInit {
     const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       localStorage.setItem('SeminarId', id);
-      this.regForm.patchValue({ id: id });
-      this.seminarId = id
+      // this.regForm.patchValue({ id: id });
+      this.seminarId = id;
     }
   }
 
   register() {
     this.submitted = true;
-    if(this.regForm.invalid){
+    if (this.regForm.invalid) {
       this.toastService.warning('Please fill all required fields');
       return;
-
     }
 
     const phoneNumber = this.phoneNumber;
@@ -178,7 +180,7 @@ export class RegisterComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error('Registration failed');
+        this.toastService.error(error?.error?.error);
       }
     );
   }
@@ -193,6 +195,4 @@ export class RegisterComponent implements OnInit {
       event.preventDefault();
     }
   }
-
-  
 }

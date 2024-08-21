@@ -1,6 +1,5 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SeminarService } from '@services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -12,7 +11,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./seminar-form.component.scss'],
 })
 export class SeminarOverViewComponent implements OnInit {
-  submitted = false;
   overViewData: any;
   action: string = '';
   attempted: any;
@@ -20,20 +18,11 @@ export class SeminarOverViewComponent implements OnInit {
   chartOptions: any;
   chartOptions2: any;
   setChart: any[] = [];
-  seminarForm = this.formBuilder.group({
-    _id: new FormControl(null),
-    name: new FormControl('', [Validators.required]),
-    type: new FormControl('', [Validators.required]),
-    college: new FormControl('', [Validators.required]),
-    dateOfSeminar: new FormControl('', [Validators.required]),
-    duration: new FormControl('', [Validators.required]),
-    description: new FormControl('', [Validators.required]),
-  });
+  seminarId: any;
 
   constructor(
     private seminarService: SeminarService,
     private router: Router,
-    private formBuilder: FormBuilder,
     private actRoutes: ActivatedRoute,
     private location: Location,
     private toastService: ToastrService,
@@ -42,21 +31,16 @@ export class SeminarOverViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
-      this.action = params.action;
+      this.seminarId = params.id;
       if (params.id) {
         this.getById(params.id);
       }
     });
   }
 
-  get form() {
-    return this.seminarForm.controls;
-  }
-
   getById(id) {
     this.spinner.show();
     this.seminarService.getSeminarOverView(id).subscribe((success) => {
-      this.spinner.hide();
       // this.seminarForm.patchValue(success.result);
       this.overViewData = success.result;
       console.log('your form data in seminar over', this.overViewData);
@@ -128,44 +112,16 @@ export class SeminarOverViewComponent implements OnInit {
       //   console.log("your chRT",this.setChart)
 
       // });
-
+      this.spinner.hide();
       console.log('***********your Set data of chart*******', this.setChart);
     });
   }
 
-  submit() {
-    this.submitted = true;
-    if (this.seminarForm.invalid) {
-      this.toastService.warning('Please fill all required field!');
-      return;
-    }
-    let formData = this.seminarForm.value;
-    if (formData._id) {
-      this.update(formData);
-    } else {
-      delete formData.id;
-      this.create(formData);
-    }
+  navigateTo(path, id) {
+    this.router.navigate([path], { queryParams: { id } });
   }
 
-  create(formData) {
-    this.spinner.show();
-    this.seminarService.addNewSeminar(formData).subscribe((success) => {
-      this.spinner.hide();
-      this.toastService.success(success.message);
-      this.router.navigate(['seminars/seminars']);
-    });
-  }
-
-  update(formData) {
-    this.spinner.show();
-    this.seminarService
-      .updateSeminar(formData._id, formData)
-      .subscribe((success) => {
-        this.submitted = false;
-        this.spinner.hide();
-        this.toastService.success(success.message);
-        this.router.navigate(['seminars/seminars']);
-      });
+  goBack() {
+    this.location.back();
   }
 }

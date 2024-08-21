@@ -4,9 +4,32 @@ const jwt = require('jsonwebtoken');
 const jwtOptions = require('../config/JwtOptions');
 const OPTIONS = require('../config/Options');
 // const { usersRoles, defaultStatus } = OPTIONS;
-const { defaultStatus, generateCloudFrontUrl,usersRoles } = require('../config/Options');
+const {
+  defaultStatus,
+  generateCloudFrontUrl,
+  usersRoles,
+} = require('../config/Options');
 const UserSchema = mongoose.Schema(
   {
+    college: {
+      type: String,
+      required: false,
+    },
+    degree: {
+      type: String,
+      required: false,
+    },
+    branch: {
+      type: String,
+      required: false,
+    },
+    otp: {
+      type: Number,
+    },
+    semester: {
+      type: String,
+      required: false,
+    },
     isDelete: {
       type: Boolean,
       required: false,
@@ -15,11 +38,10 @@ const UserSchema = mongoose.Schema(
     email: {
       type: String,
       required: true,
-      unique: true,
     },
     password: {
       type: String,
-      required: true,
+      required: false,
     },
     userName: {
       type: String,
@@ -40,8 +62,9 @@ const UserSchema = mongoose.Schema(
     phone: {
       type: Number,
       required: false,
+      unique: true,
     },
-   
+
     emailVerified: {
       type: Boolean,
       default: 0,
@@ -71,22 +94,21 @@ const UserSchema = mongoose.Schema(
     role: {
       type: String,
       required: true,
-      default:usersRoles.USER,
-      enum:usersRoles.getAllRolesAsArray()
-
+      default: usersRoles.USER,
+      enum: usersRoles.getAllRolesAsArray(),
     },
     resetPasswordOTP: {
       type: String,
-      default:null
+      default: null,
     },
   },
-  
+
   {
     collection: 'User',
     timestamps: true,
     toJSON: { getters: true, virtuals: true },
     toObject: { getters: true, virtuals: true },
-  }  
+  }
 );
 UserSchema.index({ '$**': 'text' });
 
