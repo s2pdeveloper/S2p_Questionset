@@ -8,7 +8,7 @@
         <div class="col-auto">
           <button
             type="button"
-            (click)="navigateTo('feedback/form', null, 'create')"
+            (click)="navigateTo('tags/form', null)"
             class="btn btn-outline-primary"
           >
             <i class="fa fa-plus-circle me-1"></i>
@@ -57,11 +57,11 @@
             <tr *ngFor="let tag of tags; let i = index">
               <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
               <td>
-                {{ tag?.question }}
+                {{ tag?.name }}
               </td>
               <td>
                 <button
-                  (click)="navigateTo('feedback/form', f?._id, 'edit')"
+                  (click)="navigateTo('tags/form', tag?._id)"
                   class="btn btn-sm btn-outline-success mx-2"
                   ngbTooltip="Edit Question"
                 >
@@ -70,17 +70,10 @@
                 <button
                   class="btn btn-sm btn-outline-danger mx-2"
                   data-toggle="modal"
-                  (click)="open(f, alertMsg)"
+                  (click)="open(tag, alertMsg)"
                   ngbTooltip="Delete Quesion"
                 >
                   <i class="fa fa-trash mx-1"></i>
-                </button>
-                <button
-                  (click)="navigateTo('feedback/form', f?._id, 'view')"
-                  class="btn btn-sm btn-outline-success mx-2"
-                  ngbTooltip="View Quesion"
-                >
-                  <i class="fa fa-eye mx-1"></i>
                 </button>
               </td>
             </tr>
@@ -90,7 +83,7 @@
       <app-custom-pagination
         [(page)]="page"
         [(pageSize)]="pageSize"
-        [(collection)]="totalFeedbacks"
+        [(collection)]="totalTags"
         (myOutput)="onChangePage(page)"
       ></app-custom-pagination>
     </div>
@@ -120,8 +113,8 @@
     />
     <h4 class="text-warning">Are you sure you want to Delete?</h4>
     <div class="clearfix modal-text">
-      <label *ngIf="selectedRow?.question">
-        <h3>{{ selectedRow?.question }}</h3>
+      <label *ngIf="selectedRow?.name">
+        <h3>{{ selectedRow?.name }}</h3>
       </label>
     </div>
   </div>

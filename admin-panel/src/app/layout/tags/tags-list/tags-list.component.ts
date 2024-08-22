@@ -2,6 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
+import { TagsService } from '@services/tags/tags.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
@@ -13,15 +14,16 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class TagsListComponent implements OnInit {
   selectedRow: any = {};
-  feedbacks: any = [];
+  tags: any = [];
   search: any = '';
   page = 1;
   pageSize = 10;
-  totalFeedbacks: number;
+  totalTags: number;
 
   constructor(
     private router: Router,
     private modalService: NgbModal,
+    private tagService: TagsService,
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
   ) {}
@@ -31,14 +33,32 @@ export class TagsListComponent implements OnInit {
   }
 
   getAll() {
-   
+    this.spinner.show();
+    let params = {
+      page: this.page,
+      pageSize: this.pageSize,
+      search: this.search,
+    };
+    this.tagService.getAllTags(params).subscribe(
+      (success) => {
+        console.log('All Tags', success);
+        this.tags = success?.result?.data;
+        this.totalTags = success?.result?.totalCount;
+        console.log('All Tags', this.tags);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something went Wrong!');
+      }
+    );
   }
 
-  navigateTo(path, id, action) {
+  navigateTo(path, id) {
     if (id) {
-      this.router.navigate([path], { queryParams: { id, action } });
+      this.router.navigate([path], { queryParams: { id } });
     } else {
-      this.router.navigate([path], { queryParams: { action } });
+      this.router.navigate([path]);
     }
   }
 
@@ -54,12 +74,10 @@ export class TagsListComponent implements OnInit {
     this.getAll();
   }
 
-  open(f, content) {
-    this.selectedRow = f;
+  open(tag, content) {
+    this.selectedRow = tag;
     this.modalService.open(content, { centered: true });
   }
 
-  delete(id) {
-    
-  }
+  delete(id) {}
 }

@@ -36,7 +36,6 @@ export class FeedBackFormComponent implements OnInit {
     private router: Router,
     private formBuilder: FormBuilder,
     private location: Location,
-    private validationService: ValidationService,
     private feedbackService: FeedbackService,
     private seminarService: SeminarService,
     private actRoutes: ActivatedRoute,

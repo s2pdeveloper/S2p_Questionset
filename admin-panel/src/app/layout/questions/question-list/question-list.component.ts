@@ -47,10 +47,10 @@ export class QuestionListComponent implements OnInit {
     };
     this.questionService.getSetQuestions(id, params).subscribe(
       (success) => {
-        this.spinner.hide();
         console.log('Questions', success);
         this.questions = success?.result?.data;
         this.totalQuestion = success?.result?.totalCount;
+        this.spinner.hide();
       },
       (error) => {
         this.spinner.hide();
@@ -65,6 +65,11 @@ export class QuestionListComponent implements OnInit {
     } else {
       this.router.navigate([path], { queryParams: { s_id, action } });
     }
+  }
+
+  refreshList(title) {
+    this.search = title == 'clear' ? '' : this.search;
+    this.getQuestionsOfSet(this.setId);
   }
 
   onChangePage(pageNo) {
