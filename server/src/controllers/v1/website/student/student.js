@@ -132,7 +132,8 @@ const customerobj = {
       ];
       const resp = await QuestionSet.aggregate(pipeline);
       if(resp.length > 0 && resp[0].data.length == 0){
-        res.serverError("Please Wait, No Question Present");
+        return  res.success({questionSetActive:false});
+        // res.serverError("Please Wait, No Question Present");
       }
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
       console.log('req.user---',req.user,data,resp);
@@ -148,7 +149,7 @@ const customerobj = {
       }
 
       console.log('your data', data.option);
-      return res.success({ data });
+      return res.success({ data ,questionSetActive:true});
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);

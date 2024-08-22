@@ -8,6 +8,8 @@ const question = require('./question/routes')
 const user = require('./user/routes')
 const result=require("./result/routes")
 const feedback=require("./feedback/routes")
+const tag=require("./tag/routes")
+
 
 
 
@@ -17,6 +19,8 @@ router.use('/question',AuthHelper.authenticateJWT(usersRoles.getAdmin()), questi
 router.use('/user',  user);
 router.use('/result', AuthHelper.authenticateJWT(usersRoles.getAdmin()), result);
 router.use('/feedback', AuthHelper.authenticateJWT(usersRoles.getAdmin()), feedback);
+router.use('/tag', AuthHelper.authenticateJWT(usersRoles.getAdmin()), tag);
+
 
 
 
