@@ -1,0 +1,166 @@
+<div class="container-fluid animated fadeIn">
+  <div class="card">
+    <div class="card-header">
+      <div class="row justify-content-between align-items-center">
+        <div class="col-auto">
+          <h3 class="mb-0">Feedback Form</h3>
+        </div>
+        <div class="col-auto">
+          <button type="button" class="btn btn-danger" (click)="goBack()">
+            <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
+            Back
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="feedbackForm" class="form-horizontal">
+        <div class="row justify-content-start">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Question
+                <span class="text-danger">*</span>
+              </label>
+              <input
+                formControlName="question"
+                type="text"
+                class="form-control"
+                placeholder="Enter Question Statement"
+                [ngClass]="{
+                  'is-invalid':
+                    form.question.invalid &&
+                    submitted &&
+                    (form.question.touched || form.question.dirty)
+                }"
+              />
+              <validation-messages [control]="form['question']">
+              </validation-messages>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Type of Answer
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="type"
+                class="form-select"
+                placeholder="Select Type of Question"
+                [ngClass]="{
+                  'is-invalid':
+                    form.type.invalid &&
+                    submitted &&
+                    (form.type.touched || form.type.dirty)
+                }"
+              >
+                <option disabled value="">Select Type</option>
+                <option value="MCQ">MCQ</option>
+                <option value="TEXT">Text</option>
+                <option value="NUMBER">Number</option>
+              </select>
+              <validation-messages [control]="form['type']">
+              </validation-messages>
+            </div>
+          </div>
+
+          <div
+            class="col-md-6 d-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3">
+              <label class="form-label">Question Image</label>
+              <input
+                type="file"
+                class="form-control"
+                (change)="fileBrowseHandler($event)"
+              />
+            </div>
+            <div class="card mb-0 img-shadow">
+              <img [src]="displayImage" width="150" height="70" alt="" />
+            </div>
+            <!-- <img [src]="displayImage" width="100" height="60" alt="" /> -->
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Select Seminar
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="seminarId"
+                class="form-select"
+                placeholder="Select Seminar"
+                [ngClass]="{
+                  'is-invalid':
+                    form.seminarId.invalid &&
+                    submitted &&
+                    (form.seminarId.touched || form.seminarId.dirty)
+                }"
+              >
+                <option *ngFor="let s of seminars" [value]="s?._id">
+                  {{ s?.name }}
+                </option>
+              </select>
+              <validation-messages
+                [control]="form['seminarId']"
+              ></validation-messages>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="mb-3">
+              <label class="form-label">
+                Options
+                <span class="text-danger">* </span>
+              </label>
+              <button class="btn btn-success btn-sm" (click)="addOptionInput()">
+                <i class="fa fa-plus-square text-light" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="row">
+              <div
+                *ngFor="let o of splitArray; let i = index"
+                class="col-3 mb-3"
+              >
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    placeholder="Enter Options"
+                    class="form-control"
+                    [(ngModel)]="o.option"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <div
+                    (click)="removeOptionInput(i)"
+                    class="input-group-append"
+                  >
+                    <span class="input-group-text"
+                      ><i
+                        class="fa fa-minus-square text-secondary"
+                        aria-hidden="true"
+                      ></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div class="text-center">
+        <button
+          [disabled]="action === 'view'"
+          (click)="submit()"
+          type="submit"
+          class="btn btn-success text-white"
+        >
+          {{ form._id.value ? "Update" : "Save" }}
+        </button>
+        <button (click)="goBack()" class="btn btn-danger">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>

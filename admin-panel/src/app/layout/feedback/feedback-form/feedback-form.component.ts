@@ -2,65 +2,87 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { QuestionsService } from '@services/questions/questions.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
+import { ValidationService } from '../../../core/components';
+import { UserService } from '../../../services/users/user.service';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { FeedbackService } from '@services/feedback/feedback.service';
+import { SeminarService } from '@services/seminar/seminar.service';
 
 @Component({
-  selector: 'app-question-form',
-  templateUrl: './question-form.component.html',
-  styleUrls: ['./question-form.component.scss'],
+  selector: 'app-feedback-form',
+  templateUrl: './feedback-form.component.html',
+  styleUrls: ['./feedback-form.component.scss'],
 })
-export class QuestionFormComponent implements OnInit {
-  constructor(
-    private router: Router,
-    private questionService: QuestionsService,
-    private formBuilder: FormBuilder,
-    private actRoutes: ActivatedRoute,
-    private location: Location,
-    private spinner: NgxSpinnerService,
-    private toastService: ToastrService
-  ) {}
-
+export class FeedBackFormComponent implements OnInit {
+  seminars: any;
+  action: string = '';
   submitted = false;
   optionsList: string[] = [];
-  setId: any = null;
   splitArray: any = [{ option: '' }];
-  act: string = '';
   images: any;
   displayImage: any;
-  questionForm = this.formBuilder.group({
+  feedbackForm = this.formBuilder.group({
     _id: new FormControl(null),
     question: new FormControl('', [Validators.required]),
     type: new FormControl('', [Validators.required]),
-    hint: new FormControl(''),
     options: new FormControl([]),
-    correctOption: new FormControl('', [Validators.required]),
-    questionType: new FormControl('TEXT'),
     queImageUrl: new FormControl(''),
+    seminarId: new FormControl('', [Validators.required]),
   });
 
+  constructor(
+    private spinner: NgxSpinnerService,
+    private router: Router,
+    private formBuilder: FormBuilder,
+    private location: Location,
+    private validationService: ValidationService,
+    private feedbackService: FeedbackService,
+    private seminarService: SeminarService,
+    private actRoutes: ActivatedRoute,
+    private toastService: ToastrService
+  ) {}
+
   ngOnInit(): void {
+    this.getSeminarList();
     this.actRoutes.queryParams.subscribe((params) => {
-      this.setId = params.s_id;
-      this.act = params.action;
-      console.log('set id in form', this.setId);
-      if (params.q_id) {
-        this.getById(params.q_id);
+      this.action = params.action;
+      if (params.id) {
+        this.getById(params.id);
       }
     });
   }
 
   get form() {
-    return this.questionForm.controls;
+    return this.feedbackForm.controls;
   }
 
-  onTextChange(ev: any) {
-    // console.log(ev.target.value);
+  getById(id) {
+    this.feedbackService.getFeedbackById(id).subscribe((success) => {
+      console.log('get by id', success);
+      // this.splitArray = success?.result[0]?.options;
 
-    this.splitArray = ev.target.value.split(',');
-    // this.questionForm.get('options')?.setValue(splitArray);
-    // console.log(this.splitArray);
+      this.splitArray = success?.result[0]?.options.map((option) => {
+        return { option: option };
+      });
+      // this.splitArray = success?.result[0]?.options;
+      this.displayImage = success?.result[0]?.queImageUrl;
+
+      this.feedbackForm.patchValue(success?.result[0]);
+    });
+  }
+
+  getSeminarList() {
+    this.seminarService.allSeminarList().subscribe(
+      (success) => {
+        console.log(success);
+        this.seminars = success?.result?.data;
+        // console.log('this.seminars', this.seminars);
+
+        // this.totalSeminars = success?.result?.
+      },
+      (error) => {}
+    );
   }
 
   addOptionInput() {
@@ -71,32 +93,21 @@ export class QuestionFormComponent implements OnInit {
     this.splitArray.splice(i, 1);
   }
 
-  getById(id) {
-    this.questionService.getQuestionById(id).subscribe((success) => {
-      console.log('get by id', success);
-      // this.splitArray = success?.result[0]?.options;
-
-      this.splitArray = success?.result[0]?.options.map((option) => {
-        return { option: option };
-      });
-      // this.splitArray = success?.result[0]?.options;
-      this.displayImage = success?.result[0]?.queImageUrl;
-
-      this.questionForm.patchValue(success?.result[0]);
-    });
-  }
-
   submit() {
     this.submitted = true;
 
-    let formData = this.questionForm.value;
+    let formData = this.feedbackForm.value;
+
+    console.log('formData', formData);
+    
 
     formData.options = this.splitArray.map((x: any) => {
       return x.option;
     });
-    console.log(this.questionForm, formData.options);
 
-    if (this.questionForm.invalid) {
+    console.log(this.feedbackForm, formData.options);
+
+    if (this.feedbackForm.invalid) {
       this.toastService.warning('Please fill all required fields!');
       return;
     }
@@ -104,10 +115,8 @@ export class QuestionFormComponent implements OnInit {
     let fd = new FormData();
     fd.append('question', formData.question);
     fd.append('type', formData.type);
-    fd.append('hint', formData.hint);
+    fd.append('seminarId', formData.seminarId);
     fd.append('options', JSON.stringify(formData.options));
-    fd.append('correctOption', formData.correctOption);
-    // fd.append('questionType', formData.questionType);
     if (this.images) {
       fd.append('queImageUrl', this.images, this.images.name);
     }
@@ -122,14 +131,12 @@ export class QuestionFormComponent implements OnInit {
 
   create(formData) {
     this.spinner.show();
-    this.questionService.createQuestion(formData, this.setId).subscribe(
+    this.feedbackService.createFeedback(formData).subscribe(
       (success) => {
-        console.log('Created Question', success);
+        console.log('Created Feedback', success);
         this.spinner.hide();
         this.toastService.success(success.message);
-        this.router.navigate(['questions/questions-list'], {
-          queryParams: { id: this.setId },
-        });
+        this.router.navigate(['feedback/list']);
       },
       (error) => {
         this.spinner.hide();
@@ -140,14 +147,12 @@ export class QuestionFormComponent implements OnInit {
 
   update(formData, id) {
     this.spinner.show();
-    this.questionService.updateQuestion(formData, id).subscribe(
+    this.feedbackService.updateFeedback(formData, id).subscribe(
       (success) => {
         this.submitted = false;
         this.spinner.hide();
         this.toastService.success(success.message);
-        this.router.navigate(['questions/questions-list'], {
-          queryParams: { id: this.setId },
-        });
+        this.router.navigate(['feedback/list']);
       },
       (error) => {
         this.spinner.hide();
@@ -159,12 +164,6 @@ export class QuestionFormComponent implements OnInit {
   goBack() {
     this.location.back();
   }
-
-  // toggleQueType(e: any) {
-  //   this.form.question.setValue('');
-  //   this.form.queImageUrl.setValue('');
-  //   this.form.questionType.setValue(e.target.value);
-  // }
 
   fileBrowseHandler(event: any) {
     if (event.target.value) {
