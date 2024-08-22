@@ -19,6 +19,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 })
 export class HeaderComponent {
   isNavbarFixed: boolean = false;
+  isDropdownOpen = false;
+  selectedOption: string = '';
+
+
+
 
   @HostListener('window:scroll', ['$event']) onScroll() {
     if (window.scrollY > 100) {
@@ -42,4 +47,26 @@ export class HeaderComponent {
     localStorage.removeItem('token');
     this.router.navigate([`/login/${activeSeminarId}`]);
   }
+
+
+  toggleDropdown(){
+    this.isDropdownOpen = !this.isDropdownOpen;
+
+  }
+
+  @HostListener('document:click', ['$event'])
+  clickout(event: any) {
+    if (!event.target.closest('.dropdown')) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+  selectOption(option: string) {
+    this.selectedOption = option; // Store the selected option
+    console.log('Selected:', option); // Optionally log the selected option
+    this.isDropdownOpen = false; // Close the dropdown
+  }
+
+ 
+  
 }

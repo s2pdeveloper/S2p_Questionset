@@ -280,6 +280,22 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
+  deleteRelatedRecords:async(seminarId)=> {
+    try {
+      let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
+      if (existing.length === 0) {
+        return;
+      }
+      for (const ele of existing) {
+        await Question.deleteMany({ questionSetId: ele._id });
+        await QuestionSet.findOneAndDelete({ _id: ele._id });
+      }
+  
+      return;
+    } catch (e) {
+      return new Error(e);
+    }
+  }
 };
 
 module.exports = questionsetOjbect;
@@ -397,19 +413,19 @@ async function questionSetAllData(req, seminarId, questionSetId) {
   };
 }
 
-export async function deleteRelatedRecords(seminarId) {
-  try {
-    let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
-    if (existing.length === 0) {
-      return;
-    }
-    for (const ele of existing) {
-      await Question.deleteMany({ questionSetId: ele._id });
-      await QuestionSet.findOneAndDelete({ _id: ele._id });
-    }
+// export async function deleteRelatedRecords(seminarId) {
+//   try {
+//     let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
+//     if (existing.length === 0) {
+//       return;
+//     }
+//     for (const ele of existing) {
+//       await Question.deleteMany({ questionSetId: ele._id });
+//       await QuestionSet.findOneAndDelete({ _id: ele._id });
+//     }
 
-    return;
-  } catch (e) {
-    return new Error(e);
-  }
-}
+//     return;
+//   } catch (e) {
+//     return new Error(e);
+//   }
+// }
