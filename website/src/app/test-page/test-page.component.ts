@@ -33,6 +33,7 @@ export class TestPageComponent implements OnDestroy {
   startButton: boolean = false;
   data: any;
   isTestSubmitted: boolean = false;
+  questionSetActive:boolean
   constructor(
     private zone: NgZone,
     private router: Router,
@@ -86,8 +87,12 @@ export class TestPageComponent implements OnDestroy {
     this.studentService.getVisibleSet(params).subscribe(
       (success: any) => {
         this.data = success?.result?.data;
+        this.questionSetActive = success?.result?.questionSetActive
         this.questions = success?.result?.data?.questions;
-        this.selectedAnswers = new Array(this.questions.length).fill('');
+        if(this.questions && this.questions.length){
+          this.selectedAnswers = new Array(this.questions.length).fill('');
+
+        }
         // let activeTimerValue = localStorage.getItem('activeQueSetTime');
         // if (activeTimerValue) {
         //   this.convertToMinutes(activeTimerValue);

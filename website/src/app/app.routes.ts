@@ -6,6 +6,7 @@ import { ReportPageComponent } from './report-page/report-page.component';
 import { ResultPageComponent } from './result-page/result-page.component';
 import { NotFoundPageComponent } from './not-found-page/not-found-page.component';
 import { DefaultLayoutComponent } from './default-layout/default-layout.component';
+import { FeedbackComponent } from './feedback/feedback.component';
 
 export const routes: Routes = [
   // {
@@ -47,6 +48,12 @@ export const routes: Routes = [
         path: 'report',
         title: 'Reports',
         component: ReportPageComponent,
+      },
+
+      {
+        path: 'feedback',
+        title: 'Feedback',
+        component: FeedbackComponent,
       },
     ]},
   

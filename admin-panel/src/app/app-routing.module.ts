@@ -95,6 +95,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./layout/questions/question.module').then((m) => m.QuestionModule),
       },
+      {
+        path: 'feedback',
+        loadChildren: () =>
+          import('./layout/feedback/feedback.module').then((m) => m.FeedBackModule),
+      },
     ],
   },
   { path: '**', component: P404Component },
