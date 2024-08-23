@@ -28,11 +28,17 @@ const resultSchema = mongoose.Schema(
       type: Number,
       required: false,
     },
-    maxScore:{
-        type:Number,
-        
+    maxScore: {
+      type: Number,
     },
-    answers:[],
+    answers: [],
+    marksByTag: [
+      // {
+      //   tagName: String,
+      //   obtainMarks: String,
+      //   totalMarks: String,
+      // },
+    ],
   },
   {
     timestamps: true,

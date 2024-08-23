@@ -16,7 +16,6 @@ const customerobj = {
       let existing = await User.findOne({ phone: req.body.phone });
       console.log('req.body.phone---', req.body.phone);
 
-
       if (existing) {
         const errors = 'User Already Exist';
         return res.serverError(errors);
@@ -31,7 +30,6 @@ const customerobj = {
       let user = await User.create(createdObj);
 
       console.log('user---', user);
-
 
       if (user) {
         await Seminar.findOneAndUpdate(
@@ -131,13 +129,13 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-      if(resp.length > 0 && resp[0].data.length == 0){
-        return  res.success({questionSetActive:false});
+      if (resp.length > 0 && resp[0].data.length == 0) {
+        return res.success({ questionSetActive: false });
         // res.serverError("Please Wait, No Question Present");
       }
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
-      console.log('req.user---',req.user,data,resp);
-      
+      console.log('req.user---', req.user, data, resp);
+
       const result = await Result.findOne({
         studentId: req.user._id,
         questionSetId: data._id,
@@ -149,7 +147,7 @@ const customerobj = {
       }
 
       console.log('your data', data.option);
-      return res.success({ data ,questionSetActive:true});
+      return res.success({ data, questionSetActive: true });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -232,6 +230,10 @@ const customerobj = {
         return;
       }
       const questions = await Question.find({ questionSetId });
+
+      let marksByTag = await calculateResultByTags(answers, questions);
+      return;
+
       let correctAnswers = 0;
       answers.forEach((answer) => {
         const questionId = Object.keys(answer)[0];
@@ -261,6 +263,8 @@ const customerobj = {
         });
       }
 
+      //  let marksByTag = await calculateResultByTags(answers,questions)
+
       // Create result data object
       const resultData = {
         studentId,
@@ -271,6 +275,7 @@ const customerobj = {
         passingMarks,
         maxScore,
         answers,
+        marksByTag,
       };
       await Result.create(resultData);
 
@@ -288,7 +293,7 @@ const customerobj = {
     try {
       const { phone, otp, seminarId } = req.body;
 
-      let user = await  User.findOne({
+      let user = await User.findOne({
         phone: phone,
       });
 
@@ -302,8 +307,7 @@ const customerobj = {
         { $push: { studentIds: user._id } }
       );
 
-      console.log(user,user.otp,otp,user.otp == otp);
-      
+      console.log(user, user.otp, otp, user.otp == otp);
 
       if (!(user.otp == otp)) {
         const errors = 'Invalid OTP';
@@ -708,4 +712,91 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     topStudent,
     student,
   };
+}
+
+async function calculateResultByTags(answers, questions) {
+  console.log('1========', answers, questions);
+
+  let marksByTag = [];
+
+  let groupedQueByTag = {};
+
+  // Process each question
+  for (const ele of questions) {
+    // if (!ele.tag) {
+    //   break;
+    // }
+
+    // Process each tag for the question
+    for (const tag of ele.tags) {
+      if (!groupedQueByTag[tag]) {
+        groupedQueByTag[tag] = [];
+      }
+      // Ensure the question is only added once per tag
+      if (!groupedQueByTag[tag].some((q) => q._id === ele._id)) {
+        groupedQueByTag[tag].push(ele);
+      }
+    }
+  }
+
+  console.log('2========', groupedQueByTag);
+
+  function isEmptyObj(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
+  function findCorrectAnswerAndTag(q, questionId) {
+    for (let key in q) {
+      for (let question of q[key]) {
+        if (question._id === questionId) {
+          return { correctOption: question.correctOption, Tag: key };
+        }
+      }
+    }
+    return null;
+  }
+
+  let checkIfEmptyObj = isEmptyObj(groupedQueByTag);
+
+  if (checkIfEmptyObj) {
+    return [];
+  }
+
+  for (let answer of answers) {
+    const questionId = Object.keys(answer)[0];
+    const studentAnswer = answer[questionId];
+    const result = findCorrectAnswerAndTag(groupedQueByTag, questionId);
+
+  console.log('result========', result);
+
+
+    if (!marksByTag.some((obj) => obj.tagName === result.Tag)) {
+      marksByTag.push({ tagName: result.Tag });
+    }
+
+    if (result && studentAnswer === result.correctOption) {
+      marksByTag.forEach((x) => {
+        if (x.tagName == result.Tag) {
+          if (!x.obtainMarks) {
+            x.obtainMarks = 1;
+          } else if (x.obtainMarks) {
+            x.obtainMarks += 1;
+          }
+        }
+      });
+    }
+
+    marksByTag.forEach((x) => {
+      if (x.tagName == result.Tag) {
+        if (!x.totalMarks) {
+          x.totalMarks = 1;
+        } else {
+          x.totalMarks += 1;
+        }
+      }
+    });
+  }
+  console.log('Marks By Tagn======', marksByTag);
+
+  return marksByTag;
 }
