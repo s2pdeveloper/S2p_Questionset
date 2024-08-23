@@ -62,13 +62,13 @@
           <tbody>
             <tr *ngFor="let s of sets; let i = index">
               <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
-              <td>{{ s.name }}</td>
-              <td>{{ s.serialNumber }}</td>
-              <td>{{ s.seminarName }}</td>
-              <td>{{ s.noOfQuestion }}</td>
-              <td>{{ s.duration }}</td>
-              <td>{{ s.passingMarks }}</td>
-              <td>{{ s.isVisible ? "Visible" : "Not Visible" }}</td>
+              <td>{{ s?.name }}</td>
+              <td>{{ s?.serialNumber }}</td>
+              <td>{{ s?.seminarName }}</td>
+              <td>{{ s?.noOfQuestion }}</td>
+              <td>{{ s?.duration }}</td>
+              <td>{{ s?.passingMarks }}</td>
+              <td>{{ s?.isVisible ? "Visible" : "Not Visible" }}</td>
               <td>
                 <button
                   (click)="navigateTo('/questionSet/questionSet-form', s._id)"

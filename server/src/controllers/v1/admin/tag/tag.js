@@ -127,7 +127,7 @@ const obj = {
   },
   masterData: async (req, res) => {
     try {
-      let tags = await Tag.find().sort({ createdAt: 'desc' });
+      let tags = await Tag.find({},{name:1}).sort({ createdAt: 'desc' });
       return res.success(tags);
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

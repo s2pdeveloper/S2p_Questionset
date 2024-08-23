@@ -191,13 +191,28 @@
                 type="file"
                 class="form-control"
                 (change)="fileBrowseHandler($event)"
-
               />
             </div>
             <div class="card mb-0 img-shadow">
               <img [src]="displayImage" width="150" height="70" alt="" />
             </div>
             <!-- <img [src]="displayImage" width="100" height="60" alt="" /> -->
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Select Tag
+                <span class="text-danger">*</span>
+              </label>
+              <ng-select
+                [items]="tags"
+                bindLabel="name"
+                bindValue="name"
+                [multiple]="true"
+                placeholder="Select Question Tag"
+                formControlName="tags"
+              ></ng-select>
+            </div>
           </div>
 
           <div class="col-12 mb-3">
@@ -206,12 +221,15 @@
                 Options
                 <span class="text-danger">*</span>
               </label>
-             <button class="btn btn-success  btn-sm" (click)="addOptionInput()" >
-              <i class="fa fa-plus-square text-light" aria-hidden="true"></i>
-             </button>
+              <button class="btn btn-success btn-sm" (click)="addOptionInput()">
+                <i class="fa fa-plus-square text-light" aria-hidden="true"></i>
+              </button>
             </div>
             <div class="row">
-              <div *ngFor="let o of splitArray;let i = index" class="col-3 mb-3">
+              <div
+                *ngFor="let o of splitArray; let i = index"
+                class="col-3 mb-3"
+              >
                 <!-- <input
                 
                   type="text"
@@ -223,19 +241,27 @@
                 /> -->
 
                 <div class="input-group mb-3">
-                  <input  type="text"
-                  placeholder="Enter Options"
-                  class="form-control"
-                  [(ngModel)]="o.option"
-                   [ngModelOptions]="{standalone: true}"
-                   >
-                  <div  (click)="removeOptionInput(i)"  class="input-group-append">
-                    <span class="input-group-text"><i class="fa fa-minus-square text-secondary" aria-hidden="true"></i></span>
+                  <input
+                    type="text"
+                    placeholder="Enter Options"
+                    class="form-control"
+                    [(ngModel)]="o.option"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <div
+                    (click)="removeOptionInput(i)"
+                    class="input-group-append"
+                  >
+                    <span class="input-group-text"
+                      ><i
+                        class="fa fa-minus-square text-secondary"
+                        aria-hidden="true"
+                      ></i
+                    ></span>
                   </div>
                 </div>
               </div>
             </div>
-            
           </div>
         </div>
       </form>

@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { QuestionsService } from '@services/questions/questions.service';
+import { TagsService } from '@services/tags/tags.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -15,6 +16,7 @@ export class QuestionFormComponent implements OnInit {
   constructor(
     private router: Router,
     private questionService: QuestionsService,
+    private tagService: TagsService,
     private formBuilder: FormBuilder,
     private actRoutes: ActivatedRoute,
     private location: Location,
@@ -23,6 +25,8 @@ export class QuestionFormComponent implements OnInit {
   ) {}
 
   submitted = false;
+  selectedTags: string[];
+  tags: any;
   optionsList: string[] = [];
   setId: any = null;
   splitArray: any = [{ option: '' }];
@@ -38,9 +42,11 @@ export class QuestionFormComponent implements OnInit {
     correctOption: new FormControl('', [Validators.required]),
     questionType: new FormControl('TEXT'),
     queImageUrl: new FormControl(''),
+    tags: new FormControl([]),
   });
 
   ngOnInit(): void {
+    this.getAllTags();
     this.actRoutes.queryParams.subscribe((params) => {
       this.setId = params.s_id;
       this.act = params.action;
@@ -55,13 +61,20 @@ export class QuestionFormComponent implements OnInit {
     return this.questionForm.controls;
   }
 
-  onTextChange(ev: any) {
-    // console.log(ev.target.value);
-
-    this.splitArray = ev.target.value.split(',');
-    // this.questionForm.get('options')?.setValue(splitArray);
-    // console.log(this.splitArray);
+  getAllTags(){
+    this.tagService.getTagList().subscribe((success) => {
+      console.log("Tag List" ,success);
+      this.tags = success?.result;
+    })
   }
+
+  // onTextChange(ev: any) {
+  //   // console.log(ev.target.value);
+
+  //   this.splitArray = ev.target.value.split(',');
+  //   // this.questionForm.get('options')?.setValue(splitArray);
+  //   // console.log(this.splitArray);
+  // }
 
   addOptionInput() {
     this.splitArray.push({ option: '' });
@@ -72,6 +85,7 @@ export class QuestionFormComponent implements OnInit {
   }
 
   getById(id) {
+    this.spinner.show();
     this.questionService.getQuestionById(id).subscribe((success) => {
       console.log('get by id', success);
       // this.splitArray = success?.result[0]?.options;
@@ -83,6 +97,7 @@ export class QuestionFormComponent implements OnInit {
       this.displayImage = success?.result[0]?.queImageUrl;
 
       this.questionForm.patchValue(success?.result[0]);
+      this.spinner.hide();
     });
   }
 
@@ -106,8 +121,8 @@ export class QuestionFormComponent implements OnInit {
     fd.append('type', formData.type);
     fd.append('hint', formData.hint);
     fd.append('options', JSON.stringify(formData.options));
+    fd.append('tags', JSON.stringify(formData.tags));
     fd.append('correctOption', formData.correctOption);
-    // fd.append('questionType', formData.questionType);
     if (this.images) {
       fd.append('queImageUrl', this.images, this.images.name);
     }

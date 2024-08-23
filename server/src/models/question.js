@@ -37,6 +37,7 @@ const QuestionSchema = mongoose.Schema(
       required: false,
 
     },
+    tags: [],
   },
   {
     timestamps: true,

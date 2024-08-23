@@ -12,7 +12,7 @@ export class TagsService {
     getByIdPath: (id) => `/tag/getById/${id}`,
     updatePath: (id) => `/tag/update/${id}`,
     deletePath: (id) => `/tag/delete/${id}`,
-    getListPath: `tag/list`,
+    getListPath: `/tag/list`,
   };
   constructor(private http: ApiService) {}
 
@@ -34,5 +34,9 @@ export class TagsService {
 
   deleteTag(id) {
     return this.http.delete(this.routes.deletePath(id));
+  }
+
+  getTagList() {
+    return this.http.get(this.routes.getListPath);
   }
 }
