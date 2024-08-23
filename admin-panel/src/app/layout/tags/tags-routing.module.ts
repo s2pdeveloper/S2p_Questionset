@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { FeedBackListComponent } from './feedback-list/feedback-list.component';
-import { FeedBackFormComponent } from './feedback-form/feedback-form.component';
+import { TagsListComponent } from './tags-list/tags-list.component';
+import { TagsFormComponent } from './tags-form/tags-form.component';
 
 const userRoutes: Routes = [
   {
     path: '',
     data: {
-      title: 'Feedback',
+      title: 'Tags',
     },
     children: [
       {
@@ -16,16 +16,16 @@ const userRoutes: Routes = [
       },
       {
         path: 'list',
-        component: FeedBackListComponent,
+        component: TagsListComponent,
         data: {
-          title: 'Feedback List',
+          title: 'Tags List',
         },
       },
       {
         path: 'form',
-        component: FeedBackFormComponent,
+        component: TagsFormComponent,
         data: {
-          title: 'Feedback Form',
+          title: 'Tags Form',
         },
       },
     ],
@@ -36,4 +36,4 @@ const userRoutes: Routes = [
   imports: [RouterModule.forChild(userRoutes)],
   exports: [RouterModule],
 })
-export class FeedBackRoutingModule {}
+export class TagsRoutingModule {}

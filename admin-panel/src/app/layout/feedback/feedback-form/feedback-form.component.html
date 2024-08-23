@@ -1,9 +1,9 @@
-<!-- <div class="container-fluid animated fadeIn">
+<div class="container-fluid animated fadeIn">
   <div class="card">
     <div class="card-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-auto">
-          <h3 class="mb-0">Admin Form</h3>
+          <h3 class="mb-0">Feedback Form</h3>
         </div>
         <div class="col-auto">
           <button type="button" class="btn btn-danger" (click)="goBack()">
@@ -14,141 +14,153 @@
       </div>
     </div>
     <div class="card-body">
-      <form [formGroup]="userForm" class="form-horizontal">
-        <div class="row">
+      <form [formGroup]="feedbackForm" class="form-horizontal">
+        <div class="row justify-content-start">
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
-                First Name
+                Question
                 <span class="text-danger">*</span>
               </label>
               <input
-                formControlName="firstName"
+                formControlName="question"
                 type="text"
                 class="form-control"
+                placeholder="Enter Question Statement"
                 [ngClass]="{
                   'is-invalid':
-                    form.firstName.invalid &&
+                    form.question.invalid &&
                     submitted &&
-                    (form.firstName.touched || form.firstName.dirty)
+                    (form.question.touched || form.question.dirty)
                 }"
-                placeholder="Enter First Name"
               />
-              <validation-messages [control]="form['firstName']">
+              <validation-messages [control]="form['question']">
               </validation-messages>
             </div>
           </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">
-                Last Name
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                formControlName="lastName"
-                type="text"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid':
-                    form.lastName.invalid &&
-                    submitted &&
-                    form.lastName.touched &&
-                    form.lastName.dirty
-                }"
-                placeholder="Enter Last Name"
-              />
-              <validation-messages [control]="form['lastName']">
-              </validation-messages>
-            </div>
-          </div>
-        </div>
 
-        <div class="row">
           <div class="col-md-6">
             <div class="mb-3">
               <label class="form-label">
-                Mobile Number
+                Type of Answer
                 <span class="text-danger">*</span>
               </label>
-              <input
-                formControlName="mobileNo"
-                type="number"
-                
-                class="form-control"
-                minlength="10"
-                maxlength="10"
-                [ngClass]="{
-                  'is-invalid':
-                    form.mobileNo.invalid &&
-                    submitted &&
-                    (form.mobileNo.touched || form.mobileNo.dirty)
-                }"
-                placeholder="Enter Mobile Number"
-              />
-              <validation-messages [control]="form['mobileNo']">
-              </validation-messages>
-            </div>
-          </div>
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label">
-                Password
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                formControlName="password"
-                type="password"
-                class="form-control"
-                [ngClass]="{
-                  'is-invalid':
-                    form.password.invalid &&
-                    submitted &&
-                    (form.password.touched || form.password.dirty)
-                }"
-                placeholder="Enter Password"
-              />
-              <validation-messages [control]="form['password']">
-              </validation-messages>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-6">
-            <div class="mb-3">
-              <label class="form-label"
-                >Role<span class="text-danger">*</span></label
-              >
               <select
-                formControlName="role"
-                placeholder="Select Role"
+                formControlName="type"
                 class="form-select"
+                placeholder="Select Type of Question"
                 [ngClass]="{
                   'is-invalid':
-                    form.role.invalid &&
+                    form.type.invalid &&
                     submitted &&
-                    (form.role.touched || form.role.dirty)
+                    (form.type.touched || form.type.dirty)
                 }"
               >
-                <option selected disabled [value]="null">Select Role</option>
-                <option value="ADMIN">ADMIN</option>
-                <option value="SUPER_ADMIN">SUPER_ADMIN</option>
+                <option disabled value="">Select Type</option>
+                <option value="MCQ">MCQ</option>
+                <option value="TEXT">Text</option>
+                <option value="NUMBER">Number</option>
               </select>
-              <validation-messages [control]="form['role']">
+              <validation-messages [control]="form['type']">
               </validation-messages>
+            </div>
+          </div>
+
+          <div
+            class="col-md-6 d-flex justify-content-between align-items-center"
+          >
+            <div class="mb-3">
+              <label class="form-label">Question Image</label>
+              <input
+                type="file"
+                class="form-control"
+                (change)="fileBrowseHandler($event)"
+              />
+            </div>
+            <div class="card mb-0 img-shadow">
+              <img [src]="displayImage" width="150" height="70" alt="" />
+            </div>
+            <!-- <img [src]="displayImage" width="100" height="60" alt="" /> -->
+          </div>
+
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label class="form-label">
+                Select Seminar
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                formControlName="seminarId"
+                class="form-select"
+                placeholder="Select Seminar"
+                [ngClass]="{
+                  'is-invalid':
+                    form.seminarId.invalid &&
+                    submitted &&
+                    (form.seminarId.touched || form.seminarId.dirty)
+                }"
+              >
+                <option *ngFor="let s of seminars" [value]="s?._id">
+                  {{ s?.name }}
+                </option>
+              </select>
+              <validation-messages
+                [control]="form['seminarId']"
+              ></validation-messages>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <div class="mb-3">
+              <label class="form-label">
+                Options
+                <span class="text-danger">* </span>
+              </label>
+              <button class="btn btn-success btn-sm" (click)="addOptionInput()">
+                <i class="fa fa-plus-square text-light" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="row">
+              <div
+                *ngFor="let o of splitArray; let i = index"
+                class="col-3 mb-3"
+              >
+                <div class="input-group mb-3">
+                  <input
+                    type="text"
+                    placeholder="Enter Options"
+                    class="form-control"
+                    [(ngModel)]="o.option"
+                    [ngModelOptions]="{ standalone: true }"
+                  />
+                  <div
+                    (click)="removeOptionInput(i)"
+                    class="input-group-append"
+                  >
+                    <span class="input-group-text"
+                      ><i
+                        class="fa fa-minus-square text-secondary"
+                        aria-hidden="true"
+                      ></i
+                    ></span>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </form>
       <div class="text-center">
         <button
+          [disabled]="action === 'view'"
           (click)="submit()"
           type="submit"
           class="btn btn-success text-white"
         >
-          {{ form.id.value ? "Update" : "Save" }}
+          {{ form._id.value ? "Update" : "Save" }}
         </button>
         <button (click)="goBack()" class="btn btn-danger">Cancel</button>
       </div>
     </div>
   </div>
-</div> -->
+</div>

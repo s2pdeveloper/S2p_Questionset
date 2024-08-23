@@ -5,7 +5,10 @@ const Feedback = require('../../../../models/feedback');
 // const Question = require('../../../../models/question');
 const Result = require('../../../../models/result');
 const Student = require('../../../../models/student');
-const { handleBufferUpload, deleteFile } = require('../../../../../utils/cloudinary');
+const {
+  handleBufferUpload,
+  deleteFile,
+} = require('../../../../../utils/cloudinary');
 
 const obj = {
   createFeedback: async (req, res) => {
@@ -97,10 +100,8 @@ const obj = {
           seminarName: {
             $arrayElemAt: ['$seminar.name', 0],
           },
-          name: 1,
-          noOfQuestion: 1,
-
-          seminarId: 1,
+          question: 1,
+          _id: 1,
         },
       };
       const pipeline = [
@@ -127,6 +128,36 @@ const obj = {
       throw new Error(e);
     }
   },
+  getFeedbackBySeminarId: async (req, res) => {
+    try {
+      let { seminarId = null } = req.query;
+
+      const matchStage = {
+        $match: {
+          seminarId: new mongoose.Types.ObjectId(seminarId),
+        },
+      };
+
+      const projectStage = {
+        $project: {
+          question: 1,
+          _id: 1,
+          seminarId: 1,
+          type: 1,
+          options: 1,
+          queImageUrl: 1,
+        },
+      };
+      const pipeline = [matchStage, projectStage];
+      const resp = await Feedback.aggregate(pipeline);
+
+      return res.success(resp);
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
 
   update: async (req, res) => {
     try {
@@ -138,7 +169,6 @@ const obj = {
         return res.unprocessableEntity(errors);
       }
 
-      
       if (req.body.options) {
         // req.body.options = req.body.options.split(',');
 

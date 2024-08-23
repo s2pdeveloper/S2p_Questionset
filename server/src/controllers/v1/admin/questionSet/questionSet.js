@@ -280,12 +280,9 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
-  deleteRelatedRecords: async (seminarId) => {
+  deleteRelatedRecords :async (seminarId) => {
     try {
-      let existing = await QuestionSet.find(
-        { seminarId: seminarId },
-        { _id: 1 }
-      );
+      let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
       if (existing.length === 0) {
         return;
       }
@@ -293,11 +290,12 @@ const questionsetOjbect = {
         await Question.deleteMany({ questionSetId: ele._id });
         await QuestionSet.findOneAndDelete({ _id: ele._id });
       }
+  
       return;
     } catch (e) {
       return new Error(e);
     }
-  },
+  }
 };
 
 module.exports = questionsetOjbect;

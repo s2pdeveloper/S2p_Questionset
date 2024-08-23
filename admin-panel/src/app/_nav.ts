@@ -29,4 +29,14 @@ export const navItems: INavData[] = [
     url: '/questionSet/questionSet',
     icon: 'icon-user',
   },
+  {
+    name: 'Feedback',
+    url: '/feedback/list',
+    icon: 'icon-user',
+  },
+  {
+    name: 'Tags',
+    url: '/tags/list',
+    icon: 'icon-user',
+  },
 ];

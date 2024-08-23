@@ -3,7 +3,7 @@
     <div class="card-header">
       <div class="row justify-content-between align-items-center">
         <div class="col-auto">
-          <h3 class="mb-0">Feedback</h3>
+          <h3 class="mb-0">Tags</h3>
         </div>
         <div class="col-auto">
           <button
@@ -12,7 +12,7 @@
             class="btn btn-outline-primary"
           >
             <i class="fa fa-plus-circle me-1"></i>
-            Add Question
+            Add Tag
           </button>
         </div>
       </div>
@@ -50,17 +50,15 @@
             <tr>
               <th>Sr.No</th>
               <th>Question</th>
-              <th>Seminar</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr *ngFor="let f of feedbacks; let i = index">
+            <tr *ngFor="let tag of tags; let i = index">
               <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
               <td>
-                {{ f?.question }}
+                {{ tag?.question }}
               </td>
-              <td>{{ f?.seminarName }}</td>
               <td>
                 <button
                   (click)="navigateTo('feedback/form', f?._id, 'edit')"

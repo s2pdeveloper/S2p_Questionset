@@ -25,10 +25,10 @@ export class QuestionFormComponent implements OnInit {
   submitted = false;
   optionsList: string[] = [];
   setId: any = null;
-  splitArray: any = [{option:''}];
+  splitArray: any = [{ option: '' }];
   act: string = '';
   images: any;
-  displayImage:any
+  displayImage: any;
   questionForm = this.formBuilder.group({
     _id: new FormControl(null),
     question: new FormControl('', [Validators.required]),
@@ -63,26 +63,24 @@ export class QuestionFormComponent implements OnInit {
     // console.log(this.splitArray);
   }
 
-  addOptionInput(){
-    this.splitArray.push({option:''}) 
+  addOptionInput() {
+    this.splitArray.push({ option: '' });
   }
 
-  removeOptionInput(i:Number){
-    this.splitArray.splice(i,1) 
+  removeOptionInput(i: Number) {
+    this.splitArray.splice(i, 1);
   }
-
-
 
   getById(id) {
     this.questionService.getQuestionById(id).subscribe((success) => {
       console.log('get by id', success);
       // this.splitArray = success?.result[0]?.options;
 
-      this.splitArray =   success?.result[0]?.options.map(option => {
+      this.splitArray = success?.result[0]?.options.map((option) => {
         return { option: option };
-    })
+      });
       // this.splitArray = success?.result[0]?.options;
-      this.displayImage = success?.result[0]?.queImageUrl
+      this.displayImage = success?.result[0]?.queImageUrl;
 
       this.questionForm.patchValue(success?.result[0]);
     });
@@ -92,16 +90,16 @@ export class QuestionFormComponent implements OnInit {
     this.submitted = true;
 
     let formData = this.questionForm.value;
-    
-    formData.options = this.splitArray.map((x:any)=> {return  x.option})
-    console.log(this.questionForm , formData.options);
-    
+
+    formData.options = this.splitArray.map((x: any) => {
+      return x.option;
+    });
+    console.log(this.questionForm, formData.options);
 
     if (this.questionForm.invalid) {
       this.toastService.warning('Please fill all required fields!');
       return;
     }
-   
 
     let fd = new FormData();
     fd.append('question', formData.question);
@@ -115,7 +113,7 @@ export class QuestionFormComponent implements OnInit {
     }
 
     if (formData._id) {
-      this.update(fd,formData._id);
+      this.update(fd, formData._id);
     } else {
       delete formData._id;
       this.create(fd);
@@ -140,7 +138,7 @@ export class QuestionFormComponent implements OnInit {
     );
   }
 
-  update(formData,id) {
+  update(formData, id) {
     this.spinner.show();
     this.questionService.updateQuestion(formData, id).subscribe(
       (success) => {

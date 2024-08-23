@@ -100,6 +100,11 @@ export const routes: Routes = [
         loadChildren: () =>
           import('./layout/feedback/feedback.module').then((m) => m.FeedBackModule),
       },
+      {
+        path: 'tags',
+        loadChildren: () =>
+          import('./layout/tags/tags.module').then((m) => m.TagsModule),
+      },
     ],
   },
   { path: '**', component: P404Component },

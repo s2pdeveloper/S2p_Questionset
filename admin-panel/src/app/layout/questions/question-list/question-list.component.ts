@@ -26,9 +26,7 @@ export class QuestionListComponent implements OnInit {
     private modalService: NgbModal,
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
-  ) {
-    // console.log("in question list");
-  }
+  ) {}
 
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
@@ -81,7 +79,7 @@ export class QuestionListComponent implements OnInit {
     this.modalService.open(content, { centered: true });
   }
 
-  deleteQuestion(id){
+  deleteQuestion(id) {
     this.questionService.deleteQuestionById(id).subscribe(
       (success) => {
         console.log(success);

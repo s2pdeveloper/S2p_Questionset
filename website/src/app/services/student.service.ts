@@ -15,7 +15,10 @@ export class StudentService {
     rankedResultPath: `${environment.apiEndpoint}student/rankedResult`,
     getAllResultPath: `${environment.apiEndpoint}student/allResultOfStudent`,
     loginPath: `${environment.apiEndpoint}student/login`,
-    otpPath: `${environment.apiEndpoint}student/Otplogin`
+    otpPath: `${environment.apiEndpoint}student/Otplogin`,
+    feedPath: `${environment.apiEndpoint}getFeedbackBySeminarID`
+
+    // `/getFeedbackBySeminarId/:id`
     
   };
 
@@ -49,5 +52,9 @@ export class StudentService {
 
   otpLogin(data:any){
     return this.http.post(this.routes.otpPath, data);
+  }
+
+  feedLog(data:any){
+    return this.http.get(this.routes.feedPath, data);
   }
 }

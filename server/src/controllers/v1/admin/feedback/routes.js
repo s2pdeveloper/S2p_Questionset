@@ -6,6 +6,7 @@ const upload=require("../../../../../utils/multer")
 
 app.get('/getAll', Feedback.getAll); 
 app.post('/create',upload.single("queImageUrl"), Feedback.createFeedback);
+app.get('/getFeedbackBySeminarId/:id', Feedback.getFeedbackBySeminarId);
 app.put('/update/:id',upload.single("queImageUrl"), Feedback.update);
 app.delete('/delete/:id', Feedback.delete);
 app.get('/getById/:id', Feedback.getById);
