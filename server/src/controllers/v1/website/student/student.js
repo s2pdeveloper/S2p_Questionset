@@ -231,8 +231,8 @@ const customerobj = {
       }
       const questions = await Question.find({ questionSetId });
 
-      let marksByTag = await calculateResultByTags(answers, questions);
-      return;
+      // let marksByTag = await calculateResultByTags(answers, questions);
+      // return;
 
       let correctAnswers = 0;
       answers.forEach((answer) => {
@@ -263,7 +263,7 @@ const customerobj = {
         });
       }
 
-      //  let marksByTag = await calculateResultByTags(answers,questions)
+       let marksByTag = await calculateResultByTags(answers,questions)
 
       // Create result data object
       const resultData = {
@@ -715,11 +715,20 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
 }
 
 async function calculateResultByTags(answers, questions) {
-  console.log('1========', answers, questions);
+  // console.log('1========', answers, questions);
 
   let marksByTag = [];
 
   let groupedQueByTag = {};
+
+  // questions.forEach((x)=>{
+  // console.log('x._id.valueOf()======',x._id.valueOf())
+
+  //   x._id = x._id.valueOf()
+  // })
+
+  console.log('questions======', questions);
+  // return
 
   // Process each question
   for (const ele of questions) {
@@ -733,13 +742,15 @@ async function calculateResultByTags(answers, questions) {
         groupedQueByTag[tag] = [];
       }
       // Ensure the question is only added once per tag
-      if (!groupedQueByTag[tag].some((q) => q._id === ele._id)) {
+      if (
+        !groupedQueByTag[tag].some((q) => String(q._id) === String(ele._id))
+      ) {
         groupedQueByTag[tag].push(ele);
       }
     }
   }
 
-  console.log('2========', groupedQueByTag);
+  console.log('groupedQueByTag=======', groupedQueByTag);
 
   function isEmptyObj(obj) {
     return Object.keys(obj).length === 0;
@@ -748,7 +759,7 @@ async function calculateResultByTags(answers, questions) {
   function findCorrectAnswerAndTag(q, questionId) {
     for (let key in q) {
       for (let question of q[key]) {
-        if (question._id === questionId) {
+        if (String(question._id) === String(questionId)) {
           return { correctOption: question.correctOption, Tag: key };
         }
       }
@@ -762,41 +773,73 @@ async function calculateResultByTags(answers, questions) {
     return [];
   }
 
-  for (let answer of answers) {
-    const questionId = Object.keys(answer)[0];
-    const studentAnswer = answer[questionId];
-    const result = findCorrectAnswerAndTag(groupedQueByTag, questionId);
+  // for (let answer of answers) {
+  //   const questionId = Object.keys(answer)[0];
+  //   const studentAnswer = answer[questionId];
+  //   const result = findCorrectAnswerAndTag(groupedQueByTag, questionId);
 
-  console.log('result========', result);
+  //   console.log('result========', result);
 
+  //   if (!marksByTag.some((obj) => obj.tagName === result.Tag)) {
+  //     marksByTag.push({ tagName: result.Tag });
+  //   }
 
-    if (!marksByTag.some((obj) => obj.tagName === result.Tag)) {
-      marksByTag.push({ tagName: result.Tag });
-    }
+  //   if (result && studentAnswer === result.correctOption) {
+  //     marksByTag.forEach((x) => {
+  //       if (x.tagName == result.Tag) {
+  //         if (!x.obtainMarks) {
+  //           x.obtainMarks = 1;
+  //         } else if (x.obtainMarks) {
+  //           x.obtainMarks += 1;
+  //         }
+  //       }
+  //     });
+  //   }
 
-    if (result && studentAnswer === result.correctOption) {
-      marksByTag.forEach((x) => {
-        if (x.tagName == result.Tag) {
-          if (!x.obtainMarks) {
-            x.obtainMarks = 1;
-          } else if (x.obtainMarks) {
-            x.obtainMarks += 1;
-          }
-        }
-      });
-    }
+  //   marksByTag.forEach((x) => {
+  //     if (x.tagName == result.Tag) {
+  //       if (!x.totalMarks) {
+  //         x.totalMarks = groupedQueByTag[result.Tag].length;
+  //       }
+  //       // if (!x.totalMarks) {
+  //       //   x.totalMarks = 1;
+  //       // } else {
+  //       //   x.totalMarks += 1;
+  //       // }
+  //     }
+  //   });
+  // }
 
-    marksByTag.forEach((x) => {
-      if (x.tagName == result.Tag) {
-        if (!x.totalMarks) {
-          x.totalMarks = 1;
-        } else {
-          x.totalMarks += 1;
+  for (let key in groupedQueByTag) {
+    const tagEntry = {
+      tagName: key,
+      obtainMarks: 0,
+      totalMarks: groupedQueByTag[key].length
+    };
+  
+    for (let question of groupedQueByTag[key]) {
+      const questionId = question._id;
+      const correctAnswer = question.correctOption;
+  
+      const studentAnswerEntry = answers.find(
+        (answer) => answer[questionId] !== undefined
+      );
+  
+      if (studentAnswerEntry) {
+        const studentAnswer = studentAnswerEntry[questionId];
+        if (studentAnswer === correctAnswer) {
+          tagEntry.obtainMarks += 1;
         }
       }
-    });
+    }
+  
+    marksByTag.push(tagEntry);
   }
-  console.log('Marks By Tagn======', marksByTag);
+  // console.log('Marks By Tagn======', marksByTag);
 
   return marksByTag;
 }
+ 
+ 
+
+
