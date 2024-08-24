@@ -513,6 +513,7 @@ const customerobj = {
         passingMarks: existing.passingMarks,
         topStudent,
         student,
+
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -814,7 +815,8 @@ async function calculateResultByTags(answers, questions) {
     const tagEntry = {
       tagName: key,
       obtainMarks: 0,
-      totalMarks: groupedQueByTag[key].length
+      totalMarks: groupedQueByTag[key].length,
+      totalPercentage:0
     };
   
     for (let question of groupedQueByTag[key]) {
@@ -832,6 +834,9 @@ async function calculateResultByTags(answers, questions) {
         }
       }
     }
+
+    tagEntry.totalPercentage = (tagEntry.obtainMarks/tagEntry.totalMarks) * 100
+
   
     marksByTag.push(tagEntry);
   }
