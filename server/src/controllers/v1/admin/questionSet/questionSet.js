@@ -280,9 +280,12 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
-  deleteRelatedRecords :async (seminarId) => {
+  deleteRelatedRecords: async (seminarId) => {
     try {
-      let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
+      let existing = await QuestionSet.find(
+        { seminarId: seminarId },
+        { _id: 1 }
+      );
       if (existing.length === 0) {
         return;
       }
@@ -290,12 +293,56 @@ const questionsetOjbect = {
         await Question.deleteMany({ questionSetId: ele._id });
         await QuestionSet.findOneAndDelete({ _id: ele._id });
       }
-  
+
       return;
     } catch (e) {
       return new Error(e);
     }
-  }
+  },
+
+  duplicateQuestionSet: async (req, res) => {
+    try {
+      const { seminarId, questionSetId } = req.body;
+      let existingQuestionSet = await QuestionSet.findOne(
+        { _id: questionSetId },
+        {
+          name: 1,
+          noOfQuestion: 1,
+          duration: 1,
+          serialNumber: 1,
+          passingMarks: 1,
+          _id: 0,
+        }
+      );
+      let createdObj = existingQuestionSet.toObject();
+      createdObj.seminarId = seminarId;
+      let newQueSet = await QuestionSet.create(createdObj);
+
+      let existingQuestion = await Question.find(
+        { questionSetId: questionSetId },
+        {
+          _id: 0,
+          question: 1,
+          questionText: 1,
+          type: 1,
+          options: 1,
+          correctOption: 1,
+          queImageUrl: 1,
+        }
+      );
+
+      for (let ele of existingQuestion) {
+        ele = ele.toObject();
+        ele.questionSetId = newQueSet._id;
+        await Question.create(ele);
+      }
+
+      return res.success();
+    } catch (e) {
+      console.log('e', e);
+      return new Error(e);
+    }
+  },
 };
 
 module.exports = questionsetOjbect;
@@ -412,20 +459,3 @@ async function questionSetAllData(req, seminarId, questionSetId) {
     topStudent,
   };
 }
-
-// export async function deleteRelatedRecords(seminarId) {
-//   try {
-//     let existing = await QuestionSet.find({ seminarId: seminarId }, { _id: 1 });
-//     if (existing.length === 0) {
-//       return;
-//     }
-//     for (const ele of existing) {
-//       await Question.deleteMany({ questionSetId: ele._id });
-//       await QuestionSet.findOneAndDelete({ _id: ele._id });
-//     }
-
-//     return;
-//   } catch (e) {
-//     return new Error(e);
-//   }
-// }
