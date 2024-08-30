@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { QuestionSetService } from '@services/questionSet/question-set.service';
+import { SeminarService } from '@services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -18,10 +19,13 @@ export class QuestionSetListComponent implements OnInit {
   pageSize = 5;
   search: any = '';
   visibility: any = {};
+  seminars: any;
+  selectedSeminarId: string;
 
   constructor(
     private router: Router,
     private questionSetService: QuestionSetService,
+    private seminarService: SeminarService,
     private modalService: NgbModal,
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
@@ -29,6 +33,7 @@ export class QuestionSetListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getAllSets();
+    this.getSeminarList();
   }
 
   getAllSets() {
@@ -55,6 +60,22 @@ export class QuestionSetListComponent implements OnInit {
     );
   }
 
+  getSeminarList() {
+    this.seminarService.allSeminarList().subscribe(
+      (success) => {
+        console.log(success);
+        this.seminars = success?.result?.data;
+        // console.log('this.seminars', this.seminars);
+
+        // this.totalSeminars = success?.result?.
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something went Wrong!');
+      }
+    );
+  }
+
   onChangePage(pageNo) {
     if (pageNo > 0) {
       this.page = pageNo;
@@ -71,15 +92,14 @@ export class QuestionSetListComponent implements OnInit {
   }
 
   switchVisibility(row) {
+    this.spinner.show();
     this.selectedRow = row;
     let seminarInfo = {
       seminarId: row.seminarId,
     };
-    this.spinner.show();
     this.questionSetService.changeSetVisibility(row._id, seminarInfo).subscribe(
       (success) => {
         // console.log('visibility', success);
-        this.spinner.hide();
         this.toastService.success(success.result.message);
 
         // this.sets.forEach((set) => {
@@ -87,6 +107,7 @@ export class QuestionSetListComponent implements OnInit {
         // });
         // row.isVisible = !row.isVisible;
         this.getAllSets();
+        this.spinner.hide();
       },
       (error) => {
         this.spinner.hide();
@@ -106,16 +127,44 @@ export class QuestionSetListComponent implements OnInit {
   }
 
   deleteQuestionSet(id) {
+    this.spinner.show();
     this.questionSetService.deleteSetById(id).subscribe(
       (success) => {
         this.getAllSets();
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.success(success.result.message);
       },
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
+        this.toastService.error('Something went Wrong!');
+      }
+    );
+  }
+
+  copyQuestionSet(id) {
+    this.spinner.show();
+    let payload = {
+      seminarId: this.selectedSeminarId,
+      questionSetId: id,
+    };
+    this.questionSetService.duplicateQuestionSet(payload).subscribe(
+      (success) => {
+        console.log('Create Duplicate', success);
+        this.getAllSets();
+        this.selectedSeminarId = null;
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.spinner.hide();
+        this.toastService.success('Set Duplicated Successfully!');
+      },
+      (error) => {
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );

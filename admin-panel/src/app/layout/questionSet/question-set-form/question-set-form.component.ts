@@ -59,7 +59,10 @@ export class QuestionSetFormComponent implements OnInit {
 
         // this.totalSeminars = success?.result?.
       },
-      (error) => {}
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something went Wrong!');
+      }
     );
   }
 

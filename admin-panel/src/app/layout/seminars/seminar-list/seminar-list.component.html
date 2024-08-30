@@ -54,8 +54,8 @@
               <th>College</th>
               <th>Seminar Date</th>
               <th>Description</th>
-              <th>Duration</th>
-              <th>Created At</th>
+              <th>Duration(in hrs.)</th>
+              <!-- <th>Created At</th> -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -68,7 +68,7 @@
               <td>{{ s.dateOfSeminar | date }}</td>
               <td>{{ s.description }}</td>
               <td>{{ s.duration }}</td>
-              <td>{{ s.createdAt | date }}</td>
+              <!-- <td>{{ s.createdAt | date }}</td> -->
               <td>
                 <button
                   (click)="navigateTo('/seminars/seminars-form', s._id, 'edit')"
