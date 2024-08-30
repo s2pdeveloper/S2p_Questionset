@@ -263,7 +263,7 @@ const customerobj = {
         });
       }
 
-       let marksByTag = await calculateResultByTags(answers,questions)
+      let marksByTag = await calculateResultByTags(answers, questions);
 
       // Create result data object
       const resultData = {
@@ -715,20 +715,8 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
 }
 
 async function calculateResultByTags(answers, questions) {
-  // console.log('1========', answers, questions);
-
   let marksByTag = [];
-
   let groupedQueByTag = {};
-
-  // questions.forEach((x)=>{
-  // console.log('x._id.valueOf()======',x._id.valueOf())
-
-  //   x._id = x._id.valueOf()
-  // })
-
-  console.log('questions======', questions);
-  // return
 
   // Process each question
   for (const ele of questions) {
@@ -749,8 +737,6 @@ async function calculateResultByTags(answers, questions) {
       }
     }
   }
-
-  console.log('groupedQueByTag=======', groupedQueByTag);
 
   function isEmptyObj(obj) {
     return Object.keys(obj).length === 0;
@@ -773,58 +759,21 @@ async function calculateResultByTags(answers, questions) {
     return [];
   }
 
-  // for (let answer of answers) {
-  //   const questionId = Object.keys(answer)[0];
-  //   const studentAnswer = answer[questionId];
-  //   const result = findCorrectAnswerAndTag(groupedQueByTag, questionId);
-
-  //   console.log('result========', result);
-
-  //   if (!marksByTag.some((obj) => obj.tagName === result.Tag)) {
-  //     marksByTag.push({ tagName: result.Tag });
-  //   }
-
-  //   if (result && studentAnswer === result.correctOption) {
-  //     marksByTag.forEach((x) => {
-  //       if (x.tagName == result.Tag) {
-  //         if (!x.obtainMarks) {
-  //           x.obtainMarks = 1;
-  //         } else if (x.obtainMarks) {
-  //           x.obtainMarks += 1;
-  //         }
-  //       }
-  //     });
-  //   }
-
-  //   marksByTag.forEach((x) => {
-  //     if (x.tagName == result.Tag) {
-  //       if (!x.totalMarks) {
-  //         x.totalMarks = groupedQueByTag[result.Tag].length;
-  //       }
-  //       // if (!x.totalMarks) {
-  //       //   x.totalMarks = 1;
-  //       // } else {
-  //       //   x.totalMarks += 1;
-  //       // }
-  //     }
-  //   });
-  // }
-
   for (let key in groupedQueByTag) {
     const tagEntry = {
       tagName: key,
       obtainMarks: 0,
-      totalMarks: groupedQueByTag[key].length
+      totalMarks: groupedQueByTag[key].length,
     };
-  
+
     for (let question of groupedQueByTag[key]) {
       const questionId = question._id;
       const correctAnswer = question.correctOption;
-  
+
       const studentAnswerEntry = answers.find(
         (answer) => answer[questionId] !== undefined
       );
-  
+
       if (studentAnswerEntry) {
         const studentAnswer = studentAnswerEntry[questionId];
         if (studentAnswer === correctAnswer) {
@@ -832,14 +781,46 @@ async function calculateResultByTags(answers, questions) {
         }
       }
     }
-  
+
     marksByTag.push(tagEntry);
   }
-  // console.log('Marks By Tagn======', marksByTag);
 
   return marksByTag;
 }
- 
- 
 
+async function generateAndSaveReport(marksByTag, studentInfo = {}) {
+  let pdfData = {
+    studentName: '',
+    totalMarks: '',
+    obtainMarks: '',
+    percentage: '',
+    placementChances: '',
+    topicWiseResult: {
+      barChart: {
+        obtainMarks: [],
+        totalMarks: [],
+        topics: [],
+      },
+      dounutChart: {
+        obtainMarks: [],
+        topics: [],
+      },
+    },
+    technologyToFocus: [],
+  };
+  pdfData.studentName = studentInfo.studentName;
+  pdfData.totalMarks = studentInfo.totalMarks;
+  pdfData.obtainMarks = studentInfo.obtainMarks;
+  pdfData.percentage = (studentInfo.obtainMarks / studentInfo.totalMarks) * 100;
 
+  for (const ele of marksByTag) {
+    pdfData.technologyToFocus.push(ele.tagName);
+
+    pdfData.topicWiseResult.barChart.obtainMarks.push(ele.obtainMarks);
+    pdfData.topicWiseResult.barChart.totalMarks.push(ele.totalMarks);
+    pdfData.topicWiseResult.barChart.topics.push(ele.tagName);
+
+    pdfData.topicWiseResult.dounutChart.topics.push(ele.tagName);
+    pdfData.topicWiseResult.dounutChart.obtainMarks.push(ele.obtainMarks);
+  }
+}
