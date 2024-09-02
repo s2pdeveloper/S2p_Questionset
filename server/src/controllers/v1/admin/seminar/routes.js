@@ -7,6 +7,7 @@ const AuthHelper = require('../../../../models/helpers/AuthHelper');
 
 app.get('/',seminaryController.getAll);
 app.get('/getStudentBySeminar',seminaryController.getStudentBySeminar);
+app.get('/seminarStudentReportDownload/:id', seminaryController.seminarStudentReportDownload);
 app.get('/seminarStudentExcel/:id', seminaryController.seminarStudentExcel);
 app.get('/seminarStudent/:id',AuthHelper.authenticateJWT(["SUPER_ADMIN"]) ,seminaryController.seminarStudent);
 app.get('/seminarOverView/:id',AuthHelper.authenticateJWT(["SUPER_ADMIN"]) ,seminaryController.seminarOverView);

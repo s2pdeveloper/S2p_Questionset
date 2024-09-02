@@ -14,8 +14,11 @@ export class SeminarService {
     getSeminars: (params) =>
       `seminar?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
     getSeminarList: `seminar/list`,
-    getStudentListById: (params) => `seminar/getStudentBySeminar?id=${params.id}&page=${params.page}&pageSize=${params.pageSize}`,
-    downloadExcelPath: (id) => `seminar/seminarStudentExcel/${id}`
+    getStudentListById: (params) =>
+      `seminar/getStudentBySeminar?id=${params.id}&page=${params.page}&pageSize=${params.pageSize}`,
+    studentListExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
+    studentReportsExcelPath: (id) =>
+      `seminar//seminarStudentReportDownload/${id}`,
   };
   constructor(private http: ApiService) {}
   getAllSeminars(params) {
@@ -30,12 +33,11 @@ export class SeminarService {
     return this.http.put(this.routes.updatePath(id), payload);
   }
 
-  getSeminarById(id) {  
+  getSeminarById(id) {
     return this.http.get(this.routes.getByIdPath(id));
   }
 
-
-  getSeminarOverView(id) {  
+  getSeminarOverView(id) {
     return this.http.get(this.routes.getSeminarOverViewPath(id));
   }
 
@@ -43,15 +45,19 @@ export class SeminarService {
     return this.http.delete(this.routes.deletePath(id));
   }
 
-  allSeminarList(){
+  allSeminarList() {
     return this.http.get(this.routes.getSeminarList);
   }
 
-  getAllSeminarStudents(params){
+  getAllSeminarStudents(params) {
     return this.http.get(this.routes.getStudentListById(params));
   }
 
-  downloadExcel(id){
-    return this.http.get(this.routes.downloadExcelPath(id));
+  downloadStudentListExcel(id) {
+    return this.http.get(this.routes.studentListExcelPath(id));
+  }
+
+  downloadStudentReports(id){
+    return this.http.get(this.routes.studentReportsExcelPath(id));
   }
 }

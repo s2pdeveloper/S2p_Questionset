@@ -7,7 +7,7 @@ import { TruncatePipe } from '../../pipes/truncate.pipe';
 
 
 @NgModule({
-  declarations: [UserListComponent, UserFormComponent,TruncatePipe],
+  declarations: [UserListComponent, UserFormComponent, TruncatePipe],
   imports: [UsersRoutingModule, CoreModule.forRoot()],
 })
 export class UsersModule {}

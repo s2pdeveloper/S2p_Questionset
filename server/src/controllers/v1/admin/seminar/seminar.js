@@ -6,7 +6,6 @@ const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
 const ObjectId = mongoose.Types.ObjectId;
 const { generateCreateData } = OPTIONS;
-
 const Seminar = require('../../../../models/seminar');
 const QuestionSet = require('../../../../models/questionSet');
 const Student = require('../../../../models/student');
@@ -479,6 +478,83 @@ const seminaryObject = {
       return res.success({ excelData: result, collageName: collageName });
 
       // return res.success(studentList);
+    } catch (e) {
+      const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
+      res.serverError(errors);
+      throw new Error(e);
+    }
+  },
+  seminarStudentReportDownload: async (req, res) => {
+    try {
+      let {
+        page = 1,
+        pageSize = 10,
+        search = null,
+        column = 'createdAt',
+        direction = -1,
+      } = req.query;
+
+      let seminar = await Seminar.findById(req.params.id);
+
+      if (!seminar) {
+        let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('Seminar');
+        return res.unprocessableEntity(errors);
+      }
+
+      let resultData = await Result.aggregate([
+        {
+          $match: {
+            seminarId: new ObjectId(req.params.id),
+            studentId: { $in: seminar.studentIds },
+          },
+        },
+
+        {
+          $lookup: {
+            from: 'User',
+            localField:'studentId',
+            foreignField:'_id',
+            as: 'students',
+            pipeline: [
+              {
+                $project: {
+                  _id: 0,
+                  fullName:{$concat: [ "$firstName",' ', "$lastName" ]}
+
+                },
+              },
+            ],
+          },
+        },
+        {
+          $unwind:'$students'
+        },
+
+       
+
+        {
+          $project: {
+            _id: 1,
+            reportURL: 1,
+            studentsName:'$students.fullName'
+          },
+        },
+      ]);
+
+      // console.log('resultData===',resultData);
+      
+      let excelData = resultData.length > 0 ? resultData : [];
+
+      excelData = excelData.map((x) => {
+        return {
+          ['Student Name']: x.studentsName,
+          ['PDF URL']: x.reportURL,
+        };
+      });
+
+      let result = await excelService.exportTableToExcel(excelData);
+      return res.success({ excelData: result, collageName: seminar?.college });
+
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);

@@ -41,10 +41,10 @@ export class FeedBackListComponent implements OnInit {
     };
     this.feedbackService.getAllFeedback(params).subscribe(
       (success) => {
-        console.log('All Feedback', success);
+        console.log('Feedbacks', success);
         this.feedbacks = success?.result?.data;
         this.totalFeedbacks = success?.result?.totalCount;
-        console.log('All feedback', this.feedbacks);
+        // console.log('All feedback', this.feedbacks);
         this.spinner.hide();
       },
       (error) => {

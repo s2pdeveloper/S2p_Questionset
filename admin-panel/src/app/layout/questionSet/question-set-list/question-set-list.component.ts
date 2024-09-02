@@ -63,7 +63,7 @@ export class QuestionSetListComponent implements OnInit {
   getSeminarList() {
     this.seminarService.allSeminarList().subscribe(
       (success) => {
-        console.log(success);
+        // console.log(success);
         this.seminars = success?.result?.data;
         // console.log('this.seminars', this.seminars);
 

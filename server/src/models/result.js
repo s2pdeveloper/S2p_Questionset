@@ -39,6 +39,10 @@ const resultSchema = mongoose.Schema(
       //   totalMarks: String,
       // },
     ],
+    reportURL:{
+      type:String,
+      required:false
+    }
   },
   {
     timestamps: true,

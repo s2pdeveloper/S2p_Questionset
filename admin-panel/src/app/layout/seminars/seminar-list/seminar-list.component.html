@@ -91,7 +91,7 @@
                   (click)="showQr(s, qrCodeModal)"
                   ngbTooltip="Generate QR"
                 >
-                  <i class="fa fa-qrcode mx-1" aria-hidden="true"></i>
+                  <i class="fa fa-qrcode mx-1"></i>
                 </button>
                 <button
                   (click)="
@@ -100,7 +100,14 @@
                   class="btn btn-sm btn-outline-success mx-1"
                   ngbTooltip="Over View"
                 >
-                  <i class="fa fa-pie-chart" aria-hidden="true"></i>
+                  <i class="fa fa-pie-chart"></i>
+                </button>
+                <button
+                  (click)="downloadExcel(s._id)"
+                  class="btn btn-sm btn-outline-success ml-1"
+                  ngbTooltip="Download Excel"
+                >
+                  <i class="fa fa-file-excel-o"></i>
                 </button>
               </td>
             </tr>
