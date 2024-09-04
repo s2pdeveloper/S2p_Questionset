@@ -23,7 +23,14 @@ export class ResultPageComponent implements OnInit {
     private actRoute: ActivatedRoute,
     private spinner: NgxSpinnerService,
     private location: Location
-  ) {}
+  ) {
+    this.resultData = this.router.getCurrentNavigation().extras.state
+      ? this.router.getCurrentNavigation().extras.state['resultData']
+      : null;
+      // this.resultData = this.router.getCurrentNavigation().extras.state['resultData']
+     
+    console.log('Result Data From Report', this.resultData);
+  }
 
   // @HostListener('window:resize', ['$event'])
   // onResize(event: any) {
@@ -78,12 +85,17 @@ export class ResultPageComponent implements OnInit {
     this.spinner.show();
     this.actRoute.queryParams.subscribe((params: any) => {
       this.questionSetId = params.questionSetId;
-      this.resultData = params.resultData
-        ? JSON.parse(params.resultData)
-        : null;
+      // this.resultData = this.router.getCurrentNavigation()?.extras?.state[
+      //   'resultData'
+      // ]
+      //   ? JSON.parse(
+      //       this.router.getCurrentNavigation()?.extras?.state['resultData']
+      //     )
+      //   : null;
+
 
       if (this.resultData) {
-        console.log('this.resultData', this.resultData);
+        // console.log('this.resultData', this.resultData);
 
         this.processResultData(this.resultData);
       } else if (this.questionSetId) {
@@ -124,8 +136,6 @@ export class ResultPageComponent implements OnInit {
   }
 
   processResultData(result: any) {
-   
-
     this.totalStudents = result?.totalStudent;
     this.stuAttempted = result.noOfAttemptedStudent;
     this.stuNotAttempted = result?.noOfUnattemptedStudent;

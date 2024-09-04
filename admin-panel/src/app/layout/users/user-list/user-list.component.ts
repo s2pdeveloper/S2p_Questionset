@@ -46,8 +46,9 @@ export class UserListComponent implements OnInit {
     };
     this.userService.getAllUsers(params).subscribe(
       (success) => {
-        this.users = success.data;
-        this.collection = success.count;
+        console.log('Admins', success);
+        this.users = success?.data;
+        this.collection = success?.totalCount;
         this.spinner.hide();
       },
       (error) => {

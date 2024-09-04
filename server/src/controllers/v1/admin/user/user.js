@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const  User  = require('../../../../models/User');
+const User = require('../../../../models/User');
 const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const resCode = MESSAGES.resCode;
 const OPTIONS = require('../../../../config/Options');
@@ -28,11 +28,10 @@ const userObj = {
         page = 1,
         pageSize = 10,
         search = null,
-        role=req.query?req.query.role:null,
+        role = req.query ? req.query.role : null,
         column = 'createdAt',
         direction = -1,
       } = req.query;
-
 
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
@@ -40,13 +39,12 @@ const userObj = {
 
       const skip = Math.max(0, page - 1) * pageSize;
 
-      console.log("skip",skip)
 
       const matchStage = {
         $match: {
-          ...(role && {
-            role: role,
-          }) 
+          role: {
+            $in: [OPTIONS.usersRoles.SUPER_ADMIN, OPTIONS.usersRoles.ADMIN],
+          },
         },
       };
 
@@ -61,11 +59,14 @@ const userObj = {
       const pipeline = [matchStage, sortStage, facetStage];
       const resp = await User.aggregate(pipeline);
 
-      const totalCount = (resp.length > 0 && resp[0].metadata.length > 0) ? resp[0].metadata[0].total : 0;
-const data = (resp.length > 0 && resp[0].data) ? resp[0].data : [];
+      const totalCount =
+        resp.length > 0 && resp[0].metadata.length > 0
+          ? resp[0].metadata[0].total
+          : 0;
+      const data = resp.length > 0 && resp[0].data ? resp[0].data : [];
       return res.success({
         data,
-        totalCount
+        totalCount,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;

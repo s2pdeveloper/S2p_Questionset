@@ -50,10 +50,10 @@
             <tr>
               <th>Sr.No</th>
               <th>Set Name</th>
-              <th>Serial Number</th>
+              <!-- <th>Serial Number</th> -->
               <th>Seminar Name</th>
               <th>No of Questions</th>
-              <th>Duration</th>
+              <th>Duration(in min.)</th>
               <th>Passing Marks</th>
               <th>Visibility</th>
               <th>Actions</th>
@@ -62,13 +62,13 @@
           <tbody>
             <tr *ngFor="let s of sets; let i = index">
               <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
-              <td>{{ s.name }}</td>
-              <td>{{ s.serialNumber }}</td>
-              <td>{{ s.seminarName }}</td>
-              <td>{{ s.noOfQuestion }}</td>
-              <td>{{ s.duration }}</td>
-              <td>{{ s.passingMarks }}</td>
-              <td>{{ s.isVisible ? "Visible" : "Not Visible" }}</td>
+              <td>{{ s?.name }}</td>
+              <!-- <td>{{ s?.serialNumber }}</td> -->
+              <td>{{ s?.seminarName }}</td>
+              <td>{{ s?.noOfQuestion }}</td>
+              <td>{{ s?.duration }}</td>
+              <td>{{ s?.passingMarks }}</td>
+              <td>{{ s?.isVisible ? "Visible" : "Not Visible" }}</td>
               <td>
                 <button
                   (click)="navigateTo('/questionSet/questionSet-form', s._id)"
@@ -99,6 +99,14 @@
                 >
                   <i class="fa fa-plus mx-1"></i>
                 </button>
+                <button
+                  class="btn btn-sm btn-outline-success mx-1"
+                  data-toggle="modal"
+                  (click)="open(s, copySet)"
+                  ngbTooltip="Copy Set"
+                >
+                  <i class="fa fa-clone mx-1"></i>
+                </button>
               </td>
             </tr>
           </tbody>
@@ -113,6 +121,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #alertMsg let-modal>
   <div class="row mt-3 me-3">
     <div class="col-md-10 col-sm-10"></div>
@@ -146,7 +155,7 @@
     <div class="clearfix py-2">
       <button
         class="btn btn-danger me-2"
-        (click)="deleteQuestionSet(this.selectedRow._id)"
+        (click)="deleteQuestionSet(selectedRow._id)"
       >
         OK
       </button>
@@ -155,4 +164,98 @@
       </button>
     </div>
   </div>
+</ng-template>
+
+<ng-template #copySet let-modal>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Copy Question Set</h5>
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="row justify-content-center py-2">
+        <div class="col-md-8">
+          <ng-select
+            [items]="seminars"
+            bindLabel="name"
+            bindValue="_id"
+            [multiple]="false"
+            [(ngModel)]="selectedSeminarId"
+            placeholder="Select Seminar"
+          ></ng-select>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="modal-footer"> -->
+    <div class="row justify-content-end pb-2">
+      <div class="col-12 text-end">
+        <button
+          type="button"
+          class="btn btn-primary mx-1"
+          (click)="copyQuestionSet(selectedRow._id)"
+        >
+          Copy
+        </button>
+        <button
+          type="button"
+          class="btn btn-secondary mx-2"
+          data-dismiss="modal"
+          (click)="modal.dismiss('Cross click')"
+        >
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- <div class="row mt-3 me-3">
+    <div class="col-md-10 col-sm-10"></div>
+    <div class="col-md-2 col-sm-2 text-right">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        aria-label="Close"
+        (click)="modal.dismiss('Cross click')"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
+  <div class="modal-body text-center px-0">
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <label>Select Seminar</label>
+        <ng-select
+          [items]="seminars"
+          bindLabel="name"
+          bindValue="_id"
+          [multiple]="false"
+          [(ngModel)]="selectedSeminarId" 
+          placeholder="Select Seminar"
+        ></ng-select>
+      </div>
+    </div>
+  </div> -->
+  <!-- <div class="model-footer border-0 text-center px-0 pb-4">
+    <div class="clearfix py-2">
+      <button
+        class="btn btn-danger me-2"
+        (click)="copyQuestionSet(selectedRow._id)"
+      >
+        OK
+      </button>
+      <button class="btn btn-success" (click)="modal.dismiss('Cross click')">
+        Cancel
+      </button>
+    </div>
+  </div> -->
 </ng-template>

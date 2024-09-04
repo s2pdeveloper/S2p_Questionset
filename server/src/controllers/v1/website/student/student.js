@@ -16,7 +16,6 @@ const customerobj = {
       let existing = await User.findOne({ phone: req.body.phone });
       console.log('req.body.phone---', req.body.phone);
 
-
       if (existing) {
         const errors = 'User Already Exist';
         return res.serverError(errors);
@@ -31,7 +30,6 @@ const customerobj = {
       let user = await User.create(createdObj);
 
       console.log('user---', user);
-
 
       if (user) {
         await Seminar.findOneAndUpdate(
@@ -131,12 +129,13 @@ const customerobj = {
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
-      if(resp.length > 0 && resp[0].data.length == 0){
-        res.serverError("Please Wait, No Question Present");
+      if (resp.length > 0 && resp[0].data.length == 0) {
+        return res.success({ questionSetActive: false });
+        // res.serverError("Please Wait, No Question Present");
       }
       const data = resp.length > 0 && resp[0].data ? resp[0].data[0] : [];
-      console.log('req.user---',req.user,data,resp);
-      
+      console.log('req.user---', req.user, data, resp);
+
       const result = await Result.findOne({
         studentId: req.user._id,
         questionSetId: data._id,
@@ -148,7 +147,7 @@ const customerobj = {
       }
 
       console.log('your data', data.option);
-      return res.success({ data });
+      return res.success({ data, questionSetActive: true });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
       res.serverError(errors);
@@ -231,6 +230,10 @@ const customerobj = {
         return;
       }
       const questions = await Question.find({ questionSetId });
+
+      // let marksByTag = await calculateResultByTags(answers, questions);
+      // return;
+
       let correctAnswers = 0;
       answers.forEach((answer) => {
         const questionId = Object.keys(answer)[0];
@@ -260,6 +263,8 @@ const customerobj = {
         });
       }
 
+      let marksByTag = await calculateResultByTags(answers, questions);
+
       // Create result data object
       const resultData = {
         studentId,
@@ -270,6 +275,7 @@ const customerobj = {
         passingMarks,
         maxScore,
         answers,
+        marksByTag,
       };
       await Result.create(resultData);
 
@@ -287,7 +293,7 @@ const customerobj = {
     try {
       const { phone, otp, seminarId } = req.body;
 
-      let user = await  User.findOne({
+      let user = await User.findOne({
         phone: phone,
       });
 
@@ -301,8 +307,7 @@ const customerobj = {
         { $push: { studentIds: user._id } }
       );
 
-      console.log(user,user.otp,otp,user.otp == otp);
-      
+      console.log(user, user.otp, otp, user.otp == otp);
 
       if (!(user.otp == otp)) {
         const errors = 'Invalid OTP';
@@ -508,6 +513,7 @@ const customerobj = {
         passingMarks: existing.passingMarks,
         topStudent,
         student,
+
       });
     } catch (error) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -707,4 +713,115 @@ async function resultOverView(req, questionSetId, studentId, seminarId) {
     topStudent,
     student,
   };
+}
+
+async function calculateResultByTags(answers, questions) {
+  let marksByTag = [];
+  let groupedQueByTag = {};
+
+  // Process each question
+  for (const ele of questions) {
+    // if (!ele.tag) {
+    //   break;
+    // }
+
+    // Process each tag for the question
+    for (const tag of ele.tags) {
+      if (!groupedQueByTag[tag]) {
+        groupedQueByTag[tag] = [];
+      }
+      // Ensure the question is only added once per tag
+      if (
+        !groupedQueByTag[tag].some((q) => String(q._id) === String(ele._id))
+      ) {
+        groupedQueByTag[tag].push(ele);
+      }
+    }
+  }
+
+  function isEmptyObj(obj) {
+    return Object.keys(obj).length === 0;
+  }
+
+  function findCorrectAnswerAndTag(q, questionId) {
+    for (let key in q) {
+      for (let question of q[key]) {
+        if (String(question._id) === String(questionId)) {
+          return { correctOption: question.correctOption, Tag: key };
+        }
+      }
+    }
+    return null;
+  }
+
+  let checkIfEmptyObj = isEmptyObj(groupedQueByTag);
+
+  if (checkIfEmptyObj) {
+    return [];
+  }
+
+  for (let key in groupedQueByTag) {
+    const tagEntry = {
+      tagName: key,
+      obtainMarks: 0,
+      totalMarks: groupedQueByTag[key].length,
+    };
+
+    for (let question of groupedQueByTag[key]) {
+      const questionId = question._id;
+      const correctAnswer = question.correctOption;
+
+      const studentAnswerEntry = answers.find(
+        (answer) => answer[questionId] !== undefined
+      );
+
+      if (studentAnswerEntry) {
+        const studentAnswer = studentAnswerEntry[questionId];
+        if (studentAnswer === correctAnswer) {
+          tagEntry.obtainMarks += 1;
+        }
+      }
+    }
+
+    marksByTag.push(tagEntry);
+  }
+
+  return marksByTag;
+}
+
+async function generateAndSaveReport(marksByTag, studentInfo = {}) {
+  let pdfData = {
+    studentName: '',
+    totalMarks: '',
+    obtainMarks: '',
+    percentage: '',
+    placementChances: '',
+    topicWiseResult: {
+      barChart: {
+        obtainMarks: [],
+        totalMarks: [],
+        topics: [],
+      },
+      dounutChart: {
+        obtainMarks: [],
+        topics: [],
+      },
+    },
+    technologyToFocus: [],
+  };
+  pdfData.studentName = studentInfo.studentName;
+  pdfData.totalMarks = studentInfo.totalMarks;
+  pdfData.obtainMarks = studentInfo.obtainMarks;
+  pdfData.percentage = (studentInfo.obtainMarks / studentInfo.totalMarks) * 100;
+
+  for (const ele of marksByTag) {
+    pdfData.technologyToFocus.push(ele.tagName);
+
+    pdfData.topicWiseResult.barChart.obtainMarks.push(ele.obtainMarks);
+    pdfData.topicWiseResult.barChart.totalMarks.push(ele.totalMarks);
+    pdfData.topicWiseResult.barChart.topics.push(ele.tagName);
+
+    pdfData.topicWiseResult.dounutChart.topics.push(ele.tagName);
+    pdfData.topicWiseResult.dounutChart.obtainMarks.push(ele.obtainMarks);
+  }
 }

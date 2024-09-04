@@ -26,9 +26,7 @@ export class QuestionListComponent implements OnInit {
     private modalService: NgbModal,
     private toastService: ToastrService,
     private spinner: NgxSpinnerService
-  ) {
-    // console.log("in question list");
-  }
+  ) {}
 
   ngOnInit(): void {
     this.actRoutes.queryParams.subscribe((params) => {
@@ -49,10 +47,10 @@ export class QuestionListComponent implements OnInit {
     };
     this.questionService.getSetQuestions(id, params).subscribe(
       (success) => {
-        this.spinner.hide();
         console.log('Questions', success);
         this.questions = success?.result?.data;
         this.totalQuestion = success?.result?.totalCount;
+        this.spinner.hide();
       },
       (error) => {
         this.spinner.hide();
@@ -69,6 +67,11 @@ export class QuestionListComponent implements OnInit {
     }
   }
 
+  refreshList(title) {
+    this.search = title == 'clear' ? '' : this.search;
+    this.getQuestionsOfSet(this.setId);
+  }
+
   onChangePage(pageNo) {
     if (pageNo > 0) {
       this.page = pageNo;
@@ -81,18 +84,21 @@ export class QuestionListComponent implements OnInit {
     this.modalService.open(content, { centered: true });
   }
 
-  deleteQuestion(id){
+  deleteQuestion(id) {
+    this.spinner.show();
     this.questionService.deleteQuestionById(id).subscribe(
       (success) => {
         console.log(success);
         this.getQuestionsOfSet(this.setId);
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.success(success.result.message);
       },
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );

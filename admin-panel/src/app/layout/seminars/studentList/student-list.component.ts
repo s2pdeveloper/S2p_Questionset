@@ -69,7 +69,7 @@ export class StudentListComponent implements OnInit {
 
   excelDownload() {
     this.spinner.show();
-    this.seminarService.downloadExcel(this.seminarId).subscribe(
+    this.seminarService.downloadStudentListExcel(this.seminarId).subscribe(
       (success: any) => {
         console.log(success.result);
 

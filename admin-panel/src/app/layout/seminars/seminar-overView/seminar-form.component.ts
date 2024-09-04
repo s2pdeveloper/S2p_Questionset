@@ -108,10 +108,9 @@ export class SeminarOverViewComponent implements OnInit {
       //       labels:["FAIL" ,"PASS"]
       //     }
       //   )
-
       //   console.log("your chRT",this.setChart)
-
       // });
+      
       this.spinner.hide();
       // console.log('***********your Set data of chart*******', this.setChart);
     });

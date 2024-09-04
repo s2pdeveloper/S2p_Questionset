@@ -12,7 +12,8 @@ export class QuestionSetService {
     getByIdPath: (id) => `questionSet/${id}`,
     updatePath: (id) => `questionSet/${id}`,
     deletePath: (id) => `questionSet/${id}`,
-    visibilityPath: (id) => `questionSet/changeVisibility/${id}`
+    visibilityPath: (id) => `questionSet/changeVisibility/${id}`,
+    duplicateSetPath: `questionSet/duplicateQuestionSet`,
   };
 
   constructor(private http: ApiService) {}
@@ -39,5 +40,9 @@ export class QuestionSetService {
 
   changeSetVisibility(id, info){
     return this.http.put(this.routes.visibilityPath(id), info);
+  }
+
+  duplicateQuestionSet(data){
+    return this.http.post(this.routes.duplicateSetPath, data);
   }
 }
