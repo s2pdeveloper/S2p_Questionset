@@ -57,18 +57,25 @@ export class FeedBackFormComponent implements OnInit {
   }
 
   getById(id) {
-    this.feedbackService.getFeedbackById(id).subscribe((success) => {
-      console.log('get by id', success);
-      // this.splitArray = success?.result[0]?.options;
+    this.spinner.show();
+    this.feedbackService.getFeedbackById(id).subscribe(
+      (success) => {
+        console.log('get by id', success);
+        // this.splitArray = success?.result[0]?.options;
 
-      this.splitArray = success?.result[0]?.options.map((option) => {
-        return { option: option };
-      });
-      // this.splitArray = success?.result[0]?.options;
-      this.displayImage = success?.result[0]?.queImageUrl;
+        this.splitArray = success?.result[0]?.options.map((option) => {
+          return { option: option };
+        });
+        // this.splitArray = success?.result[0]?.options;
+        this.displayImage = success?.result[0]?.queImageUrl;
 
-      this.feedbackForm.patchValue(success?.result[0]);
-    });
+        this.feedbackForm.patchValue(success?.result[0]);
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong!');
+      }
+    );
   }
 
   getSeminarList() {
@@ -77,10 +84,10 @@ export class FeedBackFormComponent implements OnInit {
         console.log(success);
         this.seminars = success?.result?.data;
         // console.log('this.seminars', this.seminars);
-
-        // this.totalSeminars = success?.result?.
       },
-      (error) => {}
+      (error) => {
+        this.toastService.error('Something Went Wrong!');
+      }
     );
   }
 
@@ -98,7 +105,6 @@ export class FeedBackFormComponent implements OnInit {
     let formData = this.feedbackForm.value;
 
     console.log('formData', formData);
-    
 
     formData.options = this.splitArray.map((x: any) => {
       return x.option;

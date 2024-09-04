@@ -41,10 +41,10 @@ export class TagsListComponent implements OnInit {
     };
     this.tagService.getAllTags(params).subscribe(
       (success) => {
-        console.log('All Tags', success);
+        console.log('Tags', success);
         this.tags = success?.result?.data;
         this.totalTags = success?.result?.totalCount;
-        console.log('All Tags', this.tags);
+        // console.log('All Tags', this.tags);
         this.spinner.hide();
       },
       (error) => {
@@ -79,5 +79,23 @@ export class TagsListComponent implements OnInit {
     this.modalService.open(content, { centered: true });
   }
 
-  delete(id) {}
+  delete(id) {
+    this.spinner.show();
+    this.tagService.deleteTag(id).subscribe(
+      (success) => {
+        console.log('Tag Deleted', success);
+        this.getAll();
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.spinner.hide();
+        this.toastService.success(success.result.message);
+      },
+      (error) => {
+        this.selectedRow = {};
+        this.modalService.dismissAll();
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong!');
+      }
+    );
+  }
 }

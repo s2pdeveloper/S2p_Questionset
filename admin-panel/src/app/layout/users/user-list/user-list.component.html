@@ -57,28 +57,26 @@
             <tr>
               <th>Sr.No</th>
               <th>Name</th>
-              <!-- <th>Email</th> -->
-              <th>Mobile No.</th>
+              <th>Email</th>
               <th>Role</th>
               <th>Created At</th>
-              <th
+              <!-- <th
                 *ngIf="
                   userDetails.role == 'SUPER_ADMIN' ||
-                  userDetails.role == 'ADMIN' ||
-                  userDetails.role == 'CUSTOMER'
+                  userDetails.role == 'ADMIN'
                 "
               >
                 Action
-              </th>
+              </th> -->
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let u of users; let i = index">
               <td>{{ pageSize * (page - 1) + (i + 1) }}</td>
-              <td>{{ u.firstName }}</td>
-              <td>{{ u.mobileNo }}</td>
-              <td>{{ u.role }}</td>
-              <td>{{ u.createdAt }}</td>
+              <td>{{ u?.firstName }}</td>
+              <td>{{ u?.email }}</td>
+              <td>{{ u?.role }}</td>
+              <td>{{ u?.createdAt | date }}</td>
               <!-- <td
                 *ngIf="
                   userDetails.role == 'SUPER_ADMIN' ||
@@ -111,31 +109,33 @@
                   </button>
                 </div>
               </td> -->
-              <td>
+
+
+              <!-- <td>
                 <button
                   (click)="navigateTo('/users/users-form', u.id)"
-                  class="btn btn-sm btn-outline-success me-1"
+                  class="btn btn-sm btn-outline-success mx-1"
                   ngbTooltip="Edit User"
                 >
-                  <i class="fa fa-pencil me-1"></i>
+                  <i class="fa fa-pencil mx-1"></i>
                 </button>
                 <button
-                  class="btn btn-sm btn-outline-danger"
+                  class="btn btn-sm btn-outline-danger mx-1"
                   data-toggle="modal"
                   [disabled]="u.role == 'SUPER_ADMIN'"
                   (click)="open(u, alertMsg)"
                   ngbTooltip="Delete User"
                 >
-                  <i class="fa fa-trash me-1"></i>
+                  <i class="fa fa-trash mx-1"></i>
                 </button>
                 <button
-                (click)="navigateTo('/users/users-form', u.id)"
-                class="btn btn-sm btn-outline-success me-1"
-                ngbTooltip="View User"
-              >
-                <i class="fa fa-eye me-1"></i>
-              </button>
-              </td>
+                  (click)="navigateTo('/users/users-form', u.id)"
+                  class="btn btn-sm btn-outline-success mx-1"
+                  ngbTooltip="View User"
+                >
+                  <i class="fa fa-eye mx-1"></i>
+                </button>
+              </td> -->
             </tr>
           </tbody>
         </table>

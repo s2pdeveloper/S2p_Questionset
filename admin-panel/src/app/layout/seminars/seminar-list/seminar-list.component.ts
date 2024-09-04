@@ -109,6 +109,7 @@ export class SeminarListComponent implements OnInit {
       }
     );
   }
+
   downloadExcel(id) {
     this.spinner.show();
     this.seminarService.downloadStudentReports(id).subscribe(

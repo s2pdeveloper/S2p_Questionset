@@ -85,17 +85,20 @@ export class QuestionListComponent implements OnInit {
   }
 
   deleteQuestion(id) {
+    this.spinner.show();
     this.questionService.deleteQuestionById(id).subscribe(
       (success) => {
         console.log(success);
         this.getQuestionsOfSet(this.setId);
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.success(success.result.message);
       },
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );

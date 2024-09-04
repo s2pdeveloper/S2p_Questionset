@@ -80,16 +80,19 @@ export class FeedBackListComponent implements OnInit {
   }
 
   delete(id) {
+    this.spinner.show();
     this.feedbackService.deleteFeedback(id).subscribe(
       (success) => {
         this.getAll();
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.success(success.result.message);
       },
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );

@@ -65,21 +65,33 @@ export class TagsFormComponent implements OnInit {
 
   create(formData) {
     this.spinner.show();
-    this.tagService.createTag(formData).subscribe((success) => {
-      this.spinner.hide();
-      this.toastService.success(success.message);
-      this.router.navigate(['tags/list']);
-    });
+    this.tagService.createTag(formData).subscribe(
+      (success) => {
+        this.spinner.hide();
+        this.toastService.success('Tag Created Successfully');
+        this.router.navigate(['tags/list']);
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong!');
+      }
+    );
   }
 
   update(formData) {
     this.spinner.show();
-    this.tagService.updateTag(formData, formData._id).subscribe((success) => {
-      this.submitted = false;
-      this.spinner.hide();
-      this.toastService.success(success.message);
-      this.router.navigate(['tags/list']);
-    });
+    this.tagService.updateTag(formData, formData._id).subscribe(
+      (success) => {
+        this.submitted = false;
+        this.spinner.hide();
+        this.toastService.success('Tag Updated Successfully');
+        this.router.navigate(['tags/list']);
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong!');
+      }
+    );
   }
 
   goBack() {

@@ -70,7 +70,6 @@ export class QuestionSetListComponent implements OnInit {
         // this.totalSeminars = success?.result?.
       },
       (error) => {
-        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );
@@ -106,8 +105,8 @@ export class QuestionSetListComponent implements OnInit {
 
         // });
         // row.isVisible = !row.isVisible;
-        this.getAllSets();
         this.spinner.hide();
+        this.getAllSets();
       },
       (error) => {
         this.spinner.hide();

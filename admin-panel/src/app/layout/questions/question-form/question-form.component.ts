@@ -61,11 +61,17 @@ export class QuestionFormComponent implements OnInit {
     return this.questionForm.controls;
   }
 
-  getAllTags(){
-    this.tagService.getTagList().subscribe((success) => {
-      console.log("Tag List" ,success);
-      this.tags = success?.result;
-    })
+  getAllTags() {
+    this.tagService.getTagList().subscribe(
+      (success) => {
+        console.log('Tag List', success);
+        this.tags = success?.result;
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong');
+      }
+    );
   }
 
   // onTextChange(ev: any) {
@@ -86,19 +92,25 @@ export class QuestionFormComponent implements OnInit {
 
   getById(id) {
     this.spinner.show();
-    this.questionService.getQuestionById(id).subscribe((success) => {
-      console.log('get by id', success);
-      // this.splitArray = success?.result[0]?.options;
+    this.questionService.getQuestionById(id).subscribe(
+      (success) => {
+        console.log('get by id', success);
+        // this.splitArray = success?.result[0]?.options;
 
-      this.splitArray = success?.result[0]?.options.map((option) => {
-        return { option: option };
-      });
-      // this.splitArray = success?.result[0]?.options;
-      this.displayImage = success?.result[0]?.queImageUrl;
+        this.splitArray = success?.result[0]?.options.map((option) => {
+          return { option: option };
+        });
+        // this.splitArray = success?.result[0]?.options;
+        this.displayImage = success?.result[0]?.queImageUrl;
 
-      this.questionForm.patchValue(success?.result[0]);
-      this.spinner.hide();
-    });
+        this.questionForm.patchValue(success?.result[0]);
+        this.spinner.hide();
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong');
+      }
+    );
   }
 
   submit() {
@@ -148,7 +160,7 @@ export class QuestionFormComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error(error.message);
+        this.toastService.error('Something Went Wrong');
       }
     );
   }
@@ -166,7 +178,7 @@ export class QuestionFormComponent implements OnInit {
       },
       (error) => {
         this.spinner.hide();
-        this.toastService.error(error.message);
+        this.toastService.error('Something Went Wrong');
       }
     );
   }
