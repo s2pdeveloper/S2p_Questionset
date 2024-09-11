@@ -182,10 +182,16 @@
           </div>
 
           <div class="row mb-2">
-            <h6 class="sub-text">Result Status : {{ status }}</h6>
+            <div class="col-md-12 d-flex justify-content-between">
+              <h6 class="sub-text">Result Status : </h6>
+              <h6 class="sub-text me-3 {{ status === 'PASS' ? 'text-success' : 'text-danger' }}">{{ status }}</h6>
+            </div>
           </div>
           <div class="row mb-2">
-            <h6 class="sub-text">Rank : {{ rank }}</h6>
+            <div class="col-md-12 d-flex justify-content-between">
+              <h6 class="sub-text">Rank : </h6>
+              <h6 class="sub-text me-3">{{ rank }}</h6>
+            </div>
           </div>
         </div>
       </div>
