@@ -68,3 +68,28 @@ button{
   background: linear-gradient(90deg, #309b45, #41984f, #68ce76 66%);
 
 }
+
+.result-message {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+
+.result-message--pass {
+  background-color: #f0fdf4;
+  border: 1px solid #86efac;
+  color: #166534;
+}
+
+.result-message--fail {
+  background-color: #fff7ed;
+  border: 1px solid #fdba74;
+  color: #7c2d12;
+}
+
+.result-message__title {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.cp{
+  cursor: pointer;
+}
