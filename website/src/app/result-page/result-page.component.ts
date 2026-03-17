@@ -187,9 +187,7 @@ export class ResultPageComponent implements OnInit {
     this.location.back();
   }
 
-  // QuestionStatusFormat(): NzProgressStatusType {
-  //   if (this.questionsPercent > 70) return 'success';
-  //   else if (this.questionsPercent > 40) return null;
-  //   else return 'exception';
-  // }
+   goToLink(): void {
+    window.open('https://s2pedutech.com/landing', '_blank');
+  }
 }
