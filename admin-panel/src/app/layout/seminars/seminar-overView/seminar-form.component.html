@@ -21,6 +21,20 @@
             ></i>
             Student List
           </button>
+          <button
+            type="button"
+            class="btn btn-success"
+            style="color: white"
+            (click)="navigateToresult('seminars/result')"
+          >
+            <!-- <i class="fa fa-arrow-left me-1" aria-hidden="true"></i> -->
+            <i
+              class="fa fa-graduation-cap"
+              style="color: white"
+              aria-hidden="true"
+            ></i>
+            result List
+          </button>
 
           <button type="button" class="btn btn-danger" (click)="goBack()">
             <i class="fa fa-arrow-left me-1" aria-hidden="true"></i>
@@ -71,7 +85,7 @@
                   <apx-chart
                     [series]="[
                       d.percentageOfFailStudent,
-                      d.percentageOfPassStudent
+                      d.percentageOfPassStudent,
                     ]"
                     [chart]="{ height: 200, type: 'pie' }"
                     [xaxis]="chartOptions2?.xaxis"
@@ -83,7 +97,7 @@
                   <apx-chart
                     [series]="[
                       d.percentOfUnattemptedStudent,
-                      d.percentOfAttemptedStudent
+                      d.percentOfAttemptedStudent,
                     ]"
                     [chart]="{ height: 200, type: 'pie' }"
                     [xaxis]="chartOptions2?.xaxis"

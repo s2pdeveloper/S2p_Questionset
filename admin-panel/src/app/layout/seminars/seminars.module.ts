@@ -9,6 +9,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { StudentListComponent } from './studentList/student-list.component';
+import { ResultComponent } from './result/result.component';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { StudentListComponent } from './studentList/student-list.component';
     SeminarListComponent,
     SeminarOverViewComponent,
     StudentListComponent,
+    ResultComponent,
   ],
   imports: [
     SeminarsRoutingModule,

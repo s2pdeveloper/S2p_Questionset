@@ -1,0 +1,60 @@
+<div class="container">
+  <h2>Student Results</h2>
+  <div class="row mb-3">
+    <!-- Seminar Dropdown -->
+    <div class="col-md-4">
+      <label class="form-label">Select Seminar</label>
+      <select class="form-select" [(ngModel)]="selectedSeminarId">
+        <option value="">-- Select Seminar --</option>
+        <option *ngFor="let s of seminars" [value]="s._id">
+          {{ s.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Question Set Dropdown -->
+    <div class="col-md-4">
+      <label class="form-label">Select Question Set</label>
+      <select class="form-select" [(ngModel)]="selectedQuestionSetId">
+        <option value="">-- Select Question Set --</option>
+        <option *ngFor="let set of sets" [value]="set._id">
+          {{ set.title || set.name }}
+        </option>
+      </select>
+    </div>
+
+    <!-- Button -->
+    <div class="col-md-4 d-flex align-items-end">
+      <button class="btn btn-primary w-100" (click)="getstudentResult()">
+        Get Results
+      </button>
+    </div>
+  </div>
+  <p>Total Students: {{ totalStudents }}</p>
+
+  <table class="table table-bordered table-striped">
+    <thead>
+      <tr>
+        <th>Rank</th>
+        <th>Student Name</th>
+        <th>Marks</th>
+        <th>Total Marks</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let student of students">
+        <td>{{ student.rank }}</td>
+        <td>{{ student.studentName }}</td>
+        <td>{{ student.obtainMarks }}</td>
+        <td>{{ student.totalMarks }}</td>
+        <td>
+          <span [class]="getStatusClass(student.status)">
+            {{ student.status }}
+          </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

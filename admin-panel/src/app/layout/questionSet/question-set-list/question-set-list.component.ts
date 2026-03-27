@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { QuestionSetService } from '@services/questionSet/question-set.service';
+import { QuestionSetService } from '../../../services/questionSet/question-set.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -24,7 +24,7 @@ export class QuestionSetListComponent implements OnInit {
     private questionSetService: QuestionSetService,
     private modalService: NgbModal,
     private toastService: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {}
 
   ngOnInit(): void {
@@ -51,7 +51,7 @@ export class QuestionSetListComponent implements OnInit {
       (error) => {
         this.spinner.hide();
         this.toastService.error('Something went Wrong!');
-      }
+      },
     );
   }
 
@@ -91,11 +91,11 @@ export class QuestionSetListComponent implements OnInit {
       (error) => {
         this.spinner.hide();
         this.toastService.error('Something Went Wrong');
-      }
+      },
     );
   }
 
-  refreshList(title) {
+  refreshList(title: any) {
     this.search = title == 'clear' ? '' : this.search;
     this.getAllSets();
   }
@@ -117,7 +117,7 @@ export class QuestionSetListComponent implements OnInit {
         this.selectedRow = {};
         this.modalService.dismissAll();
         this.toastService.error('Something went Wrong!');
-      }
+      },
     );
   }
 }
