@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 const { generateCreateData } = OPTIONS;
 const Result = require('../../../../models/result');
 const { Student } = require('../../../../models/student');
+const Question = require('../../../../models/question');
+const User = require('../../../../models/User');
 const ResultObject = {
   rankedStudent: async (req, res) => {
     try {
@@ -63,6 +65,8 @@ const ResultObject = {
           topStudent.push(item);
         }
       });
+
+
       const totalStudent = await Student.countDocuments({
         seminarId: seminarId,
       });
@@ -94,6 +98,90 @@ const ResultObject = {
       throw new Error(error);
     }
   },
-};
 
+  getStudentDetailedResult: async (req, res) => {
+    try {
+      const { seminarId, questionSetId } = req.body;
+
+      const results = await Result.find({
+        seminarId: new mongoose.Types.ObjectId(seminarId),
+        questionSetId: new mongoose.Types.ObjectId(questionSetId),
+      }).lean();
+
+      const studentIds = results.map((r) => r.studentId);
+
+      const users = await User.find({
+        _id: { $in: studentIds },
+      }).lean();
+
+      const userMap = {};
+      users.forEach((user) => {
+        userMap[user._id.toString()] = user;
+      });
+
+      let questionIds = [];
+      results.forEach((student) => {
+        student.answers.forEach((ans) => {
+          questionIds.push(Object.keys(ans)[0]);
+        });
+      });
+
+      questionIds = [...new Set(questionIds)];
+
+      const questions = await Question.find({
+        _id: { $in: questionIds },
+      }).lean();
+
+      const questionMap = {};
+      questions.forEach((q) => {
+        questionMap[q._id.toString()] = q;
+      });
+
+      const finalData = results.map((student, index) => {
+        const user = userMap[student.studentId.toString()]; // ✅ correct user
+
+        const detailedAnswers = student.answers.map((ansObj) => {
+          const questionId = Object.keys(ansObj)[0];
+          const userAnswer = ansObj[questionId];
+          const question = questionMap[questionId];
+
+          return {
+            questionId,
+            question: question?.questionText || '',
+            correctAnswer: question?.correctOption || '',
+            userAnswer,
+            isCorrect: question?.correctOption === userAnswer,
+          };
+        });
+
+        return {
+          studentId: student.studentId,
+          studentName: user
+            ? `${user.firstName || ''} ${user.lastName || ''}`.trim()
+            : 'Unknown',
+          obtainMarks: student.obtainMarks,
+          totalMarks: student.answers.length,
+          status: student.status,
+          detailedAnswers,
+        };
+      });
+
+      // 6. Sort by marks (ranking)
+      finalData.sort((a, b) => b.obtainMarks - a.obtainMarks);
+
+      // 7. Add rank
+      finalData.forEach((item, index) => {
+        item.rank = index + 1;
+      });
+
+      res.status(200).json({
+        totalStudents: finalData.length,
+        students: finalData,
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  },
+};
 module.exports = ResultObject;
