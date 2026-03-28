@@ -3,10 +3,10 @@
   size="medium"
   color="#fff"
   type="ball-beat"
-> 
+>
 </ngx-spinner>
 
-<div class="container-fluid">
+<!-- <div class="container-fluid">
   <div class="container pt-5" *ngIf="startButton === false">
     <div class="row justify-content-center">
       <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
@@ -130,7 +130,7 @@
                       {{ option }}
                     </label>
 
-                    <!-- <label  class="form-check-label text"  >{{ option }}</label> -->
+                
                   </div>
                 </div>
               </div>
@@ -150,37 +150,169 @@
       </div>
     </div>
   </div>
-</div>
+</div> -->
 
-<!-- <ng-template #alertMsg let-modal>
-  <div class="row mt-3 me-3">
-    <div class="col-md-10 col-sm-10"></div>
-    <div class="col-md-2 col-sm-2 text-right">
-      <button
-        type="button"
-        class="close"
-        data-dismiss="modal"
-        aria-label="Close"
-        (click)="modal.dismiss('Cross click')"
-      >
-        <span aria-hidden="true">&times;</span>
-      </button>
+<div class="container-fluid">
+  <!-- <div class="container pt-5" *ngIf="startButton === false">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
+        <div class="card">
+          <div class="card-header text-center bg-primary">
+            <h4 class="text-center text-white head-text">Test Info</h4>
+          </div>
+          <div class="card-body p-4">
+            <div class="row">
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Name : </strong> {{ data?.name ? data?.name : "" }}
+                </p>
+              </div>
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Duration : </strong>
+                  {{ data?.duration ? data?.duration : "" }} Minutes
+                </p>
+              </div>
+            </div>
+            <div class="row">
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Total Questions :</strong
+                  >{{ data?.noOfQuestion ? data?.noOfQuestion : "" }}
+                </p>
+              </div>
+              <div
+                class="col-10 col-xs-6 col-sm-6 col-md-6 col-lg-6 col-xl-6 mb-2"
+              >
+                <p class="info-text">
+                  <strong>Passing Marks : </strong
+                  >{{ data?.passingMarks ? data?.passingMarks : "" }}
+                </p>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div
+                class="col-12 col-xs-12 col-sm-12 col-md-12 col-lg-9 col-xl-9"
+              >
+                <p class="info-text">
+                  <strong>Instructions : </strong>
+                  Please ensure you have a stable internet connection. Do not
+                  refresh the page during the test. Once you start the test, you
+                  cannot pause it.
+                </p>
+              </div>
+            </div>
+            <div class="text-center">
+              <button
+                class="btn btn-primary"
+                (click)="startTest()"
+                [disabled]="data?.isAlreadySubmited"
+              >
+                {{ data?.isAlreadySubmited ? "Completed" : "Start Test" }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+
+  <div class="container pt-5" *ngIf="!startButton">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-8 col-xl-8 mb-4">
+        <div class="card">
+          <div
+            class="card-header d-flex justify-content-between bg-primary p-2 px-3"
+          >
+            <h2 class="text-center text-white head-text">Feedback Form</h2>
+          </div>
+
+          <div class="card-body p-4">
+            <form>
+              <div
+                class="head mb-2"
+                *ngFor="let que of questions; let i = index"
+              >
+                <div class="mb-2">
+                  <p>
+                    <strong>{{ i + 1 }}. {{ que?.question }}</strong>
+                  </p>
+                  <img
+                    *ngIf="que?.queImageUrl"
+                    [src]="que?.queImageUrl"
+                    alt=""
+                    class="queImg"
+                  />
+                </div>
+
+                <div class="div mx-3">
+                  <div
+                    class="form-check text"
+                    *ngFor="let option of que?.options"
+                  >
+                    <label>
+                      <input
+                        id="checkbox-{{ i }}"
+                        (click)="answerChange(option, i, $event)"
+                        class="form-check-input"
+                        type="checkbox"
+                        [checked]="selectedAnswers[i] === option"
+                      />
+
+                      {{ option }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button class="btn btn-primary xl" (click)="submit()">
+                  Submit
+                </button>
+              </div>
+            </form>
+            <!-- <div class="circle">
+              {{ timeRemaining }}
+
+            </div> -->
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="modal-body text-center px-0">
-    <h4 class="text-warning">Are you sure you want to Submit Test?</h4>
-  </div>
-  <div class="model-footer border-0 text-center px-0 pb-4">
-    <div class="clearfix py-2">
-      <button
-        class="btn btn-danger me-2"
-        (click)="submit()"
-      >
-        OK
-      </button>
-      <button class="btn btn-success" (click)="modal.dismiss('Cross click')">
-        Cancel
-      </button>
+
+  <div class="container pt-5" *ngIf="startButton">
+    <div class="row justify-content-center">
+      <div class="col-12 col-xs-12 col-sm-12 col-md-11 col-lg-6 col-xl-6 mb-4">
+        <div class="card">
+          <!-- <div
+          class="card-header d-flex justify-content-center bg-primary p-2 px-3"
+        >
+          <h2 class="text-center text-white head-text">Thank You</h2>
+        </div> -->
+         
+
+          <div class="card-body p-4">
+          <div class="row justify-content-center">
+
+            <div class="col-10 text-center">
+              <img
+                src="../../assets/images/feedback.jpg"
+                alt=""
+                class="img-fluid"
+              />
+              <h2 class="text-center text-dark head-text">Feedback submitted !!</h2>
+            </div>
+          </div>
+        </div>
+
+        </div>
+      </div>
     </div>
   </div>
-</ng-template> -->
+</div>
