@@ -5,6 +5,7 @@ import { StudentListComponent } from './studentList/student-list.component';
 
 import { RouterModule, Routes } from '@angular/router';
 import { SeminarOverViewComponent } from './seminar-overView/seminar-form.component';
+import { ResultComponent } from './result/result.component';
 // import {StudentListComponent} from './studentList/seminar-list.component'
 
 const seminarRoutes: Routes = [
@@ -44,6 +45,13 @@ const seminarRoutes: Routes = [
         component: StudentListComponent,
         data: {
           title: 'Student List',
+        },
+      },
+      {
+        path: 'result',
+        component: ResultComponent,
+        data: {
+          title: 'result List',
         },
       },
     ],

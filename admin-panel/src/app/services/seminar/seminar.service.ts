@@ -19,6 +19,8 @@ export class SeminarService {
     studentListExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
     studentReportsExcelPath: (id) =>
       `seminar//seminarStudentReportDownload/${id}`,
+    downloadExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
+    getStudentDetailedResult: `result/getStudentDetailedResult`,
   };
   constructor(private http: ApiService) {}
   getAllSeminars(params) {
@@ -60,4 +62,12 @@ export class SeminarService {
   downloadStudentReports(id){
     return this.http.get(this.routes.studentReportsExcelPath(id));
   }
+  downloadExcel(id) {
+    return this.http.get(this.routes.downloadExcelPath(id));
+  }
+
+  getStudentDetailedResult(payload) {
+    return this.http.post(this.routes.getStudentDetailedResult, payload);
+  }
 }
+

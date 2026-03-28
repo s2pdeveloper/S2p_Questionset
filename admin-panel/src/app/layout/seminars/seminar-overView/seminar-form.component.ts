@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { SeminarService } from '@services/seminar/seminar.service';
+import { SeminarService } from '../../../services/seminar/seminar.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 
@@ -26,7 +26,7 @@ export class SeminarOverViewComponent implements OnInit {
     private actRoutes: ActivatedRoute,
     private location: Location,
     private toastService: ToastrService,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +40,7 @@ export class SeminarOverViewComponent implements OnInit {
 
   getById(id) {
     this.spinner.show();
-    this.seminarService.getSeminarOverView(id).subscribe((success) => {
+    this.seminarService.getSeminarOverView(id).subscribe((success:any) => {
       // this.seminarForm.patchValue(success.result);
       this.overViewData = success.result;
       // console.log('your form data in seminar over', this.overViewData);
@@ -80,7 +80,7 @@ export class SeminarOverViewComponent implements OnInit {
         labels: ['FAIL', 'PASS'],
       };
 
-      this.overViewData.setsData = this.overViewData.setsData.map((data) => {
+      this.overViewData.setsData = this.overViewData.setsData.map((data:any) => {
         var percentOfAttemptedStudent =
           Number(data.noOfAttemptedStudent / data.totalStudent) * 100;
         var percentOfUnattemptedStudent =
@@ -116,8 +116,11 @@ export class SeminarOverViewComponent implements OnInit {
     });
   }
 
-  navigateTo(path, id) {
+  navigateTo(path:any, id:any) {
     this.router.navigate([path], { queryParams: { id } });
+  }
+  navigateToresult(path:any) {
+    this.router.navigate([path]);
   }
 
   goBack() {
