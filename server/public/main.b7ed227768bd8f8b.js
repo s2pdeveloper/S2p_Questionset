@@ -2433,8 +2433,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 const environment = {
     production: true,
-    apiEndpoint: 'http://72.61.125.250:1989/api/v1/admin/',
-    QrCodeUrl: "http://72.61.125.250:1989/#/",
+    apiEndpoint: 'http://72.61.125.250:1988/api/v1/admin/',
+    QrCodeUrl: "http://72.61.125.250:1988/#/",
     // apiEndpoint: './api/v1/admin/',
     //  QrCodeUrl:" http://localhost:1988"
 };
@@ -2980,4 +2980,4 @@ module.exports = "<!-- <div class=\"app-body bg-color\">\n  <main class=\"main d
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.f9ec75e8f05010a2.js.map
+//# sourceMappingURL=main.b7ed227768bd8f8b.js.map
