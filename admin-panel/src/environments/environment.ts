@@ -5,8 +5,8 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'http://72.61.125.250:1989/api/v1/admin/',
-  QrCodeUrl:"http://72.61.125.250:1989/#/",
+  apiEndpoint: 'http://72.61.125.250:1988/api/v1/admin/',
+  QrCodeUrl:"http://72.61.125.250:1988/#/",
 
   // apiEndpoint: 'http://localhost:1988/api/v1/admin/',
   // QrCodeUrl:"http://localhost:1988"
