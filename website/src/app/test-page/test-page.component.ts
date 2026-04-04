@@ -83,8 +83,7 @@ export class TestPageComponent implements OnDestroy {
 
   getSetDetails() {
     let params = {
-      // id: this.seminarId,
-      id: "69cfd45f298221ed8d3b970d",
+      id: this.seminarId,
     };
     this.spinner.show();
     this.studentService.getVisibleSet(params).subscribe(
