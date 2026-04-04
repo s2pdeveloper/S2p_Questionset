@@ -30830,7 +30830,8 @@ ngb-modal-backdrop.modal-backdrop.fade.show {
   cursor: not-allowed !important;
 }
 .nav-logo {
-  width: 140px;
+  width: 65px;
+  height: 40px;
 }
 @media (max-width: 768px) {
   .nav-logo {
@@ -30847,4 +30848,4 @@ ngb-modal-backdrop.modal-backdrop.fade.show {
   }
 }
 
-/*# sourceMappingURL=styles.cd14fda704cb27de.css.map*/
+/*# sourceMappingURL=styles.34e737ec7330e41f.css.map*/

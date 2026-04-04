@@ -1,6 +1,70 @@
 "use strict";
 (self["webpackChunkng"] = self["webpackChunkng"] || []).push([["common"],{
 
+/***/ 36520:
+/*!**************************************************************!*\
+  !*** ./src/app/services/questionSet/question-set.service.ts ***!
+  \**************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "QuestionSetService": () => (/* binding */ QuestionSetService)
+/* harmony export */ });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ 42321);
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/core */ 3184);
+/* harmony import */ var _core_services__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../core/services */ 98138);
+
+
+
+let QuestionSetService = class QuestionSetService {
+    constructor(http) {
+        this.http = http;
+        this.routes = {
+            createPath: (id) => `questionSet/${id}`,
+            getPath: (params) => `questionSet/getAll?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
+            getByIdPath: (id) => `questionSet/${id}`,
+            updatePath: (id) => `questionSet/${id}`,
+            deletePath: (id) => `questionSet/${id}`,
+            visibilityPath: (id) => `questionSet/changeVisibility/${id}`,
+            duplicateSetPath: `questionSet/duplicateQuestionSet`,
+        };
+    }
+    getAllQuestionSet(params) {
+        return this.http.get(this.routes.getPath(params));
+    }
+    createQuestionSet(data, id) {
+        return this.http.post(this.routes.createPath(id), data);
+    }
+    updateQuestionSet(data, id) {
+        return this.http.put(this.routes.updatePath(id), data);
+    }
+    getQuestionSetById(id) {
+        return this.http.get(this.routes.getByIdPath(id));
+    }
+    deleteSetById(id) {
+        return this.http.delete(this.routes.deletePath(id));
+    }
+    changeSetVisibility(id, info) {
+        return this.http.put(this.routes.visibilityPath(id), info);
+    }
+    duplicateQuestionSet(data) {
+        return this.http.post(this.routes.duplicateSetPath, data);
+    }
+};
+QuestionSetService.ctorParameters = () => [
+    { type: _core_services__WEBPACK_IMPORTED_MODULE_0__.ApiService }
+];
+QuestionSetService = (0,tslib__WEBPACK_IMPORTED_MODULE_1__.__decorate)([
+    (0,_angular_core__WEBPACK_IMPORTED_MODULE_2__.Injectable)({
+        providedIn: 'root',
+    })
+], QuestionSetService);
+
+
+
+/***/ }),
+
 /***/ 32277:
 /*!*****************************************************!*\
   !*** ./src/app/services/seminar/seminar.service.ts ***!
@@ -31,6 +95,8 @@ let SeminarService = class SeminarService {
             getStudentListById: (params) => `seminar/getStudentBySeminar?id=${params.id}&page=${params.page}&pageSize=${params.pageSize}`,
             studentListExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
             studentReportsExcelPath: (id) => `seminar//seminarStudentReportDownload/${id}`,
+            downloadExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
+            getStudentDetailedResult: `result/getStudentDetailedResult`,
         };
     }
     getAllSeminars(params) {
@@ -62,6 +128,12 @@ let SeminarService = class SeminarService {
     }
     downloadStudentReports(id) {
         return this.http.get(this.routes.studentReportsExcelPath(id));
+    }
+    downloadExcel(id) {
+        return this.http.get(this.routes.downloadExcelPath(id));
+    }
+    getStudentDetailedResult(payload) {
+        return this.http.post(this.routes.getStudentDetailedResult, payload);
     }
 };
 SeminarService.ctorParameters = () => [
@@ -212,4 +284,4 @@ UserService = (0,tslib__WEBPACK_IMPORTED_MODULE_2__.__decorate)([
 /***/ })
 
 }]);
-//# sourceMappingURL=common.c9c2695729f6b41f.js.map
+//# sourceMappingURL=common.36749044130d51c0.js.map
