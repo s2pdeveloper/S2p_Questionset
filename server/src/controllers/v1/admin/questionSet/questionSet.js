@@ -2,6 +2,8 @@ const MESSAGES = require('../../../../models/helpers/MessagesHelper');
 const OPTIONS = require('../../../../config/Options');
 const mongoose = require('mongoose');
 const QuestionSet = require('../../../../models/questionSet');
+const Question = require('../../../../models/question');
+
 const Result = require('../../../../models/result');
 const Student = require('../../../../models/student');
 
@@ -10,14 +12,18 @@ const questionsetOjbect = {
     try {
       const data = req.body;
       data.seminarId = req.params.id;
-      const questionSets = await QuestionSet.find({ seminarId: req.params.id }).sort({serialNumber:1});
-      console.log("***your question Sets******",questionSets);
-      const serialNumber = questionSets.length > 0 ? questionSets[questionSets.length - 1].serialNumber + 1 : 1;
-      data.serialNumber=serialNumber;
-      console.log("***********serialNUmber************",serialNumber);
+      const questionSets = await QuestionSet.find({
+        seminarId: req.params.id,
+      }).sort({ serialNumber: 1 });
+      console.log('***your question Sets******', questionSets);
+      const serialNumber =
+        questionSets.length > 0
+          ? questionSets[questionSets.length - 1].serialNumber + 1
+          : 1;
+      data.serialNumber = serialNumber;
+      console.log('***********serialNUmber************', serialNumber);
 
-
-     const questionSet = await QuestionSet.create(data);
+      const questionSet = await QuestionSet.create(data);
       return res.success({
         message: MESSAGES.apiSuccessStrings.ADDED('QuestionSet'),
         data: questionSet,
@@ -111,17 +117,19 @@ const questionsetOjbect = {
     }
   },
 
-
   questionSetOverview: async (req, res) => {
     try {
+      const questionSet = await QuestionSet.findOne({ _id: req.params.id });
+      //  const student=await Student.find({seminarId:questionSet.seminaryObject});
+      //  const result=await Result.find({questionSetId:req.params.id});
+      const overView = await questionSetAllData(
+        req,
+        questionSet.seminarId,
+        req.params.id
+      );
 
-     const questionSet=await QuestionSet.findOne({_id:req.params.id});
-    //  const student=await Student.find({seminarId:questionSet.seminaryObject});
-    //  const result=await Result.find({questionSetId:req.params.id}); 
-  const overView=await questionSetAllData(req,questionSet.seminarId,req.params.id)
-     
       return res.success({
-        data:overView
+        data: overView,
       });
     } catch (e) {
       const errors = MESSAGES.apiErrorStrings.SERVER_ERROR;
@@ -138,7 +146,7 @@ const questionsetOjbect = {
         search = null,
         column = 'createdAt',
         direction = -1,
-        seminarId = null
+        seminarId = null,
       } = req.query;
       page = parseInt(page, 10);
       pageSize = parseInt(pageSize, 10);
@@ -176,20 +184,20 @@ const questionsetOjbect = {
           seminarName: {
             $arrayElemAt: ['$seminar.name', 0],
           },
-          name:1,
-          noOfQuestion:1,
-          duration:1,
-          serialNumber:1,
-          isVisible:1,
-          passingMarks:1,
-          seminarId:1
+          name: 1,
+          noOfQuestion: 1,
+          duration: 1,
+          serialNumber: 1,
+          isVisible: 1,
+          passingMarks: 1,
+          seminarId: 1,
         },
       };
       const pipeline = [
         matchStage,
         sortStage,
         lookupStage,
-        projectStage, 
+        projectStage,
         facetStage,
       ];
       const resp = await QuestionSet.aggregate(pipeline);
@@ -223,7 +231,7 @@ const questionsetOjbect = {
         let errors = MESSAGES.apiSuccessStrings.DATA_NOT_EXISTS('QuestionSet');
         return res.unprocessableEntity(errors);
       }
-      existing.isVisible =true;
+      existing.isVisible = true;
       await existing.save();
       return res.success({
         message: MESSAGES.apiSuccessStrings.UPDATE('Visibility'),
@@ -261,7 +269,8 @@ const questionsetOjbect = {
         return res.unprocessableEntity(errors);
       }
       await QuestionSet.findOneAndDelete({ _id: req.params.id });
-      
+      await Question.deleteMany({ questionSetId: req.params.id });
+
       return res.success({
         message: MESSAGES.apiSuccessStrings.DELETED('QuestionSet'),
       });
@@ -271,13 +280,74 @@ const questionsetOjbect = {
       throw new Error(e);
     }
   },
+  deleteRelatedRecords: async (seminarId) => {
+    try {
+      let existing = await QuestionSet.find(
+        { seminarId: seminarId },
+        { _id: 1 }
+      );
+      if (existing.length === 0) {
+        return;
+      }
+      for (const ele of existing) {
+        await Question.deleteMany({ questionSetId: ele._id });
+        await QuestionSet.findOneAndDelete({ _id: ele._id });
+      }
+
+      return;
+    } catch (e) {
+      return new Error(e);
+    }
+  },
+
+  duplicateQuestionSet: async (req, res) => {
+    try {
+      const { seminarId, questionSetId } = req.body;
+      let existingQuestionSet = await QuestionSet.findOne(
+        { _id: questionSetId },
+        {
+          name: 1,
+          noOfQuestion: 1,
+          duration: 1,
+          serialNumber: 1,
+          passingMarks: 1,
+          _id: 0,
+        }
+      );
+      let createdObj = existingQuestionSet.toObject();
+      createdObj.seminarId = seminarId;
+      let newQueSet = await QuestionSet.create(createdObj);
+
+      let existingQuestion = await Question.find(
+        { questionSetId: questionSetId },
+        {
+          _id: 0,
+          question: 1,
+          questionText: 1,
+          type: 1,
+          options: 1,
+          correctOption: 1,
+          queImageUrl: 1,
+        }
+      );
+
+      for (let ele of existingQuestion) {
+        ele = ele.toObject();
+        ele.questionSetId = newQueSet._id;
+        await Question.create(ele);
+      }
+
+      return res.success();
+    } catch (e) {
+      console.log('e', e);
+      return new Error(e);
+    }
+  },
 };
 
 module.exports = questionsetOjbect;
 
-
-async function  questionSetAllData(req,seminarId,questionSetId){
-
+async function questionSetAllData(req, seminarId, questionSetId) {
   let {
     page = 1,
     pageSize = 9999,
@@ -308,40 +378,38 @@ async function  questionSetAllData(req,seminarId,questionSetId){
       ...(questionSetId && {
         questionSetId: new mongoose.Types.ObjectId(questionSetId),
       }),
-    }, 
-   
+    },
   };
 
-  const lookupStage={
+  const lookupStage = {
     $lookup: {
       from: 'Student',
       localField: 'studentId',
       foreignField: '_id',
       as: 'studentInfo',
     },
-  }
+  };
 
-  const projectStage= {
+  const projectStage = {
     $project: {
-      seminarId:0, 
-      createdAt:0,
-      updatedAt:0,
-      answers:0,
-      __v:0,
-      "studentInfo.email":0,
-      "studentInfo.updatedAt":0,
-      "studentInfo.createdAt":0,
-      "studentInfo.seminarId":0,
-      "studentInfo.degree":0,
-      "studentInfo.phone":0,
-      "studentInfo.isDelete":0,
-      "studentInfo.branch":0,
-      "studentInfo.__v":0,
-      "studentInfo._id":0,
-      "studentInfo.gender":0,
+      seminarId: 0,
+      createdAt: 0,
+      updatedAt: 0,
+      answers: 0,
+      __v: 0,
+      'studentInfo.email': 0,
+      'studentInfo.updatedAt': 0,
+      'studentInfo.createdAt': 0,
+      'studentInfo.seminarId': 0,
+      'studentInfo.degree': 0,
+      'studentInfo.phone': 0,
+      'studentInfo.isDelete': 0,
+      'studentInfo.branch': 0,
+      'studentInfo.__v': 0,
+      'studentInfo._id': 0,
+      'studentInfo.gender': 0,
     },
-  }
-
+  };
 
   // const facetStage = {
   //   $facet: {
@@ -349,11 +417,16 @@ async function  questionSetAllData(req,seminarId,questionSetId){
   //     data: [{ $skip: skip }, { $limit: pageSize }],
   //   },
   // };
-  const pipeline = [matchStage, { $sort: { obtainMarks: -1 } },lookupStage,projectStage];
+  const pipeline = [
+    matchStage,
+    { $sort: { obtainMarks: -1 } },
+    lookupStage,
+    projectStage,
+  ];
 
   const resp = await Result.aggregate(pipeline);
 
-  console.log("your respose must watch",resp)
+  console.log('your respose must watch', resp);
   resp.forEach((item, index) => {
     item.rank = index + 1;
     if (item.status == 'PASS') {
@@ -372,8 +445,8 @@ async function  questionSetAllData(req,seminarId,questionSetId){
   noOfUnattemptedStudent = totalStudent - noOfAttemptedStudent;
   noOfFailStudent = totalStudent - noOfPassStudent;
 
-  percentageOfFailStudent =Math.round(( (noOfFailStudent / totalStudent) * 100));
-  percentageOfPassStudent =Math.round( ((noOfPassStudent / totalStudent) * 100));
+  percentageOfFailStudent = Math.round((noOfFailStudent / totalStudent) * 100);
+  percentageOfPassStudent = Math.round((noOfPassStudent / totalStudent) * 100);
 
   return {
     totalStudent,
@@ -385,5 +458,4 @@ async function  questionSetAllData(req,seminarId,questionSetId){
     noOfFailStudent,
     topStudent,
   };
-
 }

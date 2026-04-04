@@ -5,7 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { ToastrService } from 'ngx-toastr';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from 'src/environments/environment';
-
+import { saveAs } from 'file-saver';
 
 @Component({
   selector: 'app-seminar-list',
@@ -21,7 +21,7 @@ export class SeminarListComponent implements OnInit {
   search: any = '';
   totalSeminars: any;
   qrCodeUrl: string;
-  baseUrl:String;
+  baseUrl: String;
 
   constructor(
     private router: Router,
@@ -86,25 +86,46 @@ export class SeminarListComponent implements OnInit {
   showQr(s, content) {
     this.selectedRow = s;
     this.qrCodeUrl = `${environment.QrCodeUrl}login/${s._id}`;
-    console.log('your Qr code function runs',this.qrCodeUrl);
+    console.log('your Qr code function runs', this.qrCodeUrl);
     this.modalService.open(content, { centered: true });
   }
 
   deleteSeminarById(id) {
+    this.spinner.show();
     this.seminarService.deleteSeminar(id).subscribe(
       (success) => {
         console.log(success);
         this.getAll();
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.success(success.result.message);
       },
       (error) => {
         this.selectedRow = {};
         this.modalService.dismissAll();
+        this.spinner.hide();
         this.toastService.error('Something went Wrong!');
       }
     );
   }
- 
+
+  downloadExcel(id) {
+    this.spinner.show();
+    this.seminarService.downloadStudentReports(id).subscribe(
+      (success) => {
+        console.log('Download Excel called', success);
+        let UintArray = new Uint8Array(success.result.excelData.data);
+        let blob = new Blob([UintArray]);
+        this.spinner.hide();
+        saveAs(blob, `${success.result.collageName} Report Excel.xlsx`);
+        this.spinner.hide();
+        this.toastService.success('Excel Downloaded');
+      },
+      (error) => {
+        this.spinner.hide();
+        this.toastService.error('Something Went Wrong!');
+      }
+    );
+  }
 }

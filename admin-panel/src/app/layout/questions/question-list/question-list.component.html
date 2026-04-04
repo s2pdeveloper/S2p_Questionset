@@ -54,6 +54,7 @@
               <th>Question</th>
               <th>Type</th>
               <th>Correct Option</th>
+              <th>Tags</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -68,6 +69,7 @@
               </td>
               <td>{{ que?.type }}</td>
               <td>{{ que?.correctOption }}</td>
+              <td  > <span  *ngFor="let t of que.tags" >{{ t+' ' }}</span> </td>
               <td>
                 <button
                   (click)="

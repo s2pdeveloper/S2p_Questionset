@@ -26,7 +26,7 @@ export class UserService {
   getAllUsers(params) {
     return this.http
       .get(this.routes.getAllPath(params))
-      .pipe(map((res: any) => res));
+      .pipe(map((res: any) => res.result));
   }
   updateUser(id, payload: IUser) {
     return this.http

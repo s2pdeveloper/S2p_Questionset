@@ -4,10 +4,10 @@ const { validate } = require('../../../../middleware/Validators');
 const AuthHelper = require('../../../../models/helpers/AuthHelper');
 
 
-
+app.post('/duplicateQuestionSet', QuestionSet.duplicateQuestionSet);
+app.get('/getAll', QuestionSet.getAll);
 app.get('/seminarAllQuestionSet/:id', QuestionSet.getAllBySeminaryId);
 app.get('/questionSetOverView/:id', QuestionSet.questionSetOverview);
-app.get('/getAll', QuestionSet.getAll);
 app.post('/:id', QuestionSet.createForSeminar);
 app.put('/changeVisibility/:id', QuestionSet.changeVisibility);
 app.put('/:id', QuestionSet.update);

@@ -16,6 +16,9 @@ export class SeminarService {
     getSeminarList: `seminar/list`,
     getStudentListById: (params) =>
       `seminar/getStudentBySeminar?id=${params.id}&page=${params.page}&pageSize=${params.pageSize}`,
+    studentListExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
+    studentReportsExcelPath: (id) =>
+      `seminar//seminarStudentReportDownload/${id}`,
     downloadExcelPath: (id) => `seminar/seminarStudentExcel/${id}`,
     getStudentDetailedResult: `result/getStudentDetailedResult`,
   };
@@ -52,6 +55,13 @@ export class SeminarService {
     return this.http.get(this.routes.getStudentListById(params));
   }
 
+  downloadStudentListExcel(id) {
+    return this.http.get(this.routes.studentListExcelPath(id));
+  }
+
+  downloadStudentReports(id){
+    return this.http.get(this.routes.studentReportsExcelPath(id));
+  }
   downloadExcel(id) {
     return this.http.get(this.routes.downloadExcelPath(id));
   }
@@ -60,3 +70,4 @@ export class SeminarService {
     return this.http.post(this.routes.getStudentDetailedResult, payload);
   }
 }
+

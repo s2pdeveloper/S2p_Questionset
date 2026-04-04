@@ -9,7 +9,7 @@ import { NgxSpinnerModule } from 'ngx-spinner';
 @Component({
   selector: 'app-report-page',
   standalone: true,
-  imports: [HeaderComponent, CommonModule,NgxSpinnerModule],
+  imports: [HeaderComponent, CommonModule, NgxSpinnerModule],
   templateUrl: './report-page.component.html',
   styleUrl: './report-page.component.css',
 })
@@ -99,8 +99,8 @@ export class ReportPageComponent implements OnInit {
     this.router.navigate(['default/result'], {
       queryParams: {
         questionSetId: currentSet?.questionSet?._id,
-        resultData: JSON.stringify(currentSet?.result),
       },
+      state: { resultData: currentSet?.result },
     });
   }
 }
