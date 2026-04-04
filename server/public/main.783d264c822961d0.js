@@ -2434,7 +2434,7 @@ __webpack_require__.r(__webpack_exports__);
 const environment = {
     production: true,
     apiEndpoint: 'http://72.61.125.250:1988/api/v1/admin/',
-    QrCodeUrl: "http://72.61.125.250:1988/#/",
+    QrCodeUrl: "http://72.61.125.250:1989/#/",
     // apiEndpoint: './api/v1/admin/',
     //  QrCodeUrl:" http://localhost:1988"
 };
@@ -2980,4 +2980,4 @@ module.exports = "<!-- <div class=\"app-body bg-color\">\n  <main class=\"main d
 /******/ var __webpack_exports__ = __webpack_require__.O();
 /******/ }
 ]);
-//# sourceMappingURL=main.b7ed227768bd8f8b.js.map
+//# sourceMappingURL=main.783d264c822961d0.js.map
