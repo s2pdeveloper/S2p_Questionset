@@ -7,9 +7,9 @@ import { environment } from "../../environment/environment";
 })
 export class StudentService {
   routes: any = {
-    registerPath: (seminarId) =>
+    registerPath: (seminarId:any) =>
       `${environment.apiEndpoint}student/${seminarId}`,
-    getVisibleSetPath: (params) =>
+    getVisibleSetPath: (params:any) =>
       `${environment.apiEndpoint}student/getVisibleQuestionSet?id=${params.id}`,
     submitPath: `${environment.apiEndpoint}student/submitTest`,
     rankedResultPath: `${environment.apiEndpoint}student/rankedResult`,
@@ -21,11 +21,11 @@ export class StudentService {
 
   constructor(private http: HttpClient) {}
 
-  registerStudent(data: any, seminarId) {
+  registerStudent(data: any, seminarId:any) {
     return this.http.post(this.routes.registerPath(seminarId), data);
   }
 
-  getVisibleSet(params) {
+  getVisibleSet(params:any) {
     return this.http.get(this.routes.getVisibleSetPath(params));
   }
 
